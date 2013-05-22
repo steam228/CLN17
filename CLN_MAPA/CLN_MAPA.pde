@@ -40,6 +40,7 @@ void setup(){
 }
 
 void draw(){
+  smooth();
   //background(0);
  // if ( millis() - lastTime > pausa ) 
   //{
@@ -50,7 +51,7 @@ void draw(){
  //   mostraTweet();
 //} 
 animaMundo();
-//areas.desenharTodos();
+areas.desenharTodos();
 }
 
 
@@ -176,7 +177,7 @@ void animaMundo()
     if ((i+1)<casas.size())
     {
       aux1= (casa) casas.get(i+1);
-      traco.setTamanho(10);  
+      traco.setTamanho(1);  
       traco.setInicio(aux.getX(),aux.getY());
       traco.inicia(aux1.getX(),aux1.getY());
       traco.desenha();
@@ -203,6 +204,25 @@ void mostraTweet()
   {
     aux= (tweet) tweets.get(i);
     aux.mostra(0,250,20);
+
+  }
+}
+
+
+void adicionaAOuser(String _user , char tipo)
+{
+  user aux;
+  for (int i = 0; i <pessoas.size(); i++) 
+  {
+    aux= (user) pessoas.get(i);
+   if  (aux.getID()==_user)
+   {
+    if (tipo=='T')
+    aux.addTweet();
+    else if (tipo=='I')
+    aux.addInsta();
+    break;
+   }
 
   }
 }

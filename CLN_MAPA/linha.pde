@@ -10,9 +10,9 @@ float distY;          // Y-axis distance to move
 float exponent = 4;   // Determines the curve
 float x = 0.0;        // Current x-coordinate
 float y = 0.0;        // Current y-coordinate
-float step = 0.01;    // Size of each step along the path
+float step = 0.001;    // Size of each step along the path
 float pct = 0.0;      // Percentage traveled (0.0 to 1.0)
-float tamanho=20;
+float tamanho=4;
 
 linha() 
 {

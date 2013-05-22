@@ -62,6 +62,7 @@ public void setup(){
 }
 
 public void draw(){
+  smooth();
   //background(0);
  // if ( millis() - lastTime > pausa ) 
   //{
@@ -72,7 +73,7 @@ public void draw(){
  //   mostraTweet();
 //} 
 animaMundo();
-//areas.desenharTodos();
+areas.desenharTodos();
 }
 
 
@@ -198,7 +199,7 @@ public void animaMundo()
     if ((i+1)<casas.size())
     {
       aux1= (casa) casas.get(i+1);
-      traco.setTamanho(10);  
+      traco.setTamanho(1);  
       traco.setInicio(aux.getX(),aux.getY());
       traco.inicia(aux1.getX(),aux1.getY());
       traco.desenha();
@@ -225,6 +226,25 @@ public void mostraTweet()
   {
     aux= (tweet) tweets.get(i);
     aux.mostra(0,250,20);
+
+  }
+}
+
+
+public void adicionaAOuser(String _user , char tipo)
+{
+  user aux;
+  for (int i = 0; i <pessoas.size(); i++) 
+  {
+    aux= (user) pessoas.get(i);
+   if  (aux.getID()==_user)
+   {
+    if (tipo=='T')
+    aux.addTweet();
+    else if (tipo=='I')
+    aux.addInsta();
+    break;
+   }
 
   }
 }
@@ -270,19 +290,23 @@ class Area
  	int cor;
  	String ultimoInsta;
  	String ultimoTweet;
+ 	PShape desenho;
+ 	int largura=60;
+ 	int altura=85;
  	casa (String nome , float xx, float yy) 
  	{
 		tag=nome;
 		posx=xx;
 		posy=yy;
 		tamLetra=15;
-		dim=20;
+		dim=0.1f;
 		numInsta=0;
 		numTweets=0;
 		ultimoTweet="?q=%23"+nome;
+		desenho = loadShape("Casacaldas.svg");
 	}
-	public void addTweet(){numTweets++;dim+=5;}
-	public void addInsta(){numInsta++;dim+=5;}
+	public void addTweet(){numTweets++;dim+=0.5f;}
+	public void addInsta(){numInsta++;dim+=0.5f;}
 	public int countTwetts() {return numTweets;}
 	public int countInsta() {return numInsta;}
 	public float getX() {return posx;}
@@ -306,11 +330,15 @@ class Area
 
 		//textSize(tamLetra);
 		text("#"+tag, posx+tamLetra, posy-tamLetra);
-		rect (posx, posy, dim, dim);
-		line (posx, posy, posx+dim/2, posy-dim/2);
-		line (posx+dim/2, posy-dim/2, posx+dim, posy);
-		line (posx+dim, posy, posx, posy+dim);
-		line (posx, posy, posx+dim, posy+dim);
+		// desenho.disableStyle();
+		// noStroke();
+		// fill(255, 0, 0);
+		 shape(desenho, posx-(largura*dim), posy-(altura*dim), largura*dim, altura*dim);
+		// rect (posx, posy, dim, dim);
+		// line (posx, posy, posx+dim/2, posy-dim/2);
+		// line (posx+dim/2, posy-dim/2, posx+dim, posy);
+		// line (posx+dim, posy, posx, posy+dim);
+		// line (posx, posy, posx+dim, posy+dim);
 	}
 }
 class exclusoes 
@@ -422,9 +450,9 @@ float distY;          // Y-axis distance to move
 float exponent = 4;   // Determines the curve
 float x = 0.0f;        // Current x-coordinate
 float y = 0.0f;        // Current y-coordinate
-float step = 0.01f;    // Size of each step along the path
+float step = 0.001f;    // Size of each step along the path
 float pct = 0.0f;      // Percentage traveled (0.0 to 1.0)
-float tamanho=20;
+float tamanho=4;
 
 linha() 
 {
@@ -499,17 +527,57 @@ public void desenha()
  	int id;
  	int numTweets;
  	int numInsta;
+ 	String username;
  	ArrayList caminho;
  	int cor;
  	float grosura;
-
- 	user (int _id) 
+ 	linha desenhador;
+ 	
+ 	user (int _id, String _user) 
  	{
  		id=_id;
+ 		username=_user;
  	}
 
- 	public void addTweet(){numTweets++;}
- 	public void addInsta(){numInsta++;}
+ 	public void addTweet()
+ 	{
+ 		numTweets++;
+ 		grosura++;
+ 	}
+ 	public void addInsta()
+ 	{
+ 		numInsta++;
+ 		grosura++;
+ 	}
+
+ 	public String getID()
+ 	{
+ 		return username;
+ 	}
+
+ 	// void desenha(ArrayList casitas)
+ 	// {
+ 	// 	int aux,aux1;
+
+ 	// 	for (int i = 0; i <caminho.size(); i++) 
+ 	// 	{
+
+ 	// 		aux= (int) caminho.get(i);
+ 	// 		//aux.desenha();
+ 	// 		if ((i+1)<caminho.size())
+ 	// 		{
+ 	// 			aux1= (int) caminho.get(i+1);
+
+
+ 				
+ 	// 			traco.setTamanho(10);  
+ 	// 			traco.setInicio(aux.getX(),aux.getY());
+ 	// 			traco.inicia(aux1.getX(),aux1.getY());
+ 	// 			traco.desenha();
+ 	// 		}
+ 	// 	}
+ 	// }
+
  }
   static public void main(String[] passedArgs) {
     String[] appletArgs = new String[] { "CLN_MAPA" };
