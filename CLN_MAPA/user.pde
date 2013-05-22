@@ -32,27 +32,30 @@
  		return username;
  	}
 
- 	// void desenha(ArrayList casitas)
- 	// {
- 	// 	int aux,aux1;
+ 	void desenha(ArrayList casitas)
+ 	{
+ 		int aux,aux1;
 
- 	// 	for (int i = 0; i <caminho.size(); i++) 
- 	// 	{
+ 		for (int i = 0; i <caminho.size(); i++) 
+ 		{
 
- 	// 		aux= (int) caminho.get(i);
- 	// 		//aux.desenha();
- 	// 		if ((i+1)<caminho.size())
- 	// 		{
- 	// 			aux1= (int) caminho.get(i+1);
+ 			aux= (Integer) caminho.get(i);
+ 			//aux.desenha();
+ 			if ((i+1)<caminho.size())
+ 			{
+ 				aux1= (Integer) caminho.get(i+1);
 
+casa casola;
 
- 				
- 	// 			traco.setTamanho(10);  
- 	// 			traco.setInicio(aux.getX(),aux.getY());
- 	// 			traco.inicia(aux1.getX(),aux1.getY());
- 	// 			traco.desenha();
- 	// 		}
- 	// 	}
- 	// }
+ 				traco.setTamanho(10);
+
+ 				casola=(casa)casitas.get(aux);
+
+ 				traco.setInicio(casola.getX(),casola.getY());
+ 				traco.inicia(casola.getX(),casola.getY());
+ 				traco.desenha();
+ 			}
+ 		}
+ 	}
 
  }

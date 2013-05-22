@@ -41,9 +41,11 @@ public void draw() {
     x = beginX + (pct * distX);
     y = beginY + (pow(pct, exponent) * distY);
   }
+  
   fill(255);
   ellipse(x, y, 20, 20);
 }
+
 
 public void mousePressed() {
   pct = 0.0f;
