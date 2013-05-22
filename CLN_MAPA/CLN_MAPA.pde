@@ -2,38 +2,55 @@ import org.json.*;
 import java.util.*; 
 import de.bezier.data.*;
 
+import toxi.geom.*;
+import toxi.processing.*;
+
 int largura=700;
 int altura=300;
+
+int id_area;
+
+linha traco;
 
 ArrayList casas;
 ArrayList tweets;
 ArrayList instagrams;
 ArrayList pessoas;
 
+exclusoes areas;
+
 int pausa=2000;
 long lastTime = 0;
 
 void setup(){
-	size(largura, altura);
-	casas = new ArrayList();
-	tweets= new ArrayList();
-	instagrams= new ArrayList();
-	pessoas= new ArrayList();
-	background(0);
-	carregaCasas();
+  traco =new linha();
+  areas= new exclusoes(this);
+  id_area= areas.addPoligno();
+  areas.addPonto(id_area,300,0);
+  areas.addPonto(id_area,400,50);
+  areas.addPonto(id_area,410,80);
+  areas.addPonto(id_area,400,100);
+  size(largura, altura);
+  casas = new ArrayList();
+  tweets= new ArrayList();
+  instagrams= new ArrayList();
+  pessoas= new ArrayList();
+  background(0);
+  carregaCasas();
 }
 
 void draw(){
   //background(0);
-  if ( millis() - lastTime > pausa ) 
-  {
-    procuraTweets();
-    procuraInstas();
-    lastTime = millis();
-    mostraInsta();
-    mostraTweet();
-  } 
-  animaMundo();
+ // if ( millis() - lastTime > pausa ) 
+  //{
+ //   procuraTweets();
+ //   procuraInstas();
+ //lastTime = millis();
+ //   mostraInsta();
+ //   mostraTweet();
+//} 
+animaMundo();
+//areas.desenharTodos();
 }
 
 
@@ -151,12 +168,21 @@ void procuraInstas()
 }
 void animaMundo()
 {
-  casa aux;
+  casa aux,aux1;
   for (int i = 0; i <casas.size(); i++) 
   {
     aux= (casa) casas.get(i);
     aux.desenha();
+    if ((i+1)<casas.size())
+    {
+      aux1= (casa) casas.get(i+1);
+      traco.setTamanho(10);  
+      traco.setInicio(aux.getX(),aux.getY());
+      traco.inicia(aux1.getX(),aux1.getY());
+      traco.desenha();
+    }
   }
+
 }
 
 void mostraInsta()

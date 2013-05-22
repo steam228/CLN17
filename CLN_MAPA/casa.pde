@@ -25,6 +25,8 @@
 	void addInsta(){numInsta++;dim+=5;}
 	int countTwetts() {return numTweets;}
 	int countInsta() {return numInsta;}
+	float getX() {return posx;}
+	float getY() {return posy;}
 	void setInsta(String ident) {ultimoInsta = ident;}
 	void setTweet(String ident) {ultimoTweet = ident;}
 	String getInsta() {return ultimoInsta;}

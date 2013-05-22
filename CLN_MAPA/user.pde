@@ -10,9 +10,9 @@
 
  	user (int _id) 
  	{
-		id=_id;
-	}
+ 		id=_id;
+ 	}
 
-	void addTweet(){numTweets++;}
-	void addInsta(){numInsta++;}
-}
+ 	void addTweet(){numTweets++;}
+ 	void addInsta(){numInsta++;}
+ }

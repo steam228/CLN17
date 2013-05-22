@@ -6,6 +6,8 @@ import processing.opengl.*;
 import org.json.*; 
 import java.util.*; 
 import de.bezier.data.*; 
+import toxi.geom.*; 
+import toxi.processing.*; 
 
 import java.util.HashMap; 
 import java.util.ArrayList; 
@@ -22,38 +24,55 @@ public class CLN_MAPA extends PApplet {
  
 
 
+
+
+
 int largura=700;
 int altura=300;
+
+int id_area;
+
+linha traco;
 
 ArrayList casas;
 ArrayList tweets;
 ArrayList instagrams;
 ArrayList pessoas;
 
+exclusoes areas;
+
 int pausa=2000;
 long lastTime = 0;
 
 public void setup(){
-	size(largura, altura);
-	casas = new ArrayList();
-	tweets= new ArrayList();
-	instagrams= new ArrayList();
-	pessoas= new ArrayList();
-	background(0);
-	carregaCasas();
+  traco =new linha();
+  areas= new exclusoes(this);
+  id_area= areas.addPoligno();
+  areas.addPonto(id_area,300,0);
+  areas.addPonto(id_area,400,50);
+  areas.addPonto(id_area,410,80);
+  areas.addPonto(id_area,400,100);
+  size(largura, altura);
+  casas = new ArrayList();
+  tweets= new ArrayList();
+  instagrams= new ArrayList();
+  pessoas= new ArrayList();
+  background(0);
+  carregaCasas();
 }
 
 public void draw(){
   //background(0);
-  if ( millis() - lastTime > pausa ) 
-  {
-    procuraTweets();
-    procuraInstas();
-    lastTime = millis();
-    mostraInsta();
-    mostraTweet();
-  } 
-  animaMundo();
+ // if ( millis() - lastTime > pausa ) 
+  //{
+ //   procuraTweets();
+ //   procuraInstas();
+ //lastTime = millis();
+ //   mostraInsta();
+ //   mostraTweet();
+//} 
+animaMundo();
+//areas.desenharTodos();
 }
 
 
@@ -171,12 +190,21 @@ public void procuraInstas()
 }
 public void animaMundo()
 {
-  casa aux;
+  casa aux,aux1;
   for (int i = 0; i <casas.size(); i++) 
   {
     aux= (casa) casas.get(i);
     aux.desenha();
+    if ((i+1)<casas.size())
+    {
+      aux1= (casa) casas.get(i+1);
+      traco.setTamanho(10);  
+      traco.setInicio(aux.getX(),aux.getY());
+      traco.inicia(aux1.getX(),aux1.getY());
+      traco.desenha();
+    }
   }
+
 }
 
 public void mostraInsta()
@@ -199,6 +227,36 @@ public void mostraTweet()
     aux.mostra(0,250,20);
 
   }
+}
+class Area 
+{
+	int id;
+	Polygon2D poligno;
+	ToxiclibsSupport grafico;
+	
+	Area (int _id , PApplet coiso) 
+	{
+		id =_id;
+		poligno=new Polygon2D();
+		grafico=new ToxiclibsSupport(coiso);
+	}
+
+	public void addPonto( int _x , int _y)
+	{
+		poligno.add(new Vec2D(_x,_y));
+	}
+	public void desenha()
+	{
+		grafico.polygon2D(poligno);
+	}
+	public boolean contem(int _posx , int _posy)
+	{
+		return poligno.containsPoint(new Vec2D(_posx,_posy));
+	}
+	public int getID()
+	{
+		return id;
+	}
 }
  class casa 
  {
@@ -227,6 +285,8 @@ public void mostraTweet()
 	public void addInsta(){numInsta++;dim+=5;}
 	public int countTwetts() {return numTweets;}
 	public int countInsta() {return numInsta;}
+	public float getX() {return posx;}
+	public float getY() {return posy;}
 	public void setInsta(String ident) {ultimoInsta = ident;}
 	public void setTweet(String ident) {ultimoTweet = ident;}
 	public String getInsta() {return ultimoInsta;}
@@ -253,61 +313,186 @@ public void mostraTweet()
 		line (posx, posy, posx+dim, posy+dim);
 	}
 }
- class insta 
+class exclusoes 
 {
-	
-	int id;
-	int userID;
-	String url;
 
-	
-	 insta (int _id,int _user,String _url) 
-	 {
-	 	id=_id;
-	 	userID=_user;
-	 	url=_url;
-	 }
+	ArrayList zonas;
+	PApplet grafismo;
 
-	 public void mostra(int posx , int posy)
-	 {
-	 	PImage foto;
-	 	foto = loadImage(url);
-	 	image(foto, posx, posy);
-	 }
-	 public void mostra(int posx , int posy, int largura , int altura)
-	 {
-	 	PImage foto;
-	 	foto = loadImage(url);
-	 	image(foto, posx, posy, largura	, altura);
-	 }
+	exclusoes(PApplet _gra) 
+	{
+		zonas = new ArrayList();
+		grafismo=_gra;
+	}
 
-	 public int getUser(){return userID;}
-	 public int getId(){return id;}
+	public void desenharTodos() 
+	{
+		Area zonita ;
+		for (int i = 0; i <zonas.size(); i++) 
+		{
+			zonita=(Area)zonas.get(i);
+			zonita.desenha();
+		}
+	}
+
+
+	public void desenhaID(int _id)
+	{
+		Area zonita ;
+		zonita=(Area)zonas.get(_id);
+		zonita.desenha();
+	}
+
+	public int  contemTodos(int _posx , int _posy) 
+	{
+		Area zonita ;
+		for (int i = 0; i <zonas.size(); i++) 
+		{
+			zonita=(Area)zonas.get(i);
+			
+			if ( zonita.contem(_posx , _posy) )
+			return zonita.getID();
+		}
+		return -1;
+	}
+
+	public boolean  contemID(int _id , int _posx , int _posy)
+	{
+		Area zonita ;
+		zonita=(Area)zonas.get(_id);
+		return zonita.contem(_posx ,_posy);
+	}
+
+	public void addPonto(int _id , int _posx , int _posy)
+	{
+		Area zona_aux ;
+		zona_aux =(Area)zonas.get(_id);
+		zona_aux.addPonto(_posx,_posy);
+	}
+
+	public int addPoligno()
+	{	
+		Area zona_aux ;
+		int id=zonas.size();
+		zona_aux = new Area(id,grafismo);
+		zonas.add(zona_aux);	
+		return id;
+	}
+
+}
+ class insta 
+ {
+
+ 	int id;
+ 	int userID;
+ 	String url;
+
+ 	insta (int _id,int _user,String _url) 
+ 	{
+ 		id=_id;
+ 		userID=_user;
+ 		url=_url;
+ 	}
+
+ 	public void mostra(int posx , int posy)
+ 	{
+ 		PImage foto;
+ 		foto = loadImage(url);
+ 		image(foto, posx, posy);
+ 	}
+ 	public void mostra(int posx , int posy, int largura , int altura)
+ 	{
+ 		PImage foto;
+ 		foto = loadImage(url);
+ 		image(foto, posx, posy, largura	, altura);
+ 	}
+
+ 	public int getUser(){return userID;}
+ 	public int getId(){return id;}
+ }
+class linha 
+{
+
+float beginX = 20.0f;  // Initial x-coordinate
+float beginY = 10.0f;  // Initial y-coordinate
+float endX = 570.0f;   // Final x-coordinate
+float endY = 320.0f;   // Final y-coordinate
+float distX;          // X-axis distance to move
+float distY;          // Y-axis distance to move
+float exponent = 4;   // Determines the curve
+float x = 0.0f;        // Current x-coordinate
+float y = 0.0f;        // Current y-coordinate
+float step = 0.01f;    // Size of each step along the path
+float pct = 0.0f;      // Percentage traveled (0.0 to 1.0)
+float tamanho=20;
+
+linha() 
+{
+  noStroke();
+  distX = endX - beginX;
+  distY = endY - beginY;
+}
+
+public void setTamanho(float _tam)
+{
+  tamanho=_tam;
+}
+public void setInicio(float _posx, float _posy)
+{
+  x=_posx;
+  y=_posy;
+}
+
+public void inicia(float _posx, float _posy)
+{
+  pct = 0.0f;
+  beginX = x;
+  beginY = y;
+  endX = _posx;
+  endY = _posy;
+  distX = endX - beginX;
+  distY = endY - beginY;
+}
+
+public void desenha() 
+{
+  while (pct < 1.0f)
+  {
+    noStroke();
+    //fill(0, 2);
+    //rect(0, 0, width, height);
+    pct += step;
+    x = beginX + (pct * distX);
+    y = beginY + (pow(pct, exponent) * distY);
+    fill(255);
+    ellipse(x, y, tamanho, tamanho);
+  }
+}
+
 }
  class tweet 
-{
-	
-	int id;
-	int userID;
-	String texto;
+ {
 
-	
-	 tweet (int _id,int _user,String _texto) 
-	 {
-	 	id=_id;
-	 	userID=_user;
-	 	texto=_texto;
-	 }
+ 	int id;
+ 	int userID;
+ 	String texto;
 
-	 public void mostra(int posx , int posy, int letra )
-	 {
-	 	textSize(letra);
-		text(texto, posx, posy);
-	 }
+ 	tweet (int _id,int _user,String _texto) 
+ 	{
+ 		id=_id;
+ 		userID=_user;
+ 		texto=_texto;
+ 	}
 
-	 public int getUser(){return userID;}
-	 public int getId(){return id;}
-}
+ 	public void mostra(int posx , int posy, int letra )
+ 	{
+ 		textSize(letra);
+ 		text(texto, posx, posy);
+ 	}
+
+ 	public int getUser(){return userID;}
+ 	public int getId(){return id;}
+ }
  class user 
  {
 
@@ -320,12 +505,12 @@ public void mostraTweet()
 
  	user (int _id) 
  	{
-		id=_id;
-	}
+ 		id=_id;
+ 	}
 
-	public void addTweet(){numTweets++;}
-	public void addInsta(){numInsta++;}
-}
+ 	public void addTweet(){numTweets++;}
+ 	public void addInsta(){numInsta++;}
+ }
   static public void main(String[] passedArgs) {
     String[] appletArgs = new String[] { "CLN_MAPA" };
     if (passedArgs != null) {
