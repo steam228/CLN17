@@ -1,10 +1,9 @@
-class area 
+class Area 
 {
-	//ArrayList pontos;
 	int id;
-	Polygon2D poligno=new Polygon2D();
+	Polygon2D poligno;
 	ToxiclibsSupport grafico;
-	area (int _id , PApplet coiso) 
+	Area (int _id , PApplet coiso) 
 	{
 		id =_id;
 		poligno=new Polygon2D();
@@ -17,27 +16,14 @@ class area
 	}
 	void desenha()
 	{
-		grafico.polygon2D(poligno);	
+		grafico.polygon2D(poligno);
 	}
-	boolean contem(Vec2D cenas)
+	boolean contem(int _posx , int _posy)
 	{
-		if( poligno.containsPoint(cenas))
-		return true;
-		else
-		return false;
+		return poligno.containsPoint(new Vec2D(_posx,_posy));
 	}
-
 	int getID()
 	{
 		return id;
 	}
-	// Vec2D getPonto(int i)
-	// {
-	// 	return (Vec2D)pontos.get(i);
-	// }
-
-	// int getSize()
-	// {
-	// 	return pontos.size();
-	// }
 }

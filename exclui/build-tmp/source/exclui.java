@@ -20,49 +20,27 @@ public class exclui extends PApplet {
 
 
 
-int mo_x;
-int mo_y;
-Polygon2D aux;
-Polygon2D outro;
+int aux_id;
 
-Vec2D rato;
-ToxiclibsSupport grafico;
-ToxiclibsSupport grafico1;
 ArrayList zonas;
-area zonita ;
-area z_aux ;
-public void setup() {
+Area zonita ;
+
+public void setup() 
+{
 	size(680,382);
 	zonas = new ArrayList();
-	aux =new Polygon2D();
-	outro =new Polygon2D();
-	zonita = new area(zonas.size()+1,this);
-	zonas.add(zonita);
-	z_aux=(area)zonas.get(0);
 
-	grafico=new ToxiclibsSupport(this);
-	grafico1=new ToxiclibsSupport(this);
+	//zonita = new Area(zonas.size()+1,this);
+	//zonita.addPonto(10,0);
+	//zonita.addPonto(100,50);
+	//zonita.addPonto(110,80);
+	//zonita.addPonto(40,100);
+aux_id=addPoligno();
+addPonto(aux_id,10,0);
+addPonto(aux_id,100,50);
+addPonto(aux_id,110,80);
+addPonto(aux_id,40,100);
 	
-	
-	z_aux.addPonto(10,0);
-	z_aux.addPonto(100,50);
-	z_aux.addPonto(110,80);
-	z_aux.addPonto(40,100);
-
-	// aux.add(new Vec2D(10,0));
-	// aux.add(new Vec2D(100,50));
-	// aux.add(new Vec2D(110,80));
-	// aux.add(new Vec2D(40,100));
-
-	// zonas.add(aux);
-	// aux =new Polygon2D();
-	// aux.add(new Vec2D(300,0));
-	// aux.add(new Vec2D(300,50));
-	// aux.add(new Vec2D(310,80));
-	// aux.add(new Vec2D(340,100));
-	// zonas.add(aux);
-	//outro=(Polygon2D)zonas.get(1);
-	println("TAMANHO: "+zonas.size());
 }
 
 public void draw() 
@@ -70,35 +48,36 @@ public void draw()
 	background(255);
 	for (int i = 0; i <zonas.size(); i++) 
 	{
-		zonita=(area)zonas.get(i);
+		zonita=(Area)zonas.get(i);
 		zonita.desenha();
-		//zonita.contem();
-	// grafico.polygon2D(outro);
-	// outro=(Polygon2D)zonas.get(2);
-	// grafico1.polygon2D(outro);
-	mo_y=mouseY;
-	mo_x=mouseX;
-	rato =new Vec2D(mouseX	,mouseY);
-	if ( zonita.contem(rato) )
-	{
-		println("bingo -> "+zonita.getID());
-	}
+		if ( zonita.contem(mouseX ,mouseY) )
+		{
+			println("ESTA -> "+zonita.getID());
+		}
 	}
 }
-public void keyPressed()
+
+public void addPonto(int _id , int _posx , int _posy)
 {
-	if (key == 'E' || key == 'e') 
-	{
-		fill(0);
-	} 
+Area zona_aux ;
+zona_aux =(Area)zonas.get(_id);
+zona_aux.addPonto(_posx,_posy);
 }
-class area 
+
+public int addPoligno()
+{	
+	int id=zonas.size();
+	Area zona_aux ;
+	zona_aux = new Area(id,this);
+	zonas.add(zona_aux);	
+	return id;
+}
+class Area 
 {
-	//ArrayList pontos;
 	int id;
-	Polygon2D poligno=new Polygon2D();
+	Polygon2D poligno;
 	ToxiclibsSupport grafico;
-	area (int _id , PApplet coiso) 
+	Area (int _id , PApplet coiso) 
 	{
 		id =_id;
 		poligno=new Polygon2D();
@@ -111,29 +90,16 @@ class area
 	}
 	public void desenha()
 	{
-		grafico.polygon2D(poligno);	
+		grafico.polygon2D(poligno);
 	}
-	public boolean contem(Vec2D cenas)
+	public boolean contem(int _posx , int _posy)
 	{
-		if( poligno.containsPoint(cenas))
-		return true;
-		else
-		return false;
+		return poligno.containsPoint(new Vec2D(_posx,_posy));
 	}
-
 	public int getID()
 	{
 		return id;
 	}
-	// Vec2D getPonto(int i)
-	// {
-	// 	return (Vec2D)pontos.get(i);
-	// }
-
-	// int getSize()
-	// {
-	// 	return pontos.size();
-	// }
 }
   static public void main(String[] passedArgs) {
     String[] appletArgs = new String[] { "exclui" };

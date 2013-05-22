@@ -1,49 +1,21 @@
 import toxi.geom.*;
 import toxi.processing.*;
 
-int mo_x;
-int mo_y;
-Polygon2D aux;
-Polygon2D outro;
+int aux_id;
 
-Vec2D rato;
-ToxiclibsSupport grafico;
-ToxiclibsSupport grafico1;
 ArrayList zonas;
-area zonita ;
-area z_aux ;
-void setup() {
+Area zonita ;
+
+void setup() 
+{
 	size(680,382);
 	zonas = new ArrayList();
-	aux =new Polygon2D();
-	outro =new Polygon2D();
-	zonita = new area(zonas.size()+1,this);
-	zonas.add(zonita);
-	z_aux=(area)zonas.get(0);
-
-	grafico=new ToxiclibsSupport(this);
-	grafico1=new ToxiclibsSupport(this);
+aux_id=addPoligno();
+addPonto(aux_id,10,0);
+addPonto(aux_id,100,50);
+addPonto(aux_id,110,80);
+addPonto(aux_id,40,100);
 	
-	
-	z_aux.addPonto(10,0);
-	z_aux.addPonto(100,50);
-	z_aux.addPonto(110,80);
-	z_aux.addPonto(40,100);
-
-	// aux.add(new Vec2D(10,0));
-	// aux.add(new Vec2D(100,50));
-	// aux.add(new Vec2D(110,80));
-	// aux.add(new Vec2D(40,100));
-
-	// zonas.add(aux);
-	// aux =new Polygon2D();
-	// aux.add(new Vec2D(300,0));
-	// aux.add(new Vec2D(300,50));
-	// aux.add(new Vec2D(310,80));
-	// aux.add(new Vec2D(340,100));
-	// zonas.add(aux);
-	//outro=(Polygon2D)zonas.get(1);
-	println("TAMANHO: "+zonas.size());
 }
 
 void draw() 
@@ -51,25 +23,27 @@ void draw()
 	background(255);
 	for (int i = 0; i <zonas.size(); i++) 
 	{
-		zonita=(area)zonas.get(i);
+		zonita=(Area)zonas.get(i);
 		zonita.desenha();
-		//zonita.contem();
-	// grafico.polygon2D(outro);
-	// outro=(Polygon2D)zonas.get(2);
-	// grafico1.polygon2D(outro);
-	mo_y=mouseY;
-	mo_x=mouseX;
-	rato =new Vec2D(mouseX	,mouseY);
-	if ( zonita.contem(rato) )
-	{
-		println("bingo -> "+zonita.getID());
-	}
+		if ( zonita.contem(mouseX ,mouseY) )
+		{
+			println("ESTA -> "+zonita.getID());
+		}
 	}
 }
-void keyPressed()
+
+void addPonto(int _id , int _posx , int _posy)
 {
-	if (key == 'E' || key == 'e') 
-	{
-		fill(0);
-	} 
+Area zona_aux ;
+zona_aux =(Area)zonas.get(_id);
+zona_aux.addPonto(_posx,_posy);
+}
+
+int addPoligno()
+{	
+	int id=zonas.size();
+	Area zona_aux ;
+	zona_aux = new Area(id,this);
+	zonas.add(zona_aux);	
+	return id;
 }
