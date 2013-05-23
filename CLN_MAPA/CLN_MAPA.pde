@@ -131,25 +131,28 @@ void procuraInstas()
   {
     aux= (casa) casas.get(i);
     tag =aux.getTag();
-    int totalCasa=aux.countInsta();
-    instaSite = loadStrings("https://api.instagram.com/v1/tags/"+tag+"?client_id=9d6af7341f7a4fd39e888fd12ab8d8a0");
-    jsonstring =instaSite[0];
-    JSON contador = JSON.parse(jsonstring);
-    contador = contador.getJSON("data");
-    count=0;
-    count=contador.getInt("media_count");//TOTAL DE FOTOS NESSA TAG
-    println("NUM DE INSTAS _> "+count+" NUM GUARDADO _> "+aux.countInsta());
-    if (count>aux.countInsta())
-    {
+    //int totalCasa=aux.countInsta();
+   // instaSite = loadStrings("https://api.instagram.com/v1/tags/"+tag+"?client_id=9d6af7341f7a4fd39e888fd12ab8d8a0");
+    //jsonstring =instaSite[0];
+    //JSON contador = JSON.parse(jsonstring);
+    //contador = contador.getJSON("data");
+    //count=0;
+    //count=contador.getInt("media_count");//TOTAL DE FOTOS NESSA TAG
+    //println("NUM DE INSTAS _> "+count+" NUM GUARDADO _> "+aux.countInsta());
+    //if (count>aux.countInsta())
+    //{
       //carrega os novos
       instaSite = loadStrings("https://api.instagram.com/v1/tags/"+tag+"//media/recent?client_id=9d6af7341f7a4fd39e888fd12ab8d8a0&min_tag_id="+aux.getInsta()+"");
       jsonstring =instaSite[0];
       JSON data = JSON.parse(jsonstring);
       JSON ultimo = data.getJSON("pagination");
-      println("ERRO-> "+ultimo);
-      println("TAG -> "+tag+" INSTA -> "+aux.getInsta());
-      aux.setInsta( ultimo.getString("min_tag_id"));
+      //println("ERRO-> "+ultimo);
+      //println("TAG -> "+tag+" INSTA -> "+aux.getInsta());
+      println("NUM -> "+data.length());
+      
       data = data.getJSON("data");
+      if (data.length()>0)
+      aux.setInsta( ultimo.getString("min_tag_id"));
       //println("NUM fotos -> "+data.length());
       int user_id;
       for (int f=0; f<data.length();f++)
@@ -165,7 +168,7 @@ void procuraInstas()
 
         println("RECEBI NOVO-> "+aux.getTag());
       }
-    }
+    //}
   }
 
 
