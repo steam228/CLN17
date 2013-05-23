@@ -33,8 +33,10 @@ int largura=1200;
 int altura=300;
 
 int id_area;
-
-linha traco;
+boolean comeca  = false;
+boolean areclu = false;
+boolean finale = false;
+boolean prinale = true;
 
 ArrayList casas;
 ArrayList tweets;
@@ -49,7 +51,7 @@ long lastTime = 0;
 long ultimaVez = 0;
 
 public void setup(){
-  //traco =new linha();
+
   areas= new exclusoes(this);
   id_area= areas.addPoligno();
   areas.addPonto(id_area,300,0);
@@ -66,8 +68,9 @@ public void setup(){
 }
 
 public void draw(){
-
-  smooth();
+  if (comeca)
+  {
+    smooth();
  // background(0);
  if ( millis() - lastTime > pausa ) 
  {
@@ -82,8 +85,10 @@ public void draw(){
  //  ultimaVez=millis();
  desenhaCaminhos();
 //}
- animaMundo();
+animaMundo();
 
+
+}
 areas.desenharTodos();
 }
 
@@ -91,6 +96,7 @@ areas.desenharTodos();
 public void carregaCasas()
 {
 	XlsReader reader;
+  float[] posii = {0,0};
   reader = new XlsReader(this, "cln17.xls" ); 
 
   int numcasas = 11;
@@ -118,31 +124,46 @@ public void carregaCasas()
 
     float ypos = map (yvals[i], ymin, ymax, margin, height-margin);
     float xpos = map (xvals[i], xmin, xmax, margin, width-margin);
-    
-    casas.add(new casa(designa,xpos,ypos));
+    posii =verificaCasa(xpos,ypos);
+    casas.add(new casa(designa, posii[0], posii[1]));
   }
 }
+
+
+
+public float[] verificaCasa(float _posx , float _posy) { 
+int idd;
+ float[] arra ={0,0};
+ areas.contemTodos(_posx , _posy);
+ 
+ arra[0]=_posx;
+ arra[1]=_posy;
+  return arra;  // Returns an array of 3 ints: 20, 40, 60 
+}
+
+
+
+
 public void procuraTweets()
 {
-//http://search.twitter.com/search.json?since_id=334616285973463040&q=%23cln13
-//http://search.twitter.com/search.json?q=%23cln13
-casa aux;
-String twitterSite[];
-String jsonstring ;
-String ultimoURL;
-for (int i = 0; i <casas.size(); i++) 
-{
- aux= (casa) casas.get(i);
- twitterSite = loadStrings("http://search.twitter.com/search.json"+aux.getTweet());
- jsonstring =twitterSite[0];
- JSON twiits = JSON.parse(jsonstring);
- ultimoURL=twiits.getString("refresh_url");
- twiits =twiits.getJSON("results");
 
- if (twiits.length()>0)
- {
-  for (int t = 0; t<twiits.length(); t++)
+  casa aux;
+  String twitterSite[];
+  String jsonstring ;
+  String ultimoURL;
+  for (int i = 0; i <casas.size(); i++) 
   {
+   aux= (casa) casas.get(i);
+   twitterSite = loadStrings("http://search.twitter.com/search.json"+aux.getTweet());
+   jsonstring =twitterSite[0];
+   JSON twiits = JSON.parse(jsonstring);
+   ultimoURL=twiits.getString("refresh_url");
+   twiits =twiits.getJSON("results");
+
+   if (twiits.length()>0)
+   {
+    for (int t = 0; t<twiits.length(); t++)
+    {
     JSON  este =twiits.getJSON(t);//numero do tweet nesta query
     tweets.add( new tweet(tweets.size()+1,este.getInt("from_user_id"),este.getString("text")));//adiciona instagram a lista
     aux.addTweet();
@@ -197,71 +218,63 @@ public void procuraInstas()
     {
       aux= (casa) casas.get(i);
       aux.desenha();
+    }
+  }
 
-      // if (i==0)
-      //   traco = new linha(aux.getX(),aux.getY());
-      //   else
-      // traco.novapos (aux.getX(),aux.getY());
+  public void mostraInsta()
+  {
+    insta aux;
+    for (int i = 0; i <instagrams.size(); i++) 
+    {
+      aux= (insta) instagrams.get(i);
+      aux.mostra(0,0);
 
     }
-  //traco.desenhalinha();
-
-}
-
-public void mostraInsta()
-{
-  insta aux;
-  for (int i = 0; i <instagrams.size(); i++) 
-  {
-    aux= (insta) instagrams.get(i);
-    aux.mostra(0,0);
-
   }
-}
 
-public void mostraTweet()
-{
-  tweet aux;
-  for (int i = 0; i <tweets.size(); i++) 
+  public void mostraTweet()
   {
-    aux= (tweet) tweets.get(i);
-    aux.mostra(0,250,20);
+    tweet aux;
+    for (int i = 0; i <tweets.size(); i++) 
+    {
+      aux= (tweet) tweets.get(i);
+      aux.mostra(0,250,20);
 
+    }
   }
-}
-public void desenhaCaminhos()
-{
-  user aux;
-  for (int i = 0; i <pessoas.size(); i++) 
+  public void desenhaCaminhos()
   {
-    aux= (user) pessoas.get(i);
-    println("USER -> "+i+" INSTAS -> "+aux.countInsta()+" CAMI -> "+aux.getCaminhoSize()+" NAME-> "+aux.getID());
-    aux.desenha(casas);
-  }
-}
-
-public void adicionaAOuser(String _user , char tipo , String _tag)
-{
-  user aux;
-
-  for (int i = 0; i <pessoas.size(); i++) 
-  {
-    aux= (user) pessoas.get(i);
-//println("USER "+_user+" ID -> "+aux.getID());
-if  (_user.equals(aux.getID())==true)
-{
-
-  if (tipo=='T')
-  {
-   aux.addTweet();
-   aux.addCaminho(retornaCasaID(_tag));
+    user aux;
+    for (int i = 0; i <pessoas.size(); i++) 
+    {
+      aux= (user) pessoas.get(i);
+     //println("USER -> "+i+" INSTAS -> "+aux.countInsta()+" CAMI -> "+aux.getCaminhoSize()+" NAME-> "+aux.getID());
+     aux.desenha(casas);
+   }
  }
- else if (tipo=='I')
+
+ public void adicionaAOuser(String _user , char tipo , String _tag)
  {
+  user aux;
 
-   aux.addInsta();
-   aux.addCaminho(retornaCasaID(_tag));
- }
+  for (int i = 0; i <pessoas.size(); i++) 
+  {
+    aux= (user) pessoas.get(i);
+
+    if  (_user.equals(aux.getID())==true)
+    {
+
+      if (tipo=='T')
+      {
+       aux.addTweet();
+       aux.addCaminho(retornaCasaID(_tag));
+     }
+     else if (tipo=='I')
+     {
+
+       aux.addInsta();
+       aux.addCaminho(retornaCasaID(_tag));
+     }
       //desenha utilizador de novo com novas espessuras
       return ; 
     }
@@ -285,15 +298,42 @@ public int retornaCasaID(String _tag)
  for (int i = 0; i <casas.size(); i++) 
  {
   aux= (casa) casas.get(i);
-     // _tag.equals(
-      if (_tag.equals(aux.getTag())==true )
-      {
-        return i;
+  if (_tag.equals(aux.getTag())==true )
+  {
+    return i;
 
-      }
-    }
-    return -1;
   }
+}
+return -1;
+}
+
+
+public void mousePressed(){
+  if (!comeca)
+  {
+    if (prinale)
+    {
+    id_area= areas.addPoligno();
+     areas.addPonto(id_area,mouseX,mouseY);
+    prinale=false;
+    }
+    else
+    areas.addPonto(id_area,mouseX,mouseY);
+  }
+}
+
+public void keyPressed()
+{
+ if (key == 's' || key == 'S') {
+   comeca=!comeca;
+ }
+ if (key == 'a' || key == 'A') {
+   areclu=!areclu;
+ }
+ if (key == 'f' || key == 'F') {
+  prinale=true;
+ }
+}
 class Area 
 {
 	int id;
@@ -313,9 +353,10 @@ class Area
 	}
 	public void desenha()
 	{
+		stroke(0,255,0);
 		grafico.polygon2D(poligno);
 	}
-	public boolean contem(int _posx , int _posy)
+	public boolean contem(float _posx , float _posy)
 	{
 		return poligno.containsPoint(new Vec2D(_posx,_posy));
 	}
@@ -328,7 +369,8 @@ class Area
  {
 
  	int ESCALA=2;
-
+	int INCREMENTO=1;
+ 	int LIMITE=60;
 
  	float posx;
  	float posy;
@@ -341,8 +383,10 @@ class Area
  	String ultimoInsta;
  	String ultimoTweet;
  	PShape desenho;
+ 	PShape fundo;
  	int largura=PApplet.parseInt(60*0.28333f);
  	int altura=PApplet.parseInt(85*0.28333f);
+
  	casa (String nome , float xx, float yy) 
  	{
 		tag=nome;
@@ -355,12 +399,12 @@ class Area
 		ultimoInsta="0";
 		ultimoTweet="?q=%23"+nome;
 		desenho = loadShape("Casacaldas.svg");
+		fundo = loadShape("CasaFundo.svg");
+		cor = color(0,0,0);
 	}
-	public void addTweet(){numTweets++;
-if (dim<60)
-		dim+=1;
-	}
-	public void addInsta(){numInsta++;if (dim<60)dim+=1;}
+
+	public void addTweet(){numTweets++;if (dim<LIMITE)dim+=INCREMENTO;}
+	public void addInsta(){numInsta++;if (dim<LIMITE)dim+=INCREMENTO;}
 	public int countTwetts() {return numTweets;}
 	public int countInsta() {return numInsta;}
 	public float getX() {return posx;}
@@ -370,29 +414,24 @@ if (dim<60)
 	public String getInsta() {return ultimoInsta;}
 	public String getTweet() {return ultimoTweet;}
 	public String getTag(){return tag;}
+	
 	public void desenha()
 	{
 		smooth();
+		
 		stroke (204, 20, 0);
 		strokeWeight(1);
-		//noFill();
-		fill(255,0,0);
-		PFont font;
-		
+		PFont font;		
 		font = loadFont("AGaramondPro-Bold-48.vlw");
 		textFont(font, tamLetra);
-
-		//textSize(tamLetra);
 		text("#"+tag, posx+tamLetra, posy-tamLetra);
-		// desenho.disableStyle();
-		// noStroke();
-		// fill(255, 0, 0);
-		 shape(desenho, posx-((largura+dim)/2), posy-((altura+dim)/2), (largura+dim)/2, (altura+dim)/2);
-		// rect (posx, posy, dim, dim);
-		// line (posx, posy, posx+dim/2, posy-dim/2);
-		// line (posx+dim/2, posy-dim/2, posx+dim, posy);
-		// line (posx+dim, posy, posx, posy+dim);
-		// line (posx, posy, posx+dim, posy+dim);
+		
+		fill(255,0,0);
+		fundo.disableStyle();
+		 noStroke();
+		 fill(cor);
+		 shape(fundo, posx-((largura+(dim*0.7f))/ESCALA), posy-((altura+dim)/ESCALA), (largura+(dim*0.7f))/ESCALA, (altura+dim)/ESCALA);
+		 shape(desenho, posx-((largura+(dim*0.7f))/ESCALA), posy-((altura+dim)/ESCALA), (largura+(dim*0.7f))/ESCALA, (altura+dim)/ESCALA);
 	}
 }
 class exclusoes 
@@ -425,7 +464,7 @@ class exclusoes
 		zonita.desenha();
 	}
 
-	public int  contemTodos(int _posx , int _posy) 
+	public int  contemTodos(float _posx , float _posy) 
 	{
 		Area zonita ;
 		for (int i = 0; i <zonas.size(); i++) 
@@ -721,10 +760,10 @@ public void setTamanho(float _tam)
  			if (last!=_casa)
  			{
  				caminho.add(_casa);
- 				println("SIMMM");
+ 				//println("SIMMM");
  			}
  			else  {
- 				println("NAOOO");
+ 				//println("NAOOO");
  			}
  		//println("LAST ->"+caminho.get(tam)+" ESTE-> "+_casa);
  		vai=0;
@@ -737,8 +776,6 @@ public void setTamanho(float _tam)
  public int getCaminhoSize() {return caminho.size();}
  public void desenha(ArrayList casitas)
  {
- 	// if (caminho.size()>=4)
- 	// {
  		int numDaCasa;
  		casa casola;
  		casa cas_aux;
@@ -758,7 +795,7 @@ public void setTamanho(float _tam)
  				float p_yy=casola.getY();
  				numDaCasa= (Integer) caminho.get(i-1);
  				cas_aux=(casa)casitas.get(numDaCasa);
-				float c_xx=cas_aux.getX();
+ 				float c_xx=cas_aux.getX();
  				float c_yy=cas_aux.getY();
  				for (int aa= 0; aa <= 3; aa++) 
  				{
@@ -767,20 +804,10 @@ public void setTamanho(float _tam)
  					//point(x, y);
  					traco.novapos (x,y);	
  				}
- 				//traco.novapos (casola.getX(),casola.getY());	
  			}
-
  		}
-
-if (username.equals("davidorosario")==true)
-{
-traco.setCor(color(255,0,0));
+ 		traco.setCor(color(255,0,0));
  		traco.desenhalinha();	
-}
-
-
-
- 	// }
  }
 
 }

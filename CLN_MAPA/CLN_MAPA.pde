@@ -9,8 +9,10 @@ int largura=1200;
 int altura=300;
 
 int id_area;
-
-linha traco;
+boolean comeca  = false;
+boolean areclu = false;
+boolean finale = false;
+boolean prinale = true;
 
 ArrayList casas;
 ArrayList tweets;
@@ -25,7 +27,7 @@ long lastTime = 0;
 long ultimaVez = 0;
 
 void setup(){
-  //traco =new linha();
+
   areas= new exclusoes(this);
   id_area= areas.addPoligno();
   areas.addPonto(id_area,300,0);
@@ -42,8 +44,9 @@ void setup(){
 }
 
 void draw(){
-
-  smooth();
+  if (comeca)
+  {
+    smooth();
  // background(0);
  if ( millis() - lastTime > pausa ) 
  {
@@ -58,8 +61,10 @@ void draw(){
  //  ultimaVez=millis();
  desenhaCaminhos();
 //}
- animaMundo();
+animaMundo();
 
+
+}
 areas.desenharTodos();
 }
 
@@ -67,6 +72,7 @@ areas.desenharTodos();
 void carregaCasas()
 {
 	XlsReader reader;
+  float[] posii = {0,0};
   reader = new XlsReader(this, "cln17.xls" ); 
 
   int numcasas = 11;
@@ -94,31 +100,46 @@ void carregaCasas()
 
     float ypos = map (yvals[i], ymin, ymax, margin, height-margin);
     float xpos = map (xvals[i], xmin, xmax, margin, width-margin);
-    
-    casas.add(new casa(designa,xpos,ypos));
+    posii =verificaCasa(xpos,ypos);
+    casas.add(new casa(designa, posii[0], posii[1]));
   }
 }
+
+
+
+float[] verificaCasa(float _posx , float _posy) { 
+int idd;
+ float[] arra ={0,0};
+ areas.contemTodos(_posx , _posy);
+ 
+ arra[0]=_posx;
+ arra[1]=_posy;
+  return arra;  // Returns an array of 3 ints: 20, 40, 60 
+}
+
+
+
+
 void procuraTweets()
 {
-//http://search.twitter.com/search.json?since_id=334616285973463040&q=%23cln13
-//http://search.twitter.com/search.json?q=%23cln13
-casa aux;
-String twitterSite[];
-String jsonstring ;
-String ultimoURL;
-for (int i = 0; i <casas.size(); i++) 
-{
- aux= (casa) casas.get(i);
- twitterSite = loadStrings("http://search.twitter.com/search.json"+aux.getTweet());
- jsonstring =twitterSite[0];
- JSON twiits = JSON.parse(jsonstring);
- ultimoURL=twiits.getString("refresh_url");
- twiits =twiits.getJSON("results");
 
- if (twiits.length()>0)
- {
-  for (int t = 0; t<twiits.length(); t++)
+  casa aux;
+  String twitterSite[];
+  String jsonstring ;
+  String ultimoURL;
+  for (int i = 0; i <casas.size(); i++) 
   {
+   aux= (casa) casas.get(i);
+   twitterSite = loadStrings("http://search.twitter.com/search.json"+aux.getTweet());
+   jsonstring =twitterSite[0];
+   JSON twiits = JSON.parse(jsonstring);
+   ultimoURL=twiits.getString("refresh_url");
+   twiits =twiits.getJSON("results");
+
+   if (twiits.length()>0)
+   {
+    for (int t = 0; t<twiits.length(); t++)
+    {
     JSON  este =twiits.getJSON(t);//numero do tweet nesta query
     tweets.add( new tweet(tweets.size()+1,este.getInt("from_user_id"),este.getString("text")));//adiciona instagram a lista
     aux.addTweet();
@@ -173,71 +194,63 @@ void procuraInstas()
     {
       aux= (casa) casas.get(i);
       aux.desenha();
+    }
+  }
 
-      // if (i==0)
-      //   traco = new linha(aux.getX(),aux.getY());
-      //   else
-      // traco.novapos (aux.getX(),aux.getY());
+  void mostraInsta()
+  {
+    insta aux;
+    for (int i = 0; i <instagrams.size(); i++) 
+    {
+      aux= (insta) instagrams.get(i);
+      aux.mostra(0,0);
 
     }
-  //traco.desenhalinha();
-
-}
-
-void mostraInsta()
-{
-  insta aux;
-  for (int i = 0; i <instagrams.size(); i++) 
-  {
-    aux= (insta) instagrams.get(i);
-    aux.mostra(0,0);
-
   }
-}
 
-void mostraTweet()
-{
-  tweet aux;
-  for (int i = 0; i <tweets.size(); i++) 
+  void mostraTweet()
   {
-    aux= (tweet) tweets.get(i);
-    aux.mostra(0,250,20);
+    tweet aux;
+    for (int i = 0; i <tweets.size(); i++) 
+    {
+      aux= (tweet) tweets.get(i);
+      aux.mostra(0,250,20);
 
+    }
   }
-}
-void desenhaCaminhos()
-{
-  user aux;
-  for (int i = 0; i <pessoas.size(); i++) 
+  void desenhaCaminhos()
   {
-    aux= (user) pessoas.get(i);
-    println("USER -> "+i+" INSTAS -> "+aux.countInsta()+" CAMI -> "+aux.getCaminhoSize()+" NAME-> "+aux.getID());
-    aux.desenha(casas);
-  }
-}
-
-void adicionaAOuser(String _user , char tipo , String _tag)
-{
-  user aux;
-
-  for (int i = 0; i <pessoas.size(); i++) 
-  {
-    aux= (user) pessoas.get(i);
-//println("USER "+_user+" ID -> "+aux.getID());
-if  (_user.equals(aux.getID())==true)
-{
-
-  if (tipo=='T')
-  {
-   aux.addTweet();
-   aux.addCaminho(retornaCasaID(_tag));
+    user aux;
+    for (int i = 0; i <pessoas.size(); i++) 
+    {
+      aux= (user) pessoas.get(i);
+     //println("USER -> "+i+" INSTAS -> "+aux.countInsta()+" CAMI -> "+aux.getCaminhoSize()+" NAME-> "+aux.getID());
+     aux.desenha(casas);
+   }
  }
- else if (tipo=='I')
+
+ void adicionaAOuser(String _user , char tipo , String _tag)
  {
+  user aux;
 
-   aux.addInsta();
-   aux.addCaminho(retornaCasaID(_tag));
- }
+  for (int i = 0; i <pessoas.size(); i++) 
+  {
+    aux= (user) pessoas.get(i);
+
+    if  (_user.equals(aux.getID())==true)
+    {
+
+      if (tipo=='T')
+      {
+       aux.addTweet();
+       aux.addCaminho(retornaCasaID(_tag));
+     }
+     else if (tipo=='I')
+     {
+
+       aux.addInsta();
+       aux.addCaminho(retornaCasaID(_tag));
+     }
       //desenha utilizador de novo com novas espessuras
       return ; 
     }
@@ -261,12 +274,39 @@ int retornaCasaID(String _tag)
  for (int i = 0; i <casas.size(); i++) 
  {
   aux= (casa) casas.get(i);
-     // _tag.equals(
-      if (_tag.equals(aux.getTag())==true )
-      {
-        return i;
+  if (_tag.equals(aux.getTag())==true )
+  {
+    return i;
 
-      }
-    }
-    return -1;
   }
+}
+return -1;
+}
+
+
+void mousePressed(){
+  if (!comeca)
+  {
+    if (prinale)
+    {
+    id_area= areas.addPoligno();
+     areas.addPonto(id_area,mouseX,mouseY);
+    prinale=false;
+    }
+    else
+    areas.addPonto(id_area,mouseX,mouseY);
+  }
+}
+
+void keyPressed()
+{
+ if (key == 's' || key == 'S') {
+   comeca=!comeca;
+ }
+ if (key == 'a' || key == 'A') {
+   areclu=!areclu;
+ }
+ if (key == 'f' || key == 'F') {
+  prinale=true;
+ }
+}

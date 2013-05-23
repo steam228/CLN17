@@ -28,7 +28,7 @@ class exclusoes
 		zonita.desenha();
 	}
 
-	int  contemTodos(int _posx , int _posy) 
+	int  contemTodos(float _posx , float _posy) 
 	{
 		Area zonita ;
 		for (int i = 0; i <zonas.size(); i++) 

@@ -17,9 +17,10 @@ class Area
 	}
 	void desenha()
 	{
+		stroke(0,255,0);
 		grafico.polygon2D(poligno);
 	}
-	boolean contem(int _posx , int _posy)
+	boolean contem(float _posx , float _posy)
 	{
 		return poligno.containsPoint(new Vec2D(_posx,_posy));
 	}

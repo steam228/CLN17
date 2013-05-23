@@ -2,7 +2,8 @@
  {
 
  	int ESCALA=2;
-
+	int INCREMENTO=1;
+ 	int LIMITE=60;
 
  	float posx;
  	float posy;
@@ -15,8 +16,10 @@
  	String ultimoInsta;
  	String ultimoTweet;
  	PShape desenho;
+ 	PShape fundo;
  	int largura=int(60*0.28333);
  	int altura=int(85*0.28333);
+
  	casa (String nome , float xx, float yy) 
  	{
 		tag=nome;
@@ -29,12 +32,12 @@
 		ultimoInsta="0";
 		ultimoTweet="?q=%23"+nome;
 		desenho = loadShape("Casacaldas.svg");
+		fundo = loadShape("CasaFundo.svg");
+		cor = color(0,0,0);
 	}
-	void addTweet(){numTweets++;
-if (dim<60)
-		dim+=1;
-	}
-	void addInsta(){numInsta++;if (dim<60)dim+=1;}
+
+	void addTweet(){numTweets++;if (dim<LIMITE)dim+=INCREMENTO;}
+	void addInsta(){numInsta++;if (dim<LIMITE)dim+=INCREMENTO;}
 	int countTwetts() {return numTweets;}
 	int countInsta() {return numInsta;}
 	float getX() {return posx;}
@@ -44,28 +47,23 @@ if (dim<60)
 	String getInsta() {return ultimoInsta;}
 	String getTweet() {return ultimoTweet;}
 	String getTag(){return tag;}
+	
 	void desenha()
 	{
 		smooth();
+		
 		stroke (204, 20, 0);
 		strokeWeight(1);
-		//noFill();
-		fill(255,0,0);
-		PFont font;
-		
+		PFont font;		
 		font = loadFont("AGaramondPro-Bold-48.vlw");
 		textFont(font, tamLetra);
-
-		//textSize(tamLetra);
 		text("#"+tag, posx+tamLetra, posy-tamLetra);
-		// desenho.disableStyle();
-		// noStroke();
-		// fill(255, 0, 0);
-		 shape(desenho, posx-((largura+dim)/2), posy-((altura+dim)/2), (largura+dim)/2, (altura+dim)/2);
-		// rect (posx, posy, dim, dim);
-		// line (posx, posy, posx+dim/2, posy-dim/2);
-		// line (posx+dim/2, posy-dim/2, posx+dim, posy);
-		// line (posx+dim, posy, posx, posy+dim);
-		// line (posx, posy, posx+dim, posy+dim);
+		
+		fill(255,0,0);
+		fundo.disableStyle();
+		 noStroke();
+		 fill(cor);
+		 shape(fundo, posx-((largura+(dim*0.7))/ESCALA), posy-((altura+dim)/ESCALA), (largura+(dim*0.7))/ESCALA, (altura+dim)/ESCALA);
+		 shape(desenho, posx-((largura+(dim*0.7))/ESCALA), posy-((altura+dim)/ESCALA), (largura+(dim*0.7))/ESCALA, (altura+dim)/ESCALA);
 	}
 }
