@@ -1,5 +1,9 @@
  class casa 
  {
+
+ 	int ESCALA=2;
+
+
  	float posx;
  	float posy;
  	float dim;
@@ -11,23 +15,26 @@
  	String ultimoInsta;
  	String ultimoTweet;
  	PShape desenho;
- 	int largura=60;
- 	int altura=85;
+ 	int largura=int(60*0.28333);
+ 	int altura=int(85*0.28333);
  	casa (String nome , float xx, float yy) 
  	{
 		tag=nome;
 		posx=xx;
 		posy=yy;
 		tamLetra=15;
-		dim=0.1;
+		dim=1;
 		numInsta=0;
 		numTweets=0;
 		ultimoInsta="0";
 		ultimoTweet="?q=%23"+nome;
 		desenho = loadShape("Casacaldas.svg");
 	}
-	void addTweet(){numTweets++;dim+=0.5;}
-	void addInsta(){numInsta++;dim+=0.5;}
+	void addTweet(){numTweets++;
+if (dim<60)
+		dim+=1;
+	}
+	void addInsta(){numInsta++;if (dim<60)dim+=1;}
 	int countTwetts() {return numTweets;}
 	int countInsta() {return numInsta;}
 	float getX() {return posx;}
@@ -54,7 +61,7 @@
 		// desenho.disableStyle();
 		// noStroke();
 		// fill(255, 0, 0);
-		 shape(desenho, posx-(largura*dim), posy-(altura*dim), largura*dim, altura*dim);
+		 shape(desenho, posx-((largura+dim)/2), posy-((altura+dim)/2), (largura+dim)/2, (altura+dim)/2);
 		// rect (posx, posy, dim, dim);
 		// line (posx, posy, posx+dim/2, posy-dim/2);
 		// line (posx+dim/2, posy-dim/2, posx+dim, posy);

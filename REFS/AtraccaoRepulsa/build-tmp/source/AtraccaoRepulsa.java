@@ -17,20 +17,21 @@ public class AtraccaoRepulsa extends PApplet {
 ArrayList bolas;
 
 //n\u00famero inicial de bolas 
-int numeroDeBolas = 500;
+int numeroDeBolas = 5000;
 
 public void setup(){
-  size(800, 600);
+  size(800, 600,OPENGL);
   background(0); 
   bolas = new ArrayList();
-
+frameRate(30);
 //criamos numeroDeBolas para come\u00e7ar....
-  for(int i=0; i<numeroDeBolas; i++){
+ // for(int i=0; i<numeroDeBolas; i++){
     bolas.add(new Bola()); 
-  }
+ // }
 }
 
 public void draw(){
+   bolas.add(new Bola()); 
   background(0);
   stroke(255, 255, 255, 100);
   //nosso loop a interar por todas as bolas
@@ -122,7 +123,7 @@ class Bola{
     //este valor convem ser entre 0 e 1
     //em que zero = resistencia total (o objecto n\u00e3o mexe)
     //e 1 = nenhuma resistencia
-    resistencia = 0.95f;
+    resistencia = 0.01f;
 
     //raio
     raio = 5;

@@ -4,6 +4,7 @@ import toxi.geom.*;
 class linha 
 {
 
+int ESCALA = 2;
   float beginX;  // Initial x-coordinate
   float beginY;  // Initial y-coordinate
   //  float endX;   // Final x-coordinate
@@ -11,7 +12,7 @@ class linha
   float x = 0.0;  // Current x-coordinate
   float y = 0.0;  // Current y-coordinate
 
-  float tamanho=4;
+  float tamanho=2;
 
   boolean showLine=true;
   boolean showSpline=true;
@@ -44,9 +45,10 @@ class linha
   void desenhalinha() 
   {
     noFill();
-    //    stroke (cor);
-    stroke(255);
-    strokeWeight (tamanho); // alterar quando a path ficar invisivel e for percorrida
+
+        stroke (cor);
+    //stroke(255);
+    strokeWeight (tamanho/ESCALA); // alterar quando a path ficar invisivel e for percorrida
     numP=points.size();
     beginShape();
     for (int i=0; i<numP; i++) {

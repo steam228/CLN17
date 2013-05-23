@@ -29,7 +29,7 @@ public class CLN_MAPA extends PApplet {
 
 
 
-int largura=700;
+int largura=1200;
 int altura=300;
 
 int id_area;
@@ -44,7 +44,9 @@ ArrayList pessoas;
 exclusoes areas;
 
 int pausa=2000;
+int espera=5000;
 long lastTime = 0;
+long ultimaVez = 0;
 
 public void setup(){
   //traco =new linha();
@@ -64,20 +66,25 @@ public void setup(){
 }
 
 public void draw(){
+
   smooth();
  // background(0);
-   if ( millis() - lastTime > pausa ) 
-   {
-     procuraTweets();
-procuraInstas();
-  lastTime = millis();
-     mostraInsta();
-     mostraTweet();
+ if ( millis() - lastTime > pausa ) 
+ {
+   procuraTweets();
+   procuraInstas();
+   lastTime = millis();
+   // mostraInsta();
+   // mostraTweet();
  } 
-desenhaCaminhos();
-animaMundo();
+ // if ( millis() - ultimaVez > espera ) 
+ // {
+ //  ultimaVez=millis();
+ desenhaCaminhos();
+//}
+ animaMundo();
 
-//areas.desenharTodos();
+areas.desenharTodos();
 }
 
 
@@ -175,7 +182,7 @@ public void procuraInstas()
         String fotoURL =(String) imagens.getString("url"); 
         JSON user= unico.getJSON("user");     
         user_id=user.getInt("id");//identificador do user
-      username=user.getString("username");
+        username=user.getString("username");
         instagrams.add( new insta(instagrams.size()+1,user_id,fotoURL));//adiciona instagram a lista
         aux.addInsta();//aumenta o num de instagrams na casa
         adicionaAOuser(username,'I',tag); 
@@ -241,49 +248,52 @@ public void adicionaAOuser(String _user , char tipo , String _tag)
   {
     aux= (user) pessoas.get(i);
 //println("USER "+_user+" ID -> "+aux.getID());
-    if  (_user.equals(aux.getID())==true)
-    {
-    
-      if (tipo=='T')
-      {
-       aux.addTweet();
-       aux.addCaminho(retornaCasaID(_tag));
-     }
-     else if (tipo=='I')
-     {
-      //println("Toooooooooooooo"+_user);
-       aux.addInsta();
-        aux.addCaminho(retornaCasaID(_tag));
-     }
+if  (_user.equals(aux.getID())==true)
+{
+
+  if (tipo=='T')
+  {
+   aux.addTweet();
+   aux.addCaminho(retornaCasaID(_tag));
+ }
+ else if (tipo=='I')
+ {
+
+   aux.addInsta();
+   aux.addCaminho(retornaCasaID(_tag));
+ }
       //desenha utilizador de novo com novas espessuras
       return ; 
     }
   }
 //create new user if needed
 
-  pessoas.add(new user(pessoas.size(),_user));
-   aux= (user) pessoas.get(pessoas.size()-1);
-   if (tipo=='T')
-    aux.addTweet();
-    else if (tipo=='I')
-     aux.addInsta();
+pessoas.add(new user(pessoas.size(),_user));
+aux= (user) pessoas.get(pessoas.size()-1);
+if (tipo=='T')
+aux.addTweet();
+else if (tipo=='I')
+aux.addInsta();
 
-   aux.addCaminho(retornaCasaID(_tag));
+aux.addCaminho(retornaCasaID(_tag));
 }
 
 
 public int retornaCasaID(String _tag)
 {
  casa aux;
-    for (int i = 0; i <casas.size(); i++) 
-    {
-      aux= (casa) casas.get(i);
+ for (int i = 0; i <casas.size(); i++) 
+ {
+  aux= (casa) casas.get(i);
      // _tag.equals(
-      if (_tag.equals(aux.getTag()) )
-      return i;
+      if (_tag.equals(aux.getTag())==true )
+      {
+        return i;
+
+      }
     }
     return -1;
-}
+  }
 class Area 
 {
 	int id;
@@ -316,6 +326,10 @@ class Area
 }
  class casa 
  {
+
+ 	int ESCALA=2;
+
+
  	float posx;
  	float posy;
  	float dim;
@@ -327,23 +341,26 @@ class Area
  	String ultimoInsta;
  	String ultimoTweet;
  	PShape desenho;
- 	int largura=60;
- 	int altura=85;
+ 	int largura=PApplet.parseInt(60*0.28333f);
+ 	int altura=PApplet.parseInt(85*0.28333f);
  	casa (String nome , float xx, float yy) 
  	{
 		tag=nome;
 		posx=xx;
 		posy=yy;
 		tamLetra=15;
-		dim=0.1f;
+		dim=1;
 		numInsta=0;
 		numTweets=0;
 		ultimoInsta="0";
 		ultimoTweet="?q=%23"+nome;
 		desenho = loadShape("Casacaldas.svg");
 	}
-	public void addTweet(){numTweets++;dim+=0.5f;}
-	public void addInsta(){numInsta++;dim+=0.5f;}
+	public void addTweet(){numTweets++;
+if (dim<60)
+		dim+=1;
+	}
+	public void addInsta(){numInsta++;if (dim<60)dim+=1;}
 	public int countTwetts() {return numTweets;}
 	public int countInsta() {return numInsta;}
 	public float getX() {return posx;}
@@ -370,7 +387,7 @@ class Area
 		// desenho.disableStyle();
 		// noStroke();
 		// fill(255, 0, 0);
-		 shape(desenho, posx-(largura*dim), posy-(altura*dim), largura*dim, altura*dim);
+		 shape(desenho, posx-((largura+dim)/2), posy-((altura+dim)/2), (largura+dim)/2, (altura+dim)/2);
 		// rect (posx, posy, dim, dim);
 		// line (posx, posy, posx+dim/2, posy-dim/2);
 		// line (posx+dim/2, posy-dim/2, posx+dim, posy);
@@ -481,6 +498,7 @@ class exclusoes
 class linha 
 {
 
+int ESCALA = 2;
   float beginX;  // Initial x-coordinate
   float beginY;  // Initial y-coordinate
   //  float endX;   // Final x-coordinate
@@ -488,7 +506,7 @@ class linha
   float x = 0.0f;  // Current x-coordinate
   float y = 0.0f;  // Current y-coordinate
 
-  float tamanho=4;
+  float tamanho=2;
 
   boolean showLine=true;
   boolean showSpline=true;
@@ -521,9 +539,10 @@ class linha
   public void desenhalinha() 
   {
     noFill();
-    //    stroke (cor);
-    stroke(255);
-    strokeWeight (tamanho); // alterar quando a path ficar invisivel e for percorrida
+
+        stroke (cor);
+    //stroke(255);
+    strokeWeight (tamanho/ESCALA); // alterar quando a path ficar invisivel e for percorrida
     numP=points.size();
     beginShape();
     for (int i=0; i<numP; i++) {
@@ -670,11 +689,14 @@ public void setTamanho(float _tam)
  	float grosura;
  	linha desenhador;
  	linha traco;
+ 	int corcor;
+ 	int vai=0;
  	user (int _id, String _user) 
  	{
  		id=_id;
  		username=_user;
  		caminho= new ArrayList();
+ 		corcor=color(random(0,256),random(0,256),random(0,256));
  	}
 
  	public void addTweet()
@@ -695,40 +717,73 @@ public void setTamanho(float _tam)
  		int tam=caminho.size();
  		if (tam>0)
  		{
- 			int last=(Integer)caminho.get(tam);
- 		if (last!=_casa)
- 		{
- 		caminho.add(_casa);
- 		println("SIMMM");
- 		}
- 		else  {
- 			println("NAOOO");
- 		}
- 		println("LAST ->"+caminho.get(tam)+" ESTE-> "+_casa);
- 		}
- 	}
- 	public int getCaminhoSize() {return caminho.size();}
- 	public void desenha(ArrayList casitas)
- 	{
- 		if (caminho.size()>=4)
- 		{
- 			int numDaCasa;
- 			casa casola;
- 			for (int i = 0; i <caminho.size(); i++) 
+ 			int last=(Integer)caminho.get(tam-1);
+ 			if (last!=_casa)
  			{
-
- 				numDaCasa= (Integer) caminho.get(i);
- 				casola=(casa)casitas.get(numDaCasa);
- 				if (i==0)
- 				traco = new linha(casola.getX(),casola.getY());
- 				else
- 				traco.novapos (casola.getX(),casola.getY());
+ 				caminho.add(_casa);
+ 				println("SIMMM");
  			}
- 			traco.desenhalinha();
- 		}
+ 			else  {
+ 				println("NAOOO");
+ 			}
+ 		//println("LAST ->"+caminho.get(tam)+" ESTE-> "+_casa);
+ 		vai=0;
+ 	}
+ 	else  {
+ 		caminho.add(_casa);
  	}
 
  }
+ public int getCaminhoSize() {return caminho.size();}
+ public void desenha(ArrayList casitas)
+ {
+ 	// if (caminho.size()>=4)
+ 	// {
+ 		int numDaCasa;
+ 		casa casola;
+ 		casa cas_aux;
+ 		for (int i = 0; i <caminho.size(); i++) 
+ 		{
+
+ 			numDaCasa= (Integer) caminho.get(i);
+ 			casola=(casa)casitas.get(numDaCasa);
+ 			if (i==0)
+ 			{
+ 				traco = new linha(casola.getX(),casola.getY());
+ 				traco.setCor(corcor);
+ 			}
+ 			else
+ 			{
+ 				float p_xx=casola.getX();
+ 				float p_yy=casola.getY();
+ 				numDaCasa= (Integer) caminho.get(i-1);
+ 				cas_aux=(casa)casitas.get(numDaCasa);
+				float c_xx=cas_aux.getX();
+ 				float c_yy=cas_aux.getY();
+ 				for (int aa= 0; aa <= 3; aa++) 
+ 				{
+ 					float x = lerp(p_xx, c_xx, aa/3);
+ 					float y = lerp(p_yy, c_yy, aa/3);
+ 					//point(x, y);
+ 					traco.novapos (x,y);	
+ 				}
+ 				//traco.novapos (casola.getX(),casola.getY());	
+ 			}
+
+ 		}
+
+if (username.equals("davidorosario")==true)
+{
+traco.setCor(color(255,0,0));
+ 		traco.desenhalinha();	
+}
+
+
+
+ 	// }
+ }
+
+}
   static public void main(String[] passedArgs) {
     String[] appletArgs = new String[] { "CLN_MAPA" };
     if (passedArgs != null) {

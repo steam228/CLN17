@@ -5,7 +5,7 @@ import de.bezier.data.*;
 import toxi.geom.*;
 import toxi.processing.*;
 
-int largura=700;
+int largura=1200;
 int altura=300;
 
 int id_area;
@@ -20,7 +20,9 @@ ArrayList pessoas;
 exclusoes areas;
 
 int pausa=2000;
+int espera=5000;
 long lastTime = 0;
+long ultimaVez = 0;
 
 void setup(){
   //traco =new linha();
@@ -40,20 +42,25 @@ void setup(){
 }
 
 void draw(){
+
   smooth();
  // background(0);
-   if ( millis() - lastTime > pausa ) 
-   {
-     procuraTweets();
-procuraInstas();
-  lastTime = millis();
-     mostraInsta();
-     mostraTweet();
+ if ( millis() - lastTime > pausa ) 
+ {
+   procuraTweets();
+   procuraInstas();
+   lastTime = millis();
+   // mostraInsta();
+   // mostraTweet();
  } 
-desenhaCaminhos();
-animaMundo();
+ // if ( millis() - ultimaVez > espera ) 
+ // {
+ //  ultimaVez=millis();
+ desenhaCaminhos();
+//}
+ animaMundo();
 
-//areas.desenharTodos();
+areas.desenharTodos();
 }
 
 
@@ -151,7 +158,7 @@ void procuraInstas()
         String fotoURL =(String) imagens.getString("url"); 
         JSON user= unico.getJSON("user");     
         user_id=user.getInt("id");//identificador do user
-      username=user.getString("username");
+        username=user.getString("username");
         instagrams.add( new insta(instagrams.size()+1,user_id,fotoURL));//adiciona instagram a lista
         aux.addInsta();//aumenta o num de instagrams na casa
         adicionaAOuser(username,'I',tag); 
@@ -217,46 +224,49 @@ void adicionaAOuser(String _user , char tipo , String _tag)
   {
     aux= (user) pessoas.get(i);
 //println("USER "+_user+" ID -> "+aux.getID());
-    if  (_user.equals(aux.getID())==true)
-    {
-    
-      if (tipo=='T')
-      {
-       aux.addTweet();
-       aux.addCaminho(retornaCasaID(_tag));
-     }
-     else if (tipo=='I')
-     {
-      //println("Toooooooooooooo"+_user);
-       aux.addInsta();
-        aux.addCaminho(retornaCasaID(_tag));
-     }
+if  (_user.equals(aux.getID())==true)
+{
+
+  if (tipo=='T')
+  {
+   aux.addTweet();
+   aux.addCaminho(retornaCasaID(_tag));
+ }
+ else if (tipo=='I')
+ {
+
+   aux.addInsta();
+   aux.addCaminho(retornaCasaID(_tag));
+ }
       //desenha utilizador de novo com novas espessuras
       return ; 
     }
   }
 //create new user if needed
 
-  pessoas.add(new user(pessoas.size(),_user));
-   aux= (user) pessoas.get(pessoas.size()-1);
-   if (tipo=='T')
-    aux.addTweet();
-    else if (tipo=='I')
-     aux.addInsta();
+pessoas.add(new user(pessoas.size(),_user));
+aux= (user) pessoas.get(pessoas.size()-1);
+if (tipo=='T')
+aux.addTweet();
+else if (tipo=='I')
+aux.addInsta();
 
-   aux.addCaminho(retornaCasaID(_tag));
+aux.addCaminho(retornaCasaID(_tag));
 }
 
 
 int retornaCasaID(String _tag)
 {
  casa aux;
-    for (int i = 0; i <casas.size(); i++) 
-    {
-      aux= (casa) casas.get(i);
+ for (int i = 0; i <casas.size(); i++) 
+ {
+  aux= (casa) casas.get(i);
      // _tag.equals(
       if (_tag.equals(aux.getTag())==true )
-      return i;
+      {
+        return i;
+
+      }
     }
     return -1;
-}
+  }
