@@ -41,17 +41,17 @@ void setup(){
 
 void draw(){
   smooth();
-  //background(0);
- // if ( millis() - lastTime > pausa ) 
-  //{
- //   procuraTweets();
- //   procuraInstas();
- //lastTime = millis();
- //   mostraInsta();
- //   mostraTweet();
-//} 
+ // background(0);
+  if ( millis() - lastTime > pausa ) 
+  {
+    procuraTweets();
+    procuraInstas();
+ lastTime = millis();
+    mostraInsta();
+    mostraTweet();
+} 
 animaMundo();
-areas.desenharTodos();
+//areas.desenharTodos();
 }
 
 
@@ -146,6 +146,7 @@ void procuraInstas()
       jsonstring =instaSite[0];
       JSON data = JSON.parse(jsonstring);
       JSON ultimo = data.getJSON("pagination");
+      println(ultimo);
       aux.setInsta( ultimo.getString("min_tag_id"));
       data = data.getJSON("data");
       //println("NUM fotos -> "+data.length());
@@ -160,6 +161,7 @@ void procuraInstas()
         user_id=user.getInt("id");//identificador do user
         instagrams.add( new insta(instagrams.size()+1,user_id,fotoURL));//adiciona instagram a lista
         aux.addInsta();//aumenta o num de instagrams na casa
+
         println("RECEBI NOVO-> "+aux.getTag());
       }
     }
@@ -215,14 +217,18 @@ void adicionaAOuser(String _user , char tipo)
   for (int i = 0; i <pessoas.size(); i++) 
   {
     aux= (user) pessoas.get(i);
-   if  (aux.getID()==_user)
-   {
-    if (tipo=='T')
-    aux.addTweet();
-    else if (tipo=='I')
-    aux.addInsta();
-    break;
-   }
-
+    if  (aux.getID()==_user)
+    {
+      if (tipo=='T')
+      {
+       aux.addTweet();
+     }
+     else if (tipo=='I')
+     {
+       aux.addInsta();
+     }
+      //desenha utilizador
+      break; 
+    }
   }
 }

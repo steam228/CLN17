@@ -14,6 +14,7 @@
 
  	void mostra(int posx , int posy, int letra )
  	{
+ 		fill(255,0,0);
  		textSize(letra);
  		text(texto, posx, posy);
  	}
