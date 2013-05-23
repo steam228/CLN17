@@ -23,7 +23,7 @@ int pausa=2000;
 long lastTime = 0;
 
 void setup(){
-  traco =new linha();
+  //traco =new linha();
   areas= new exclusoes(this);
   id_area= areas.addPoligno();
   areas.addPonto(id_area,300,0);
@@ -42,15 +42,17 @@ void setup(){
 void draw(){
   smooth();
  // background(0);
-  if ( millis() - lastTime > pausa ) 
-  {
-    procuraTweets();
-    procuraInstas();
- lastTime = millis();
-    mostraInsta();
-    mostraTweet();
-} 
+   if ( millis() - lastTime > pausa ) 
+   {
+     procuraTweets();
+procuraInstas();
+  lastTime = millis();
+     mostraInsta();
+     mostraTweet();
+ } 
+desenhaCaminhos();
 animaMundo();
+
 //areas.desenharTodos();
 }
 
@@ -113,6 +115,7 @@ for (int i = 0; i <casas.size(); i++)
     JSON  este =twiits.getJSON(t);//numero do tweet nesta query
     tweets.add( new tweet(tweets.size()+1,este.getInt("from_user_id"),este.getString("text")));//adiciona instagram a lista
     aux.addTweet();
+    adicionaAOuser(este.getString("from_user"),'T',aux.getTag());
   }
   aux.setTweet(ultimoURL);
 }
@@ -126,69 +129,51 @@ void procuraInstas()
   String tag ;
   int count;
   String jsonstring ;
+  String username;
   casa aux;
   for (int i = 0; i <casas.size(); i++) 
   {
     aux= (casa) casas.get(i);
     tag =aux.getTag();
-    //int totalCasa=aux.countInsta();
-   // instaSite = loadStrings("https://api.instagram.com/v1/tags/"+tag+"?client_id=9d6af7341f7a4fd39e888fd12ab8d8a0");
-    //jsonstring =instaSite[0];
-    //JSON contador = JSON.parse(jsonstring);
-    //contador = contador.getJSON("data");
-    //count=0;
-    //count=contador.getInt("media_count");//TOTAL DE FOTOS NESSA TAG
-    //println("NUM DE INSTAS _> "+count+" NUM GUARDADO _> "+aux.countInsta());
-    //if (count>aux.countInsta())
-    //{
-      //carrega os novos
-      instaSite = loadStrings("https://api.instagram.com/v1/tags/"+tag+"//media/recent?client_id=9d6af7341f7a4fd39e888fd12ab8d8a0&min_tag_id="+aux.getInsta()+"");
-      jsonstring =instaSite[0];
-      JSON data = JSON.parse(jsonstring);
-      JSON ultimo = data.getJSON("pagination");
-      //println("ERRO-> "+ultimo);
-      //println("TAG -> "+tag+" INSTA -> "+aux.getInsta());
-      println("NUM -> "+data.length());
-      
-      data = data.getJSON("data");
-      if (data.length()>0)
-      aux.setInsta( ultimo.getString("min_tag_id"));
-      //println("NUM fotos -> "+data.length());
-      int user_id;
-      for (int f=0; f<data.length();f++)
-      {
+    instaSite = loadStrings("https://api.instagram.com/v1/tags/"+tag+"//media/recent?client_id=9d6af7341f7a4fd39e888fd12ab8d8a0&min_tag_id="+aux.getInsta()+"");
+    jsonstring =instaSite[0];
+    JSON data = JSON.parse(jsonstring);
+    JSON ultimo = data.getJSON("pagination");
+    data = data.getJSON("data");
+    if (data.length()>0)
+    aux.setInsta( ultimo.getString("min_tag_id"));
+    int user_id;
+    for (int f=0; f<data.length();f++)
+    {
         JSON unico = data.getJSON(f);//NUMERO DA FOTO NO ARRAY
         JSON imagens = unico.getJSON("images");
         imagens = imagens.getJSON("thumbnail");//melhor tamanho 612x612 standard_resolution
         String fotoURL =(String) imagens.getString("url"); 
         JSON user= unico.getJSON("user");     
         user_id=user.getInt("id");//identificador do user
+      username=user.getString("username");
         instagrams.add( new insta(instagrams.size()+1,user_id,fotoURL));//adiciona instagram a lista
         aux.addInsta();//aumenta o num de instagrams na casa
-
-        println("RECEBI NOVO-> "+aux.getTag());
+        adicionaAOuser(username,'I',tag); 
+        //println("INSTA  USER-> "+user_id+" TAG -> "+tag);
       }
-    //}
-  }
-
-
-}
-void animaMundo()
-{
-  casa aux,aux1;
-  for (int i = 0; i <casas.size(); i++) 
-  {
-    aux= (casa) casas.get(i);
-    aux.desenha();
-    if ((i+1)<casas.size())
-    {
-      aux1= (casa) casas.get(i+1);
-      traco.setTamanho(1);  
-      traco.setInicio(aux.getX(),aux.getY());
-      traco.inicia(aux1.getX(),aux1.getY());
-      traco.desenha();
     }
   }
+  void animaMundo()
+  {
+    casa aux;
+    for (int i = 0; i <casas.size(); i++) 
+    {
+      aux= (casa) casas.get(i);
+      aux.desenha();
+
+      // if (i==0)
+      //   traco = new linha(aux.getX(),aux.getY());
+      //   else
+      // traco.novapos (aux.getX(),aux.getY());
+
+    }
+  //traco.desenhalinha();
 
 }
 
@@ -213,26 +198,65 @@ void mostraTweet()
 
   }
 }
-
-
-void adicionaAOuser(String _user , char tipo)
+void desenhaCaminhos()
 {
   user aux;
   for (int i = 0; i <pessoas.size(); i++) 
   {
     aux= (user) pessoas.get(i);
-    if  (aux.getID()==_user)
+    println("USER -> "+i+" INSTAS -> "+aux.countInsta()+" CAMI -> "+aux.getCaminhoSize()+" NAME-> "+aux.getID());
+    aux.desenha(casas);
+  }
+}
+
+void adicionaAOuser(String _user , char tipo , String _tag)
+{
+  user aux;
+
+  for (int i = 0; i <pessoas.size(); i++) 
+  {
+    aux= (user) pessoas.get(i);
+//println("USER "+_user+" ID -> "+aux.getID());
+    if  (_user.equals(aux.getID())==true)
     {
+    
       if (tipo=='T')
       {
        aux.addTweet();
+       aux.addCaminho(retornaCasaID(_tag));
      }
      else if (tipo=='I')
      {
+      //println("Toooooooooooooo"+_user);
        aux.addInsta();
+        aux.addCaminho(retornaCasaID(_tag));
      }
-      //desenha utilizador
-      break; 
+      //desenha utilizador de novo com novas espessuras
+      return ; 
     }
   }
+//create new user if needed
+
+  pessoas.add(new user(pessoas.size(),_user));
+   aux= (user) pessoas.get(pessoas.size()-1);
+   if (tipo=='T')
+    aux.addTweet();
+    else if (tipo=='I')
+     aux.addInsta();
+
+   aux.addCaminho(retornaCasaID(_tag));
+}
+
+
+int retornaCasaID(String _tag)
+{
+ casa aux;
+    for (int i = 0; i <casas.size(); i++) 
+    {
+      aux= (casa) casas.get(i);
+     // _tag.equals(
+      if (_tag.equals(aux.getTag())==true )
+      return i;
+    }
+    return -1;
 }

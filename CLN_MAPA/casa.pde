@@ -42,8 +42,8 @@
 		smooth();
 		stroke (204, 20, 0);
 		strokeWeight(1);
-		noFill();
-		
+		//noFill();
+		fill(255,0,0);
 		PFont font;
 		
 		font = loadFont("AGaramondPro-Bold-48.vlw");

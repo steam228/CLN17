@@ -9,11 +9,12 @@
  	color cor;
  	float grosura;
  	linha desenhador;
- 	
+ 	linha traco;
  	user (int _id, String _user) 
  	{
  		id=_id;
  		username=_user;
+ 		caminho= new ArrayList();
  	}
 
  	void addTweet()
@@ -26,35 +27,44 @@
  		numInsta++;
  		grosura++;
  	}
-
- 	String getID()
+ 	int countInsta(){ return numInsta; }
+ 	int countTweets(){ return numTweets; }
+ 	String getID()  {return username;}
+ 	void addCaminho(int _casa) 
  	{
- 		return username;
+ 		int tam=caminho.size();
+ 		if (tam>0)
+ 		{
+ 			int last=(Integer)caminho.get(tam);
+ 		if (last!=_casa)
+ 		{
+ 		caminho.add(_casa);
+ 		println("SIMMM");
+ 		}
+ 		else  {
+ 			println("NAOOO");
+ 		}
+ 		println("LAST ->"+caminho.get(tam)+" ESTE-> "+_casa);
+ 		}
  	}
-
+ 	int getCaminhoSize() {return caminho.size();}
  	void desenha(ArrayList casitas)
  	{
- 		int aux,aux1;
-
- 		for (int i = 0; i <caminho.size(); i++) 
+ 		if (caminho.size()>=4)
  		{
-
- 			aux= (Integer) caminho.get(i);
- 			//aux.desenha();
- 			if ((i+1)<caminho.size())
+ 			int numDaCasa;
+ 			casa casola;
+ 			for (int i = 0; i <caminho.size(); i++) 
  			{
- 				aux1= (Integer) caminho.get(i+1);
 
-casa casola;
-
- 				traco.setTamanho(10);
-
- 				casola=(casa)casitas.get(aux);
-
- 				traco.setInicio(casola.getX(),casola.getY());
- 				traco.inicia(casola.getX(),casola.getY());
- 				traco.desenha();
+ 				numDaCasa= (Integer) caminho.get(i);
+ 				casola=(casa)casitas.get(numDaCasa);
+ 				if (i==0)
+ 				traco = new linha(casola.getX(),casola.getY());
+ 				else
+ 				traco.novapos (casola.getX(),casola.getY());
  			}
+ 			traco.desenhalinha();
  		}
  	}
 

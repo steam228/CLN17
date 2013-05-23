@@ -8,6 +8,8 @@ import java.util.*;
 import de.bezier.data.*; 
 import toxi.geom.*; 
 import toxi.processing.*; 
+import java.util.*; 
+import toxi.geom.*; 
 
 import java.util.HashMap; 
 import java.util.ArrayList; 
@@ -45,7 +47,7 @@ int pausa=2000;
 long lastTime = 0;
 
 public void setup(){
-  traco =new linha();
+  //traco =new linha();
   areas= new exclusoes(this);
   id_area= areas.addPoligno();
   areas.addPonto(id_area,300,0);
@@ -64,15 +66,17 @@ public void setup(){
 public void draw(){
   smooth();
  // background(0);
-  if ( millis() - lastTime > pausa ) 
-  {
-    procuraTweets();
-    procuraInstas();
- lastTime = millis();
-    mostraInsta();
-    mostraTweet();
-} 
+   if ( millis() - lastTime > pausa ) 
+   {
+     procuraTweets();
+procuraInstas();
+  lastTime = millis();
+     mostraInsta();
+     mostraTweet();
+ } 
+desenhaCaminhos();
 animaMundo();
+
 //areas.desenharTodos();
 }
 
@@ -135,6 +139,7 @@ for (int i = 0; i <casas.size(); i++)
     JSON  este =twiits.getJSON(t);//numero do tweet nesta query
     tweets.add( new tweet(tweets.size()+1,este.getInt("from_user_id"),este.getString("text")));//adiciona instagram a lista
     aux.addTweet();
+    adicionaAOuser(este.getString("from_user"),'T',aux.getTag());
   }
   aux.setTweet(ultimoURL);
 }
@@ -148,69 +153,51 @@ public void procuraInstas()
   String tag ;
   int count;
   String jsonstring ;
+  String username;
   casa aux;
   for (int i = 0; i <casas.size(); i++) 
   {
     aux= (casa) casas.get(i);
     tag =aux.getTag();
-    //int totalCasa=aux.countInsta();
-   // instaSite = loadStrings("https://api.instagram.com/v1/tags/"+tag+"?client_id=9d6af7341f7a4fd39e888fd12ab8d8a0");
-    //jsonstring =instaSite[0];
-    //JSON contador = JSON.parse(jsonstring);
-    //contador = contador.getJSON("data");
-    //count=0;
-    //count=contador.getInt("media_count");//TOTAL DE FOTOS NESSA TAG
-    //println("NUM DE INSTAS _> "+count+" NUM GUARDADO _> "+aux.countInsta());
-    //if (count>aux.countInsta())
-    //{
-      //carrega os novos
-      instaSite = loadStrings("https://api.instagram.com/v1/tags/"+tag+"//media/recent?client_id=9d6af7341f7a4fd39e888fd12ab8d8a0&min_tag_id="+aux.getInsta()+"");
-      jsonstring =instaSite[0];
-      JSON data = JSON.parse(jsonstring);
-      JSON ultimo = data.getJSON("pagination");
-      //println("ERRO-> "+ultimo);
-      //println("TAG -> "+tag+" INSTA -> "+aux.getInsta());
-      println("NUM -> "+data.length());
-      
-      data = data.getJSON("data");
-      if (data.length()>0)
-      aux.setInsta( ultimo.getString("min_tag_id"));
-      //println("NUM fotos -> "+data.length());
-      int user_id;
-      for (int f=0; f<data.length();f++)
-      {
+    instaSite = loadStrings("https://api.instagram.com/v1/tags/"+tag+"//media/recent?client_id=9d6af7341f7a4fd39e888fd12ab8d8a0&min_tag_id="+aux.getInsta()+"");
+    jsonstring =instaSite[0];
+    JSON data = JSON.parse(jsonstring);
+    JSON ultimo = data.getJSON("pagination");
+    data = data.getJSON("data");
+    if (data.length()>0)
+    aux.setInsta( ultimo.getString("min_tag_id"));
+    int user_id;
+    for (int f=0; f<data.length();f++)
+    {
         JSON unico = data.getJSON(f);//NUMERO DA FOTO NO ARRAY
         JSON imagens = unico.getJSON("images");
         imagens = imagens.getJSON("thumbnail");//melhor tamanho 612x612 standard_resolution
         String fotoURL =(String) imagens.getString("url"); 
         JSON user= unico.getJSON("user");     
         user_id=user.getInt("id");//identificador do user
+      username=user.getString("username");
         instagrams.add( new insta(instagrams.size()+1,user_id,fotoURL));//adiciona instagram a lista
         aux.addInsta();//aumenta o num de instagrams na casa
-
-        println("RECEBI NOVO-> "+aux.getTag());
+        adicionaAOuser(username,'I',tag); 
+        //println("INSTA  USER-> "+user_id+" TAG -> "+tag);
       }
-    //}
-  }
-
-
-}
-public void animaMundo()
-{
-  casa aux,aux1;
-  for (int i = 0; i <casas.size(); i++) 
-  {
-    aux= (casa) casas.get(i);
-    aux.desenha();
-    if ((i+1)<casas.size())
-    {
-      aux1= (casa) casas.get(i+1);
-      traco.setTamanho(1);  
-      traco.setInicio(aux.getX(),aux.getY());
-      traco.inicia(aux1.getX(),aux1.getY());
-      traco.desenha();
     }
   }
+  public void animaMundo()
+  {
+    casa aux;
+    for (int i = 0; i <casas.size(); i++) 
+    {
+      aux= (casa) casas.get(i);
+      aux.desenha();
+
+      // if (i==0)
+      //   traco = new linha(aux.getX(),aux.getY());
+      //   else
+      // traco.novapos (aux.getX(),aux.getY());
+
+    }
+  //traco.desenhalinha();
 
 }
 
@@ -235,28 +222,67 @@ public void mostraTweet()
 
   }
 }
-
-
-public void adicionaAOuser(String _user , char tipo)
+public void desenhaCaminhos()
 {
   user aux;
   for (int i = 0; i <pessoas.size(); i++) 
   {
     aux= (user) pessoas.get(i);
-    if  (aux.getID()==_user)
+    println("USER -> "+i+" INSTAS -> "+aux.countInsta()+" CAMI -> "+aux.getCaminhoSize()+" NAME-> "+aux.getID());
+    aux.desenha(casas);
+  }
+}
+
+public void adicionaAOuser(String _user , char tipo , String _tag)
+{
+  user aux;
+
+  for (int i = 0; i <pessoas.size(); i++) 
+  {
+    aux= (user) pessoas.get(i);
+//println("USER "+_user+" ID -> "+aux.getID());
+    if  (_user.equals(aux.getID())==true)
     {
+    
       if (tipo=='T')
       {
        aux.addTweet();
+       aux.addCaminho(retornaCasaID(_tag));
      }
      else if (tipo=='I')
      {
+      //println("Toooooooooooooo"+_user);
        aux.addInsta();
+        aux.addCaminho(retornaCasaID(_tag));
      }
-      //desenha utilizador
-      break; 
+      //desenha utilizador de novo com novas espessuras
+      return ; 
     }
   }
+//create new user if needed
+
+  pessoas.add(new user(pessoas.size(),_user));
+   aux= (user) pessoas.get(pessoas.size()-1);
+   if (tipo=='T')
+    aux.addTweet();
+    else if (tipo=='I')
+     aux.addInsta();
+
+   aux.addCaminho(retornaCasaID(_tag));
+}
+
+
+public int retornaCasaID(String _tag)
+{
+ casa aux;
+    for (int i = 0; i <casas.size(); i++) 
+    {
+      aux= (casa) casas.get(i);
+     // _tag.equals(
+      if (_tag.equals(aux.getTag()) )
+      return i;
+    }
+    return -1;
 }
 class Area 
 {
@@ -332,8 +358,8 @@ class Area
 		smooth();
 		stroke (204, 20, 0);
 		strokeWeight(1);
-		noFill();
-		
+		//noFill();
+		fill(255,0,0);
 		PFont font;
 		
 		font = loadFont("AGaramondPro-Bold-48.vlw");
@@ -449,66 +475,165 @@ class exclusoes
  	public int getUser(){return userID;}
  	public int getId(){return id;}
  }
+
+
+
 class linha 
 {
 
-float beginX = 20.0f;  // Initial x-coordinate
-float beginY = 10.0f;  // Initial y-coordinate
-float endX = 570.0f;   // Final x-coordinate
-float endY = 320.0f;   // Final y-coordinate
-float distX;          // X-axis distance to move
-float distY;          // Y-axis distance to move
-float exponent = 4;   // Determines the curve
-float x = 0.0f;        // Current x-coordinate
-float y = 0.0f;        // Current y-coordinate
-float step = 0.001f;    // Size of each step along the path
-float pct = 0.0f;      // Percentage traveled (0.0 to 1.0)
-float tamanho=4;
+  float beginX;  // Initial x-coordinate
+  float beginY;  // Initial y-coordinate
+  //  float endX;   // Final x-coordinate
+  //  float endY;   // Final y-coordinate
+  float x = 0.0f;  // Current x-coordinate
+  float y = 0.0f;  // Current y-coordinate
 
-linha() 
-{
-  noStroke();
-  distX = endX - beginX;
-  distY = endY - beginY;
+  float tamanho=4;
+
+  boolean showLine=true;
+  boolean showSpline=true;
+  boolean showHandles=false;
+  ArrayList points=new ArrayList();
+  int numP;
+  int cor;
+
+  linha(float ox, float oy) 
+  {
+    stroke(255);
+    numP=points.size();
+    showLine=true;
+    showSpline=true;
+    showHandles=true;
+    Vec2D currP=new Vec2D(x, y);
+    beginX = ox;
+    beginY = oy;
+  }
+
+
+  public void novapos(float posX, float posY) 
+  {
+    Vec2D currP=new Vec2D(posX, posY);
+    
+    points.add(currP);
+  }
+
+
+  public void desenhalinha() 
+  {
+    noFill();
+    //    stroke (cor);
+    stroke(255);
+    strokeWeight (tamanho); // alterar quando a path ficar invisivel e for percorrida
+    numP=points.size();
+    beginShape();
+    for (int i=0; i<numP; i++) {
+      Vec2D p=(Vec2D)points.get(i);
+      vertex(p.x, p.y);
+      //melhorar desenho da linha
+    }
+    endShape();
+
+    Vec2D[] handles=new Vec2D[numP];
+    for (int i=0; i<numP; i++) 
+    {
+      Vec2D p=(Vec2D)points.get(i);
+      handles[i]=p;
+      if (showHandles) 
+      ellipse(p.x, p.y, 5, 5);
+    }
+
+  // need at least 4 vertices for a spline
+//  if (numP>3 && showSpline) {
+  float estica = random (0, 0.5f);
+  //setTightness (estica)
+  if (numP>3) {
+    // pass the points into the Spline container class
+    Spline2D spline=new Spline2D(handles);
+    // sample the curve at a higher resolution
+    // so that we get extra 8 points between each original pair of points
+    java.util.List vertices=spline.computeVertices(8);
+    // draw the smoothened curve
+    beginShape();
+    for (Iterator i=vertices.iterator(); i.hasNext(); ) {
+      Vec2D v=(Vec2D)i.next();
+      vertex(v.x, v.y);
+    }
+    endShape();
+  }
+}
+
+
+
+public void setCor(int cor1) {
+
+  cor = cor1;
 }
 
 public void setTamanho(float _tam)
 {
   tamanho=_tam;
 }
-public void setInicio(float _posx, float _posy)
-{
-  x=_posx;
-  y=_posy;
 }
+// class linha 
+// {
 
-public void inicia(float _posx, float _posy)
-{
-  pct = 0.0f;
-  beginX = x;
-  beginY = y;
-  endX = _posx;
-  endY = _posy;
-  distX = endX - beginX;
-  distY = endY - beginY;
-}
+// float beginX = 20.0;  // Initial x-coordinate
+// float beginY = 10.0;  // Initial y-coordinate
+// float endX = 570.0;   // Final x-coordinate
+// float endY = 320.0;   // Final y-coordinate
+// float distX;          // X-axis distance to move
+// float distY;          // Y-axis distance to move
+// float exponent = 4;   // Determines the curve
+// float x = 0.0;        // Current x-coordinate
+// float y = 0.0;        // Current y-coordinate
+// float step = 0.001;    // Size of each step along the path
+// float pct = 0.0;      // Percentage traveled (0.0 to 1.0)
+// float tamanho=4;
 
-public void desenha() 
-{
-  while (pct < 1.0f)
-  {
-    noStroke();
-    //fill(0, 2);
-    //rect(0, 0, width, height);
-    pct += step;
-    x = beginX + (pct * distX);
-    y = beginY + (pow(pct, exponent) * distY);
-    fill(255);
-    ellipse(x, y, tamanho, tamanho);
-  }
-}
+// linha() 
+// {
+//   noStroke();
+//   distX = endX - beginX;
+//   distY = endY - beginY;
+// }
 
-}
+// void setTamanho(float _tam)
+// {
+//   tamanho=_tam;
+// }
+// void setInicio(float _posx, float _posy)
+// {
+//   x=_posx;
+//   y=_posy;
+// }
+
+// void inicia(float _posx, float _posy)
+// {
+//   pct = 0.0;
+//   beginX = x;
+//   beginY = y;
+//   endX = _posx;
+//   endY = _posy;
+//   distX = endX - beginX;
+//   distY = endY - beginY;
+// }
+
+// void desenha() 
+// {
+//   while (pct < 1.0)
+//   {
+//     noStroke();
+//     //fill(0, 2);
+//     //rect(0, 0, width, height);
+//     pct += step;
+//     x = beginX + (pct * distX);
+//     y = beginY + (pow(pct, exponent) * distY);
+//     fill(255);
+//     ellipse(x, y, tamanho, tamanho);
+//   }
+// }
+
+// }
  class tweet 
  {
 
@@ -544,11 +669,12 @@ public void desenha()
  	int cor;
  	float grosura;
  	linha desenhador;
- 	
+ 	linha traco;
  	user (int _id, String _user) 
  	{
  		id=_id;
  		username=_user;
+ 		caminho= new ArrayList();
  	}
 
  	public void addTweet()
@@ -561,35 +687,44 @@ public void desenha()
  		numInsta++;
  		grosura++;
  	}
-
- 	public String getID()
+ 	public int countInsta(){ return numInsta; }
+ 	public int countTweets(){ return numTweets; }
+ 	public String getID()  {return username;}
+ 	public void addCaminho(int _casa) 
  	{
- 		return username;
+ 		int tam=caminho.size();
+ 		if (tam>0)
+ 		{
+ 			int last=(Integer)caminho.get(tam);
+ 		if (last!=_casa)
+ 		{
+ 		caminho.add(_casa);
+ 		println("SIMMM");
+ 		}
+ 		else  {
+ 			println("NAOOO");
+ 		}
+ 		println("LAST ->"+caminho.get(tam)+" ESTE-> "+_casa);
+ 		}
  	}
-
+ 	public int getCaminhoSize() {return caminho.size();}
  	public void desenha(ArrayList casitas)
  	{
- 		int aux,aux1;
-
- 		for (int i = 0; i <caminho.size(); i++) 
+ 		if (caminho.size()>=4)
  		{
-
- 			aux= (Integer) caminho.get(i);
- 			//aux.desenha();
- 			if ((i+1)<caminho.size())
+ 			int numDaCasa;
+ 			casa casola;
+ 			for (int i = 0; i <caminho.size(); i++) 
  			{
- 				aux1= (Integer) caminho.get(i+1);
 
-casa casola;
-
- 				traco.setTamanho(10);
-
- 				casola=(casa)casitas.get(aux);
-
- 				traco.setInicio(casola.getX(),casola.getY());
- 				traco.inicia(casola.getX(),casola.getY());
- 				traco.desenha();
+ 				numDaCasa= (Integer) caminho.get(i);
+ 				casola=(casa)casitas.get(numDaCasa);
+ 				if (i==0)
+ 				traco = new linha(casola.getX(),casola.getY());
+ 				else
+ 				traco.novapos (casola.getX(),casola.getY());
  			}
+ 			traco.desenhalinha();
  		}
  	}
 
