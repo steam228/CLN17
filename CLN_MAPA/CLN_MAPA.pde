@@ -132,7 +132,7 @@ void procuraInstas()
     aux= (casa) casas.get(i);
     tag =aux.getTag();
     int totalCasa=aux.countInsta();
-    instaSite = loadStrings("https://api.instagram.com/v1/tags/"+tag+"?client_id=d89bc143c63a4dbe85785bc181c146e4");
+    instaSite = loadStrings("https://api.instagram.com/v1/tags/"+tag+"?client_id=9d6af7341f7a4fd39e888fd12ab8d8a0");
     jsonstring =instaSite[0];
     JSON contador = JSON.parse(jsonstring);
     contador = contador.getJSON("data");
@@ -142,7 +142,7 @@ void procuraInstas()
     if (count>aux.countInsta())
     {
       //carrega os novos
-      instaSite = loadStrings("https://api.instagram.com/v1/tags/"+tag+"//media/recent?client_id=d89bc143c63a4dbe85785bc181c146e4&min_tag_id="+aux.getInsta()+"");
+      instaSite = loadStrings("https://api.instagram.com/v1/tags/"+tag+"//media/recent?client_id=9d6af7341f7a4fd39e888fd12ab8d8a0&min_tag_id="+aux.getInsta()+"");
       jsonstring =instaSite[0];
       JSON data = JSON.parse(jsonstring);
       JSON ultimo = data.getJSON("pagination");
