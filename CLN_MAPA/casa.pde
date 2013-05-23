@@ -22,6 +22,7 @@
 		dim=0.1;
 		numInsta=0;
 		numTweets=0;
+		ultimoInsta="";
 		ultimoTweet="?q=%23"+nome;
 		desenho = loadShape("Casacaldas.svg");
 	}

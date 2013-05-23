@@ -146,7 +146,8 @@ void procuraInstas()
       jsonstring =instaSite[0];
       JSON data = JSON.parse(jsonstring);
       JSON ultimo = data.getJSON("pagination");
-      println(ultimo);
+      println("ERRO-> "+ultimo);
+      println("TAG -> "+tag+" INSTA -> "+aux.getInsta());
       aux.setInsta( ultimo.getString("min_tag_id"));
       data = data.getJSON("data");
       //println("NUM fotos -> "+data.length());
