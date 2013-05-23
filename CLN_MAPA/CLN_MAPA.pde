@@ -23,7 +23,7 @@ int pausa=2000;
 long lastTime = 0;
 
 void setup(){
-  traco =new linha();
+//  traco =new linha();
   areas= new exclusoes(this);
   id_area= areas.addPoligno();
   areas.addPonto(id_area,300,0);
@@ -42,14 +42,14 @@ void setup(){
 void draw(){
   smooth();
  // background(0);
-  if ( millis() - lastTime > pausa ) 
-  {
-    procuraTweets();
-    procuraInstas();
- lastTime = millis();
-    mostraInsta();
-    mostraTweet();
-} 
+//  if ( millis() - lastTime > pausa ) 
+//  {
+//    procuraTweets();
+//    procuraInstas();
+// lastTime = millis();
+//    mostraInsta();
+//    mostraTweet();
+//} 
 animaMundo();
 //areas.desenharTodos();
 }
@@ -179,11 +179,16 @@ void animaMundo()
     aux.desenha();
     if ((i+1)<casas.size())
     {
+      
       aux1= (casa) casas.get(i+1);
-      traco.setTamanho(1);  
-      traco.setInicio(aux.getX(),aux.getY());
-      traco.inicia(aux1.getX(),aux1.getY());
-      traco.desenha();
+      //traco.setTamanho(1);
+      traco = new linha(aux.getX(),aux.getY());
+      traco.novapos (aux1.getX(),aux1.getY());
+      traco.desenhalinha();
+      
+//      traco.setInicio(aux.getX(),aux.getY());
+//      traco.inicia(aux1.getX(),aux1.getY());
+//      traco.desenha();
     }
   }
 
