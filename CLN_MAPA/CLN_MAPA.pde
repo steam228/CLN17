@@ -210,26 +210,26 @@ void mostraTweet()
 
   }
 }
+
+
+void adicionaAOuser(String _user , char tipo)
+{
+  user aux;
+  for (int i = 0; i <pessoas.size(); i++) 
+  {
+    aux= (user) pessoas.get(i);
+    if  (aux.getID()==_user)
+    {
+      if (tipo=='T')
+      {
+       aux.addTweet();
+     }
+     else if (tipo=='I')
+     {
+       aux.addInsta();
+     }
+      //desenha utilizador
+      break; 
+    }
+  }
 }
-
-//void adicionaAOuser(String _user , char tipo)
-//{
-//  user aux;
-//  for (int i = 0; i <pessoas.size(); i++) 
-//  {
-//    aux= (user) pessoas.get(i);
-//    if  (aux.getID()==_user)
-//    {
-//      if (tipo=='T')
-//      {
-//       aux.addTweet();
-//     }
-//     else if (tipo=='I')
-//     {
-//       aux.addInsta();
-//     }
-//      //desenha utilizador
-//      break; 
-//    }
-//  }
-
