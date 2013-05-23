@@ -14,19 +14,20 @@ void setup() {
   tr.background(0);
   tr.endDraw();
    
-  points.add(new PVector(0,0));
-  points.add(new PVector(20,5));
-  points.add(new PVector(40,10));
-  points.add(new PVector(130,200));
-  points.add(new PVector(300,200));
-  points.add(new PVector(300,80));
-  points.add(new PVector(250,50));
-  points.add(new PVector(200,80));
-  points.add(new PVector(200,200));
-  points.add(new PVector(300,500));
-  points.add(new PVector(700,0));
-  
+  //points.add(new PVector(0,0));
+  //points.add(new PVector(20,5));
+  // points.add(new PVector(40,10));
+  // points.add(new PVector(130,200));
+  // points.add(new PVector(300,200));
+  // points.add(new PVector(300,80));
+  // points.add(new PVector(250,50));
+  // points.add(new PVector(200,80));
+  // points.add(new PVector(200,200));
+  // points.add(new PVector(300,500));
+  // points.add(new PVector(700,0));
+   if (points.size() >= 4) 
   generateDists();
+
   drawTrack();
   reset();
 }
@@ -41,7 +42,7 @@ void draw() {
     PVector pt = getPos(getu(pos+0.1));
     PVector tng = PVector.sub(pt, p);
     tng.normalize();
-    vel += tng.y/4.;
+    vel += tng.y/4;
     pos += vel;
     if (pos > d[d.length-1]-0.2) {
       reset();
