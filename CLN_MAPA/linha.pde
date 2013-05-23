@@ -63,6 +63,8 @@ class linha
 
   // need at least 4 vertices for a spline
 //  if (numP>3 && showSpline) {
+  float estica = random (0, 0.5);
+  setTightness (estica)
   if (numP>3) {
     // pass the points into the Spline container class
     Spline2D spline=new Spline2D(handles);
