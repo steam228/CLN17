@@ -44,6 +44,7 @@ int ESCALA = 2;
 
   void desenhalinha() 
   {
+    
     noFill();
 
         stroke (cor);
