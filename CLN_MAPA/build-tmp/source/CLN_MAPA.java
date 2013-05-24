@@ -661,7 +661,7 @@ public void colisao(){
     //   posicaoX = raio;
     //   velocidadeX *= -1; 
     // }
-    if(posicaoX > ((width - largura_tam)-MARGEN))
+    if(posicaoX > ((width )-MARGEN))
     {
     	posicaoX = (width - largura_tam)-MARGEN;
 
@@ -679,13 +679,17 @@ public void colisao(){
     	velocidadeX--;
     	else 
     	velocidadeX++;	
+
+      if (posx>=(width -MARGEN))
+      posx--;
+
     }
     // if(posicaoY < raio){
     //   posicaoY = raio;
     //   velocidadeY *= -1; 
     // }
 
-    if(    posicaoY > (((height - altura_tam)-MARGEN) +20)  )
+    if(    posicaoY > (((height )-MARGEN) )  )
     {
     	posicaoY = (height - altura_tam)-MARGEN;
     	velocidadeY *= -1; 
@@ -693,6 +697,10 @@ public void colisao(){
     	velocidadeY--;
     	else 
     	velocidadeY++;	
+
+if (posy>=(height -(MARGEN+10)))
+posy--;
+
     }
     if(posicaoY <  (altura_tam+MARGEN))
     {
