@@ -76,14 +76,14 @@ void draw(){
 
 // if (comeca)
 // {
- //desenhaCaminhos();
+ desenhaCaminhos();
 
 
 
  if ( millis() - lastTime > pausa ) 
  {
-   // procuraTweets();
-   // procuraInstas();
+    procuraTweets();
+    procuraInstas();
    lastTime = millis();
    // mostraInsta();
    // mostraTweet();
@@ -101,17 +101,7 @@ moveMundo();
 
 
 
-// fill(0,0,255);
-// ellipse(xxx, yyy, 50, 50);
-// fill(0,255,0);
-// ellipse(xxx1, yyy1, 50, 50);
 
-// stroke(0, 0, 255);
-// //line(0,0,);
-// line();
-// stroke(0, 0, 255);
-// line();
-// line();
 
 }
 
@@ -242,6 +232,8 @@ void procuraTweets()
   // {
    aux= (casa) casas.get(vou);
    twitterSite = loadStrings("http://search.twitter.com/search.json"+aux.getTweet());
+   if (twitterSite!=null)
+{
    jsonstring =twitterSite[0];
    JSON twiits = JSON.parse(jsonstring);
    ultimoURL=twiits.getString("refresh_url");
@@ -260,6 +252,7 @@ void procuraTweets()
 }
 // }
 }
+}
 
 void procuraInstas()
 {
@@ -276,7 +269,9 @@ void procuraInstas()
     aux= (casa) casas.get(vou);
     tag =aux.getTag();
     instaSite = loadStrings("https://api.instagram.com/v1/tags/"+tag+"//media/recent?client_id=9d6af7341f7a4fd39e888fd12ab8d8a0&min_tag_id="+aux.getInsta()+"");
-    jsonstring =instaSite[0];
+   if (instaSite!=null)
+{
+   jsonstring =instaSite[0];
     JSON data = JSON.parse(jsonstring);
     JSON ultimo = data.getJSON("pagination");
     data = data.getJSON("data");
@@ -301,6 +296,7 @@ void procuraInstas()
         println("INSTA  USER-> "+user_id+" TAG -> "+tag);
       }
     // }
+  }
     vou++;
     if (vou>125)
     vou=0;
@@ -367,7 +363,9 @@ void procuraInstas()
 
 
 }
-
+void fazMagia(){
+  
+}
 void mostraInsta()
 {
   insta aux;
