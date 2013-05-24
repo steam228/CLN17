@@ -39,7 +39,7 @@ void setup(){
   areas.addPonto(id_area,410,80);
   areas.addPonto(id_area,400,100);
   //size(largura, altura,P3D);
-  size(largura, altura);
+  size(largura, altura,OPENGL);
   casas = new ArrayList();
   tweets= new ArrayList();
   instagrams= new ArrayList();
@@ -53,7 +53,7 @@ void draw(){
 //   if (hideee)
 // {areas.desenharTodos(); }
 // else  {
- // background(0);
+  background(0);
 //}
  //smooth();
 
@@ -67,21 +67,21 @@ void draw(){
 // if (comeca)
 // {
 
- if ( millis() - lastTime > pausa ) 
- {
-   procuraTweets();
-   procuraInstas();
-   lastTime = millis();
+ // if ( millis() - lastTime > pausa ) 
+ // {
+ //   procuraTweets();
+ //   procuraInstas();
+ //   lastTime = millis();
    // mostraInsta();
    // mostraTweet();
- } 
+ //} 
  // if ( millis() - ultimaVez > espera ) 
  // {
  //  ultimaVez=millis();
- desenhaCaminhos();
+//desenhaCaminhos();
 //}
-animaMundo();
-
+//animaMundo();
+moveMundo();
 
 //}
 
@@ -107,13 +107,13 @@ void carregaCasas()
   float[] posii = {0,0};
   reader = new XlsReader(this, "cln17.xls" ); 
 
-  int numcasas = 11;
+  int numcasas = 125;
   int margin = 80;//calibrate margin
   
   float[] xvals = new float[numcasas];
   float[] yvals = new float [numcasas];
   java.lang.String[] nomes = new String[numcasas];
-
+ 
   for (int i = 0; i < numcasas; i++) 
   {
     xvals[i] = reader.getFloat( i, 1 );
@@ -130,7 +130,7 @@ void carregaCasas()
   {
     String designa = nomes[i];
 
-    float ypos = map (yvals[i], ymin, ymax, margin, height-margin);
+    float ypos = map (yvals[i], ymin, ymax, margin/2, height-(margin/2));
     float xpos = map (xvals[i], xmin, xmax, margin, width-margin);
     posii =verificaCasa(xpos,ypos);
     casas.add(new casa(designa, posii[0], posii[1]));
@@ -289,6 +289,58 @@ void procuraInstas()
       aux= (casa) casas.get(i);
       aux.desenha();
     }
+  }
+
+   void moveMundo()
+  {
+     stroke(255, 255, 255, 100);
+   for(int i=0; i<casas.size(); i++){
+    casa bolaA = (casa)casas.get(i);
+    bolaA.mover();
+    
+    //dentro deste loop, temos outro loop
+    //onde cada bola vai interagir com todas as outras bolas
+    //aplicando uma força de repulsa
+    for(int j=i+1; j<casas.size(); j++){
+      casa bolaB = (casa)casas.get(j); 
+      //dx e dy representam a diferença de posição entre as 2 bolas
+      float dx = bolaA.posicaoX - bolaB.posicaoX;
+      float dy = bolaA.posicaoY - bolaB.posicaoY;
+      float distancia = dist (bolaA.posicaoX, bolaA.posicaoY, bolaB.posicaoX, bolaB.posicaoY);
+      //dividindo dx e dy pela distancia ficamos com um vector unário que aponta desde bolaA até bolaB
+      dx /= distancia;
+      dy /= distancia;
+      //como este vector é unário (tem tamanho 1) podemos então aplicar a fórmula de repulsa a cada um dos eixos
+      float forcaX = dx * (5 / distancia);
+      float forcaY = dy * (5 / distancia);
+      //somamos a força à bolaA
+      bolaA.aceleracaoX += forcaX;
+      bolaA.aceleracaoY += forcaY;
+      //e subtraimos à bolaB
+      bolaB.aceleracaoX -= forcaX;
+      bolaB.aceleracaoY -= forcaY;
+      
+      //se a distância for menor que 40, 
+      //desenhamos ainda uma linha a unir ambos os pontos
+      if(distancia < 40){
+        line(bolaA.posicaoX, bolaA.posicaoY, bolaB.posicaoX, bolaB.posicaoY);
+      }
+
+      bolaA.desenha();
+    }
+    float dx = bolaA.posicaoX - mouseX;
+    float dy = bolaA.posicaoY - mouseY;
+    float distancia = dist(bolaA.posicaoX, bolaA.posicaoY, mouseX, mouseY);
+    dx /= distancia;
+    dy /= distancia;
+    float forcaX = dx * (200 / distancia);
+    float forcaY = dy * (200 / distancia);
+    bolaA.aceleracaoX += forcaX;
+    bolaA.aceleracaoY += forcaY;
+
+  }
+
+      
   }
 
   void mostraInsta()

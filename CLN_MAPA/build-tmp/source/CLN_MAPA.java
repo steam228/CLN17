@@ -63,7 +63,7 @@ public void setup(){
   areas.addPonto(id_area,410,80);
   areas.addPonto(id_area,400,100);
   //size(largura, altura,P3D);
-  size(largura, altura);
+  size(largura, altura,OPENGL);
   casas = new ArrayList();
   tweets= new ArrayList();
   instagrams= new ArrayList();
@@ -77,7 +77,7 @@ public void draw(){
 //   if (hideee)
 // {areas.desenharTodos(); }
 // else  {
- // background(0);
+  background(0);
 //}
  //smooth();
 
@@ -91,21 +91,21 @@ public void draw(){
 // if (comeca)
 // {
 
- if ( millis() - lastTime > pausa ) 
- {
-   procuraTweets();
-   procuraInstas();
-   lastTime = millis();
+ // if ( millis() - lastTime > pausa ) 
+ // {
+ //   procuraTweets();
+ //   procuraInstas();
+ //   lastTime = millis();
    // mostraInsta();
    // mostraTweet();
- } 
+ //} 
  // if ( millis() - ultimaVez > espera ) 
  // {
  //  ultimaVez=millis();
- desenhaCaminhos();
+//desenhaCaminhos();
 //}
-animaMundo();
-
+//animaMundo();
+moveMundo();
 
 //}
 
@@ -131,13 +131,13 @@ public void carregaCasas()
   float[] posii = {0,0};
   reader = new XlsReader(this, "cln17.xls" ); 
 
-  int numcasas = 11;
+  int numcasas = 125;
   int margin = 80;//calibrate margin
   
   float[] xvals = new float[numcasas];
   float[] yvals = new float [numcasas];
   java.lang.String[] nomes = new String[numcasas];
-
+ 
   for (int i = 0; i < numcasas; i++) 
   {
     xvals[i] = reader.getFloat( i, 1 );
@@ -154,7 +154,7 @@ public void carregaCasas()
   {
     String designa = nomes[i];
 
-    float ypos = map (yvals[i], ymin, ymax, margin, height-margin);
+    float ypos = map (yvals[i], ymin, ymax, margin/2, height-(margin/2));
     float xpos = map (xvals[i], xmin, xmax, margin, width-margin);
     posii =verificaCasa(xpos,ypos);
     casas.add(new casa(designa, posii[0], posii[1]));
@@ -315,6 +315,58 @@ public void procuraInstas()
     }
   }
 
+   public void moveMundo()
+  {
+     stroke(255, 255, 255, 100);
+   for(int i=0; i<casas.size(); i++){
+    casa bolaA = (casa)casas.get(i);
+    bolaA.mover();
+    
+    //dentro deste loop, temos outro loop
+    //onde cada bola vai interagir com todas as outras bolas
+    //aplicando uma for\u00e7a de repulsa
+    for(int j=i+1; j<casas.size(); j++){
+      casa bolaB = (casa)casas.get(j); 
+      //dx e dy representam a diferen\u00e7a de posi\u00e7\u00e3o entre as 2 bolas
+      float dx = bolaA.posicaoX - bolaB.posicaoX;
+      float dy = bolaA.posicaoY - bolaB.posicaoY;
+      float distancia = dist (bolaA.posicaoX, bolaA.posicaoY, bolaB.posicaoX, bolaB.posicaoY);
+      //dividindo dx e dy pela distancia ficamos com um vector un\u00e1rio que aponta desde bolaA at\u00e9 bolaB
+      dx /= distancia;
+      dy /= distancia;
+      //como este vector \u00e9 un\u00e1rio (tem tamanho 1) podemos ent\u00e3o aplicar a f\u00f3rmula de repulsa a cada um dos eixos
+      float forcaX = dx * (5 / distancia);
+      float forcaY = dy * (5 / distancia);
+      //somamos a for\u00e7a \u00e0 bolaA
+      bolaA.aceleracaoX += forcaX;
+      bolaA.aceleracaoY += forcaY;
+      //e subtraimos \u00e0 bolaB
+      bolaB.aceleracaoX -= forcaX;
+      bolaB.aceleracaoY -= forcaY;
+      
+      //se a dist\u00e2ncia for menor que 40, 
+      //desenhamos ainda uma linha a unir ambos os pontos
+      if(distancia < 40){
+        line(bolaA.posicaoX, bolaA.posicaoY, bolaB.posicaoX, bolaB.posicaoY);
+      }
+
+      bolaA.desenha();
+    }
+    float dx = bolaA.posicaoX - mouseX;
+    float dy = bolaA.posicaoY - mouseY;
+    float distancia = dist(bolaA.posicaoX, bolaA.posicaoY, mouseX, mouseY);
+    dx /= distancia;
+    dy /= distancia;
+    float forcaX = dx * (200 / distancia);
+    float forcaY = dy * (200 / distancia);
+    bolaA.aceleracaoX += forcaX;
+    bolaA.aceleracaoY += forcaY;
+
+  }
+
+      
+  }
+
   public void mostraInsta()
   {
     insta aux;
@@ -472,6 +524,24 @@ class Area
  class casa 
  {
 
+
+ float posicaoX, posicaoY;
+ float velocidadeX, velocidadeY;
+
+  //vari\u00e1veis onde guardamos os valores de acelera\u00e7ao
+  float aceleracaoX;
+  float aceleracaoY;
+
+  //definimos um valor para o raio
+  float raio;
+
+  //resistencia
+  float resistencia;
+
+
+
+
+
  	int ESCALA=2;
 	int INCREMENTO=1;
  	int LIMITE=60;
@@ -496,6 +566,9 @@ class Area
 		tag=nome;
 		posx=xx;
 		posy=yy;
+ resistencia = 0.05f;
+		posicaoX=xx;
+		posicaoY=yy;
 		tamLetra=15;
 		dim=1;
 		numInsta=0;
@@ -519,23 +592,82 @@ class Area
 	public String getTweet() {return ultimoTweet;}
 	public String getTag(){return tag;}
 	
+
+  public void mover(){
+
+   // float centroX = posx;
+   float centroX = posx;
+  // float centroY = posy;
+  //   float centroX = width / 2;
+   float centroY = height / 2;
+   aceleracaoX += (centroX - posicaoX) / 20;
+   aceleracaoY += (centroY - posicaoY) / 20;
+
+
+    //somamos a acelera\u00e7\u00e3o \u00e0 velocidade
+    velocidadeX += aceleracaoX;
+    velocidadeY += aceleracaoY;
+
+    velocidadeX *= resistencia;
+    velocidadeY *= resistencia;
+
+    //somamos a nossa velocidade \u00e0 posi\u00e7\u00e3o
+    posicaoX += velocidadeX;
+    posicaoY += velocidadeY;
+
+    
+    aceleracaoX = 0;
+    aceleracaoY = 0;
+  }
+
+
+   public void colisao(){
+    //testamos para ver se a nossa bola colide com os lados da janela
+    //mas temos em conta o raio da bola
+    //sempre que h\u00e1 uma colis\u00e3o, colocamos a bola no ponto de colis\u00e3o
+    //e invertemos a velocidade nesse eixo
+    if(posicaoX < raio){
+      posicaoX = raio;
+      velocidadeX *= -1; 
+    }
+    if(posicaoX > width - raio){
+      posicaoX = width - raio;
+      velocidadeX *= -1; 
+    }
+    if(posicaoY < raio){
+      posicaoY = raio;
+      velocidadeY *= -1; 
+    }
+    if(posicaoY > height - raio){
+      posicaoY = height - raio;
+      velocidadeY *= -1; 
+    }
+  }
+
+
+
+
+
 	public void desenha()
 	{
 		//smooth();
 		
 		
-		fill(0, 0, 255);
-		PFont font;		
-		font = loadFont("AGaramondPro-Bold-48.vlw");
-		textFont(font, tamLetra);
-		text("#"+tag, posx+tamLetra, posy-tamLetra);
+		// fill(0, 0, 255);
+		// PFont font;		
+		// font = loadFont("AGaramondPro-Bold-48.vlw");
+		// textFont(font, tamLetra);
+		// text("#"+tag, posx+tamLetra, posy-tamLetra);
 		
 		fill(255,0,0);
 		fundo.disableStyle();
 		 noStroke();
 		 fill(cor);
-		 shape(fundo, posx-((largura+(dim*0.7f))/ESCALA), posy-((altura+dim)/ESCALA), (largura+(dim*0.7f))/ESCALA, (altura+dim)/ESCALA);
-		 shape(desenho, posx-((largura+(dim*0.7f))/ESCALA), posy-((altura+dim)/ESCALA), (largura+(dim*0.7f))/ESCALA, (altura+dim)/ESCALA);
+		 //posicaoX
+		// shape(fundo, posx-((largura+(dim*0.7))/ESCALA), posy-((altura+dim)/ESCALA), (largura+(dim*0.7))/ESCALA, (altura+dim)/ESCALA);
+		 //shape(desenho, posx-((largura+(dim*0.7))/ESCALA), posy-((altura+dim)/ESCALA), (largura+(dim*0.7))/ESCALA, (altura+dim)/ESCALA);
+		 shape(fundo, posicaoX-((largura+(dim*0.7f))/ESCALA), posicaoY-((altura+dim)/ESCALA), (largura+(dim*0.7f))/ESCALA, (altura+dim)/ESCALA);
+		 shape(desenho, posicaoX-((largura+(dim*0.7f))/ESCALA), posicaoY-((altura+dim)/ESCALA), (largura+(dim*0.7f))/ESCALA, (altura+dim)/ESCALA);
 	}
 }
 class exclusoes 

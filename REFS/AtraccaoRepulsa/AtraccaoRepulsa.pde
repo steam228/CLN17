@@ -1,7 +1,7 @@
 ArrayList bolas;
 
 //número inicial de bolas 
-int numeroDeBolas = 5000;
+int numeroDeBolas = 500;
 
 void setup(){
   size(800, 600,OPENGL);
@@ -9,13 +9,13 @@ void setup(){
   bolas = new ArrayList();
 frameRate(30);
 //criamos numeroDeBolas para começar....
- // for(int i=0; i<numeroDeBolas; i++){
+  for(int i=0; i<numeroDeBolas; i++){
     bolas.add(new Bola()); 
- // }
+  }
 }
 
 void draw(){
-   bolas.add(new Bola()); 
+  // bolas.add(new Bola()); 
   background(0);
   stroke(255, 255, 255, 100);
   //nosso loop a interar por todas as bolas

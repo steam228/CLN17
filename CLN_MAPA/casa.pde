@@ -1,6 +1,24 @@
  class casa 
  {
 
+
+ float posicaoX, posicaoY;
+ float velocidadeX, velocidadeY;
+
+  //variáveis onde guardamos os valores de aceleraçao
+  float aceleracaoX;
+  float aceleracaoY;
+
+  //definimos um valor para o raio
+  float raio;
+
+  //resistencia
+  float resistencia;
+
+
+
+
+
  	int ESCALA=2;
 	int INCREMENTO=1;
  	int LIMITE=60;
@@ -25,6 +43,9 @@
 		tag=nome;
 		posx=xx;
 		posy=yy;
+ resistencia = 0.05;
+		posicaoX=xx;
+		posicaoY=yy;
 		tamLetra=15;
 		dim=1;
 		numInsta=0;
@@ -48,22 +69,81 @@
 	String getTweet() {return ultimoTweet;}
 	String getTag(){return tag;}
 	
+
+  void mover(){
+
+   // float centroX = posx;
+   float centroX = posx;
+  // float centroY = posy;
+  //   float centroX = width / 2;
+   float centroY = height / 2;
+   aceleracaoX += (centroX - posicaoX) / 20;
+   aceleracaoY += (centroY - posicaoY) / 20;
+
+
+    //somamos a aceleração à velocidade
+    velocidadeX += aceleracaoX;
+    velocidadeY += aceleracaoY;
+
+    velocidadeX *= resistencia;
+    velocidadeY *= resistencia;
+
+    //somamos a nossa velocidade à posição
+    posicaoX += velocidadeX;
+    posicaoY += velocidadeY;
+
+    
+    aceleracaoX = 0;
+    aceleracaoY = 0;
+  }
+
+
+   void colisao(){
+    //testamos para ver se a nossa bola colide com os lados da janela
+    //mas temos em conta o raio da bola
+    //sempre que há uma colisão, colocamos a bola no ponto de colisão
+    //e invertemos a velocidade nesse eixo
+    if(posicaoX < raio){
+      posicaoX = raio;
+      velocidadeX *= -1; 
+    }
+    if(posicaoX > width - raio){
+      posicaoX = width - raio;
+      velocidadeX *= -1; 
+    }
+    if(posicaoY < raio){
+      posicaoY = raio;
+      velocidadeY *= -1; 
+    }
+    if(posicaoY > height - raio){
+      posicaoY = height - raio;
+      velocidadeY *= -1; 
+    }
+  }
+
+
+
+
+
 	void desenha()
 	{
 		//smooth();
 		
 		
-		fill(0, 0, 255);
-		PFont font;		
-		font = loadFont("AGaramondPro-Bold-48.vlw");
-		textFont(font, tamLetra);
-		text("#"+tag, posx+tamLetra, posy-tamLetra);
+		// fill(0, 0, 255);
+		// PFont font;		
+		// font = loadFont("AGaramondPro-Bold-48.vlw");
+		// textFont(font, tamLetra);
+		// text("#"+tag, posx+tamLetra, posy-tamLetra);
 		
 		fill(255,0,0);
 		fundo.disableStyle();
 		 noStroke();
 		 fill(cor);
-		 shape(fundo, posx-((largura+(dim*0.7))/ESCALA), posy-((altura+dim)/ESCALA), (largura+(dim*0.7))/ESCALA, (altura+dim)/ESCALA);
-		 shape(desenho, posx-((largura+(dim*0.7))/ESCALA), posy-((altura+dim)/ESCALA), (largura+(dim*0.7))/ESCALA, (altura+dim)/ESCALA);
+		 //posicaoX
+		// shape(fundo, posx-((largura+(dim*0.7))/ESCALA), posy-((altura+dim)/ESCALA), (largura+(dim*0.7))/ESCALA, (altura+dim)/ESCALA);
+		 //shape(desenho, posx-((largura+(dim*0.7))/ESCALA), posy-((altura+dim)/ESCALA), (largura+(dim*0.7))/ESCALA, (altura+dim)/ESCALA);
+		 shape(fundo, posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA), (largura+(dim*0.7))/ESCALA, (altura+dim)/ESCALA);
+		 shape(desenho, posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA), (largura+(dim*0.7))/ESCALA, (altura+dim)/ESCALA);
 	}
 }

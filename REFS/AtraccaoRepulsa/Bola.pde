@@ -36,13 +36,13 @@ class Bola{
     resistencia = 0.95;
 
     //raio
-    raio = 5;
+    // raio = 25;
 
-    vida = 50;
+    // vida = 50;
     
-    r = 0;
-    g = 255;
-    b = 255;
+    // r = 0;
+    // g = 255;
+    // b = 255;
   }
 
   void mover(){
@@ -70,35 +70,35 @@ class Bola{
     aceleracaoY = 0;
   }
 
-  void colisao(){
-    //testamos para ver se a nossa bola colide com os lados da janela
-    //mas temos em conta o raio da bola
-    //sempre que há uma colisão, colocamos a bola no ponto de colisão
-    //e invertemos a velocidade nesse eixo
-    if(posicaoX < raio){
-      posicaoX = raio;
-      velocidadeX *= -1; 
-    }
-    if(posicaoX > width - raio){
-      posicaoX = width - raio;
-      velocidadeX *= -1; 
-    }
-    if(posicaoY < raio){
-      posicaoY = raio;
-      velocidadeY *= -1; 
-    }
-    if(posicaoY > height - raio){
-      posicaoY = height - raio;
-      velocidadeY *= -1; 
-    }
-  }
+  // void colisao(){
+  //   //testamos para ver se a nossa bola colide com os lados da janela
+  //   //mas temos em conta o raio da bola
+  //   //sempre que há uma colisão, colocamos a bola no ponto de colisão
+  //   //e invertemos a velocidade nesse eixo
+  //   if(posicaoX < raio){
+  //     posicaoX = raio;
+  //     velocidadeX *= -1; 
+  //   }
+  //   if(posicaoX > width - raio){
+  //     posicaoX = width - raio;
+  //     velocidadeX *= -1; 
+  //   }
+  //   if(posicaoY < raio){
+  //     posicaoY = raio;
+  //     velocidadeY *= -1; 
+  //   }
+  //   if(posicaoY > height - raio){
+  //     posicaoY = height - raio;
+  //     velocidadeY *= -1; 
+  //   }
+  // }
 
 
-  void desenhar(){
-    //desenhamos um circulo baseado na posição e no raio
-    fill(r, g, b, 50);
-    ellipse(posicaoX, posicaoY, raio*2, raio*2);
-  } 
+  // void desenhar(){
+  //   //desenhamos um circulo baseado na posição e no raio
+  //   fill(r, g, b, 50);
+  //   ellipse(posicaoX, posicaoY, raio*2, raio*2);
+  // } 
 }
 
 

@@ -17,7 +17,7 @@ public class AtraccaoRepulsa extends PApplet {
 ArrayList bolas;
 
 //n\u00famero inicial de bolas 
-int numeroDeBolas = 5000;
+int numeroDeBolas = 500;
 
 public void setup(){
   size(800, 600,OPENGL);
@@ -25,13 +25,13 @@ public void setup(){
   bolas = new ArrayList();
 frameRate(30);
 //criamos numeroDeBolas para come\u00e7ar....
- // for(int i=0; i<numeroDeBolas; i++){
+  for(int i=0; i<numeroDeBolas; i++){
     bolas.add(new Bola()); 
- // }
+  }
 }
 
 public void draw(){
-   bolas.add(new Bola()); 
+  // bolas.add(new Bola()); 
   background(0);
   stroke(255, 255, 255, 100);
   //nosso loop a interar por todas as bolas
@@ -123,16 +123,16 @@ class Bola{
     //este valor convem ser entre 0 e 1
     //em que zero = resistencia total (o objecto n\u00e3o mexe)
     //e 1 = nenhuma resistencia
-    resistencia = 0.01f;
+    resistencia = 0.95f;
 
     //raio
-    raio = 5;
+    // raio = 25;
 
-    vida = 50;
+    // vida = 50;
     
-    r = 0;
-    g = 255;
-    b = 255;
+    // r = 0;
+    // g = 255;
+    // b = 255;
   }
 
   public void mover(){
@@ -160,35 +160,35 @@ class Bola{
     aceleracaoY = 0;
   }
 
-  public void colisao(){
-    //testamos para ver se a nossa bola colide com os lados da janela
-    //mas temos em conta o raio da bola
-    //sempre que h\u00e1 uma colis\u00e3o, colocamos a bola no ponto de colis\u00e3o
-    //e invertemos a velocidade nesse eixo
-    if(posicaoX < raio){
-      posicaoX = raio;
-      velocidadeX *= -1; 
-    }
-    if(posicaoX > width - raio){
-      posicaoX = width - raio;
-      velocidadeX *= -1; 
-    }
-    if(posicaoY < raio){
-      posicaoY = raio;
-      velocidadeY *= -1; 
-    }
-    if(posicaoY > height - raio){
-      posicaoY = height - raio;
-      velocidadeY *= -1; 
-    }
-  }
+  // void colisao(){
+  //   //testamos para ver se a nossa bola colide com os lados da janela
+  //   //mas temos em conta o raio da bola
+  //   //sempre que h\u00e1 uma colis\u00e3o, colocamos a bola no ponto de colis\u00e3o
+  //   //e invertemos a velocidade nesse eixo
+  //   if(posicaoX < raio){
+  //     posicaoX = raio;
+  //     velocidadeX *= -1; 
+  //   }
+  //   if(posicaoX > width - raio){
+  //     posicaoX = width - raio;
+  //     velocidadeX *= -1; 
+  //   }
+  //   if(posicaoY < raio){
+  //     posicaoY = raio;
+  //     velocidadeY *= -1; 
+  //   }
+  //   if(posicaoY > height - raio){
+  //     posicaoY = height - raio;
+  //     velocidadeY *= -1; 
+  //   }
+  // }
 
 
-  public void desenhar(){
-    //desenhamos um circulo baseado na posi\u00e7\u00e3o e no raio
-    fill(r, g, b, 50);
-    ellipse(posicaoX, posicaoY, raio*2, raio*2);
-  } 
+  // void desenhar(){
+  //   //desenhamos um circulo baseado na posi\u00e7\u00e3o e no raio
+  //   fill(r, g, b, 50);
+  //   ellipse(posicaoX, posicaoY, raio*2, raio*2);
+  // } 
 }
 
 
