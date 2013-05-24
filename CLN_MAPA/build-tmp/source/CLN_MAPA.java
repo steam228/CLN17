@@ -6,6 +6,7 @@ import processing.opengl.*;
 import org.json.*; 
 import java.util.*; 
 import de.bezier.data.*; 
+import codeanticode.syphon.*; 
 import toxi.geom.*; 
 import toxi.processing.*; 
 import java.util.*; 
@@ -27,10 +28,16 @@ public class CLN_MAPA extends PApplet {
 
 
 
+PGraphics canvas;
+SyphonServer server;
+
 
 int vou=0;
 
-PShape desenho;
+PShape desenho1;
+PShape desenho2;
+PShape desenho3;
+PShape desenho4;
 PShape fundo;
 
 int largura=1200;
@@ -61,9 +68,15 @@ long lastTime = 0;
 long ultimaVez = 0;
 
 public void setup(){
-  desenho = loadShape("Casacaldas.svg");
-  fundo= loadShape("CasaFundo.svg");
-  desenho.disableStyle();
+  // desenho1 = loadShape("peca_01.svg");
+  // desenho2 = loadShape("peca_02.svg");
+  // desenho3 = loadShape("peca_03.svg");
+  // desenho4 = loadShape("peca_04.svg");
+  // fundo= loadShape("CasaFundo.svg");
+  // desenho1.disableStyle();
+  // desenho2.disableStyle();
+  // desenho3.disableStyle();
+  // desenho4.disableStyle();
 //fundo.disableStyle();
 PFont font;   
 font = loadFont("AGaramondPro-Bold-48.vlw");
@@ -75,7 +88,10 @@ areas.addPonto(id_area,400,50);
 areas.addPonto(id_area,410,80);
 areas.addPonto(id_area,400,100);
   //size(largura, altura,P3D);
-  size(largura, altura);
+  size(largura, altura,P3D);
+   canvas = createGraphics(1200, 300, P3D);
+  server = new SyphonServer(this, "Processing Syphon");
+
   casas = new ArrayList();
   tweets= new ArrayList();
   instagrams= new ArrayList();
@@ -86,6 +102,7 @@ areas.addPonto(id_area,400,100);
 }
 
 public void draw(){
+   canvas.beginDraw();
    background(0);
   if (hideee)
 {areas.desenharTodos(); }
@@ -128,8 +145,9 @@ moveMundo();
 
 
 
-
-
+  canvas.endDraw();
+ //image(canvas, 0, 0);
+  server.sendImage(canvas);
 }
 
 
@@ -357,7 +375,7 @@ public void procuraInstas()
     for (int i = 0; i <casas.size(); i++) 
     {
       aux= (casa) casas.get(i);
-      aux.desenha(desenho , fundo);
+      aux.desenha();
     }
   }
 
@@ -396,7 +414,7 @@ public void procuraInstas()
       //   line(bolaA.posicaoX, bolaA.posicaoY, bolaB.posicaoX, bolaB.posicaoY);
       // }
 
-      bolaA.desenha(desenho,fundo);
+      bolaA.desenha();
     }
     // ACIONA A OP\u00c7AO DO RATO
     // float dx = bolaA.posicaoX - mouseX;
@@ -608,8 +626,8 @@ class Area
   String ultimoTweet;
   PShape desenho;
   PShape fundo;
-  int largura=PApplet.parseInt(60*0.28333f);
-  int altura=PApplet.parseInt(85*0.28333f);
+  int largura=17;
+  int altura=24;
   float largura_tam;
   float altura_tam;
 
@@ -744,7 +762,7 @@ posy--;
 
 
 
-public void desenha(PShape aa ,PShape bb 	)
+public void desenha(	)
 {
 		//smooth();
 		
@@ -758,15 +776,26 @@ public void desenha(PShape aa ,PShape bb 	)
 		largura_tam=((largura+(dim*0.7f))/ESCALA);
 		altura_tam=((altura+dim)/ESCALA);
 
-		noStroke();
+		//noStroke();
 		//fill(cor);
-		//stroke(color(255,0,10));
-		fill(color(255,0,10));
+		stroke(color(255,0,10));
+		//fill(color(255,0,10));
+    noFill();
+    strokeWeight(1+(dim)/16);
 		 //posicaoX
 		// shape(fundo, posx-((largura+(dim*0.7))/ESCALA), posy-((altura+dim)/ESCALA), (largura+(dim*0.7))/ESCALA, (altura+dim)/ESCALA);
 		 //shape(desenho, posx-((largura+(dim*0.7))/ESCALA), posy-((altura+dim)/ESCALA), (largura+(dim*0.7))/ESCALA, (altura+dim)/ESCALA);
 		 //shape(bb, posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA), largura_tam, altura_tam);
-		 shape(aa, posicaoX-((largura+(dim*0.7f))/ESCALA), posicaoY-((altura+dim)/ESCALA), largura_tam, altura_tam);
+		 // shape(aa, posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA), largura_tam, altura_tam);
+   //   shape(bb, posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA), largura_tam, altura_tam);
+   //   shape(cc, posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA), largura_tam, altura_tam);
+   //   shape(dd, posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA), largura_tam, altura_tam);
+rect(posicaoX-((largura+(dim*0.7f))/ESCALA), posicaoY-((altura+dim)/ESCALA), largura_tam, largura_tam);
+line(posicaoX-((largura+(dim*0.7f))/ESCALA), posicaoY-((altura+dim)/ESCALA),posicaoX-((largura+(dim*0.7f))/ESCALA)+largura_tam, posicaoY-((altura+dim)/ESCALA)+largura_tam);
+line(posicaoX-((largura+(dim*0.7f))/ESCALA), posicaoY-((altura+dim)/ESCALA)+largura_tam,posicaoX-((largura+(dim*0.7f))/ESCALA)+largura_tam, posicaoY-((altura+dim)/ESCALA));
+line(posicaoX-((largura+(dim*0.7f))/ESCALA), posicaoY-((altura+dim)/ESCALA),posicaoX-((largura+(dim*0.7f))/ESCALA)+(largura_tam/2), posicaoY-((altura+dim)/ESCALA)-(largura_tam/2));
+line(posicaoX-((largura+(dim*0.7f))/ESCALA)+largura_tam, posicaoY-((altura+dim)/ESCALA),posicaoX-((largura+(dim*0.7f))/ESCALA)+(largura_tam/2), posicaoY-((altura+dim)/ESCALA)-(largura_tam/2));
+
 		}
 	}
 class exclusoes 
