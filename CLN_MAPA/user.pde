@@ -64,52 +64,32 @@
  	for (int i = 0; i <caminho.size(); i++) 
  	{
 
- 		if ((i+1)<caminho.size())
- 		{
  		numDaCasa= (Integer) caminho.get(i);
  		casola=(casa)casitas.get(numDaCasa);
- 		// if (i==0)
- 		// {
- 			
- 			
- 		// }
- 		// else
- 		// {
- 			float p_xx=0;
- 			float p_yy=0;
- 			numDaCasa= (Integer) caminho.get(i+1);
+ 		if (i==0)
+ 		{
+ 			traco = new linha(casola.getX(),casola.getY());
+ 			traco.setCor(corcor);
+ 		}
+ 		else
+ 		{
+ 			float p_xx=casola.getX();
+ 			float p_yy=casola.getY();
+ 			numDaCasa= (Integer) caminho.get(i-1);
  			cas_aux=(casa)casitas.get(numDaCasa);
  			float c_xx=cas_aux.getX();
  			float c_yy=cas_aux.getY();
  			for (int aa= 0; aa <= 3; aa++) 
  			{
-
- 				if (aa==0)
- 				{
- 				traco = new linha(casola.getX(),casola.getY());
- 					 p_xx=casola.getX();
- 					 p_yy=casola.getY();
- 				}
- 				
-
- 				float x = lerp(p_xx, c_xx, aa/3.0);
- 				float y = lerp(p_yy, c_yy, aa/3.0);
+ 				float x = lerp(p_xx, c_xx, aa/3);
+ 				float y = lerp(p_yy, c_yy, aa/3);
  					//point(x, y);
- 					fill(0);
- 					ellipse(x, y, 5, 5);
  					traco.novapos (x,y);	
  				}
- 			//}
- 			traco.setCor(corcor);
- 			traco.desenhalinha();	
+ 			}
  		}
- 		//traco.setCor(color(255,0,0));
-		
+ 		traco.setCor(color(255,0,0));
+ 		traco.desenhalinha();	
  	}
- 		
- 	}
-
-
-
 
  }

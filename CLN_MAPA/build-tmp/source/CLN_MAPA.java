@@ -100,14 +100,14 @@ public void draw(){
 
 // if (comeca)
 // {
- desenhaCaminhos();
+ //desenhaCaminhos();
 
 
 
  if ( millis() - lastTime > pausa ) 
  {
-    procuraTweets();
-    procuraInstas();
+   // procuraTweets();
+   // procuraInstas();
    lastTime = millis();
    // mostraInsta();
    // mostraTweet();
@@ -125,7 +125,17 @@ moveMundo();
 
 
 
+// fill(0,0,255);
+// ellipse(xxx, yyy, 50, 50);
+// fill(0,255,0);
+// ellipse(xxx1, yyy1, 50, 50);
 
+// stroke(0, 0, 255);
+// //line(0,0,);
+// line();
+// stroke(0, 0, 255);
+// line();
+// line();
 
 }
 
@@ -256,8 +266,6 @@ public void procuraTweets()
   // {
    aux= (casa) casas.get(vou);
    twitterSite = loadStrings("http://search.twitter.com/search.json"+aux.getTweet());
-   if (twitterSite!=null)
-{
    jsonstring =twitterSite[0];
    JSON twiits = JSON.parse(jsonstring);
    ultimoURL=twiits.getString("refresh_url");
@@ -276,7 +284,6 @@ public void procuraTweets()
 }
 // }
 }
-}
 
 public void procuraInstas()
 {
@@ -293,9 +300,7 @@ public void procuraInstas()
     aux= (casa) casas.get(vou);
     tag =aux.getTag();
     instaSite = loadStrings("https://api.instagram.com/v1/tags/"+tag+"//media/recent?client_id=9d6af7341f7a4fd39e888fd12ab8d8a0&min_tag_id="+aux.getInsta()+"");
-   if (instaSite!=null)
-{
-   jsonstring =instaSite[0];
+    jsonstring =instaSite[0];
     JSON data = JSON.parse(jsonstring);
     JSON ultimo = data.getJSON("pagination");
     data = data.getJSON("data");
@@ -320,7 +325,6 @@ public void procuraInstas()
         println("INSTA  USER-> "+user_id+" TAG -> "+tag);
       }
     // }
-  }
     vou++;
     if (vou>125)
     vou=0;
@@ -387,9 +391,7 @@ public void procuraInstas()
 
 
 }
-public void fazMagia(){
-  
-}
+
 public void mostraInsta()
 {
   insta aux;
@@ -696,7 +698,7 @@ public void colisao(){
     	else 
     	velocidadeY++;	
 
-if (posy>=(height -(MARGEN)))
+if (posy>=(height -(MARGEN+10)))
 posy--;
 
     }
@@ -1104,53 +1106,33 @@ public void setTamanho(float _tam)
  	for (int i = 0; i <caminho.size(); i++) 
  	{
 
- 		if ((i+1)<caminho.size())
- 		{
  		numDaCasa= (Integer) caminho.get(i);
  		casola=(casa)casitas.get(numDaCasa);
- 		// if (i==0)
- 		// {
- 			
- 			
- 		// }
- 		// else
- 		// {
- 			float p_xx=0;
- 			float p_yy=0;
- 			numDaCasa= (Integer) caminho.get(i+1);
+ 		if (i==0)
+ 		{
+ 			traco = new linha(casola.getX(),casola.getY());
+ 			traco.setCor(corcor);
+ 		}
+ 		else
+ 		{
+ 			float p_xx=casola.getX();
+ 			float p_yy=casola.getY();
+ 			numDaCasa= (Integer) caminho.get(i-1);
  			cas_aux=(casa)casitas.get(numDaCasa);
  			float c_xx=cas_aux.getX();
  			float c_yy=cas_aux.getY();
  			for (int aa= 0; aa <= 3; aa++) 
  			{
-
- 				if (aa==0)
- 				{
- 				traco = new linha(casola.getX(),casola.getY());
- 					 p_xx=casola.getX();
- 					 p_yy=casola.getY();
- 				}
- 				
-
- 				float x = lerp(p_xx, c_xx, aa/3.0f);
- 				float y = lerp(p_yy, c_yy, aa/3.0f);
+ 				float x = lerp(p_xx, c_xx, aa/3);
+ 				float y = lerp(p_yy, c_yy, aa/3);
  					//point(x, y);
- 					fill(0);
- 					ellipse(x, y, 5, 5);
  					traco.novapos (x,y);	
  				}
- 			//}
- 			traco.setCor(corcor);
- 			traco.desenhalinha();	
+ 			}
  		}
- 		//traco.setCor(color(255,0,0));
-		
+ 		traco.setCor(color(255,0,0));
+ 		traco.desenhalinha();	
  	}
- 		
- 	}
-
-
-
 
  }
   static public void main(String[] passedArgs) {
