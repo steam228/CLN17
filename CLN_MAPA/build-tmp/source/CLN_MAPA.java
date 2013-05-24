@@ -62,35 +62,34 @@ public void setup(){
   areas.addPonto(id_area,400,50);
   areas.addPonto(id_area,410,80);
   areas.addPonto(id_area,400,100);
-  size(largura, altura,P3D);
+  //size(largura, altura,P3D);
+  size(largura, altura);
   casas = new ArrayList();
   tweets= new ArrayList();
   instagrams= new ArrayList();
   pessoas= new ArrayList();
- // background(0);
+  background(0);
+   carregaCasas();
 
 }
 
 public void draw(){
-  if (hideee)
-{areas.desenharTodos(); }
-else  {
-  background(0);
-}
+//   if (hideee)
+// {areas.desenharTodos(); }
+// else  {
+ // background(0);
+//}
  //smooth();
 
- if (arryexclu)
- {
-  arryexclu=false;
-  carregaCasas();
-}
-else  {
-  
-  
-}
+//  if (arryexclu)
+//  {
+//   arryexclu=false;
+//   carregaCasas();
+// }
 
-if (comeca)
-{
+
+// if (comeca)
+// {
 
  if ( millis() - lastTime > pausa ) 
  {
@@ -108,13 +107,13 @@ if (comeca)
 animaMundo();
 
 
-}
+//}
 
 
-fill(0,0,255);
-ellipse(xxx, yyy, 50, 50);
-fill(0,255,0);
-ellipse(xxx1, yyy1, 50, 50);
+// fill(0,0,255);
+// ellipse(xxx, yyy, 50, 50);
+// fill(0,255,0);
+// ellipse(xxx1, yyy1, 50, 50);
 
 // stroke(0, 0, 255);
 // //line(0,0,);
@@ -166,72 +165,72 @@ public void carregaCasas()
 
 public float[] verificaCasa(float _posx , float _posy) 
 { 
-  int idd;
+//   int idd;
   float[] arra ={0,0};
-  if (areas.contemAlgum(_posx , _posy))
-  {
-   println("COLISAO");
-   xxx1=_posx;
-   yyy1=_posy;
+//   if (areas.contemAlgum(_posx , _posy))
+//   {
+//    println("COLISAO");
+//    xxx1=_posx;
+//    yyy1=_posy;
 
-   int cima=0;
-   int dir=0;
-   int esq=0;
-   float aux_x=_posx;
-   float aux_y = _posy;
-   while (areas.contemAlgum(aux_x , aux_y))
-   {
-    aux_y--;
-    cima++;
-    // fill(255, 0, 0);
-    // ellipse(_posx, aux_y, 50, 50);
-  }
-   aux_x=_posx;
-    aux_y = _posy;
-   while (areas.contemAlgum(aux_x , aux_y))
-  {
-    aux_x--;
-    esq++;
-    //   fill(0, 255, 0);
-    // ellipse(aux_x, _posy, 5, 5);
-  }
-  aux_x=_posx;
-    aux_y = _posy;
-  while (areas.contemAlgum(aux_x , aux_y))
-  {
-    aux_x++;
-    dir++;
-    //   fill(0, 0, 255);
-    // ellipse(aux_x, _posy, 5, 5);
-  }
-  arra[0]=_posx;
-  arra[1]=_posy;
-  if ((cima<=dir) && (cima<=esq))
-  {
-    arra[1]-=cima;
-    println("VOU PARA CIMA -> "+cima);
-  }
-  else if ((esq<=cima) &&(esq<=dir)) 
-  {
-    arra[0]-=esq;
-    println("VOU PARA ESQUERDA -> "+esq);
-  }
-  else if ((dir<=cima)&&(dir<=esq)) 
-  {
-    arra[0]+=dir;
-    println("VOU PARA DIREITA -> "+dir);
-  }
-  println("XO-> "+_posx+" YO-> "+_posy+" XF-> "+ arra[0]+" YF-> "+ arra[1]);
-  return arra;  
-} 
-else  
-{
+//    int cima=0;
+//    int dir=0;
+//    int esq=0;
+//    float aux_x=_posx;
+//    float aux_y = _posy;
+//    while (areas.contemAlgum(aux_x , aux_y))
+//    {
+//     aux_y--;
+//     cima++;
+//     // fill(255, 0, 0);
+//     // ellipse(_posx, aux_y, 50, 50);
+//   }
+//    aux_x=_posx;
+//     aux_y = _posy;
+//    while (areas.contemAlgum(aux_x , aux_y))
+//   {
+//     aux_x--;
+//     esq++;
+//     //   fill(0, 255, 0);
+//     // ellipse(aux_x, _posy, 5, 5);
+//   }
+//   aux_x=_posx;
+//     aux_y = _posy;
+//   while (areas.contemAlgum(aux_x , aux_y))
+//   {
+//     aux_x++;
+//     dir++;
+//     //   fill(0, 0, 255);
+//     // ellipse(aux_x, _posy, 5, 5);
+//   }
+//   arra[0]=_posx;
+//   arra[1]=_posy;
+//   if ((cima<=dir) && (cima<=esq))
+//   {
+//     arra[1]-=cima;
+//     println("VOU PARA CIMA -> "+cima);
+//   }
+//   else if ((esq<=cima) &&(esq<=dir)) 
+//   {
+//     arra[0]-=esq;
+//     println("VOU PARA ESQUERDA -> "+esq);
+//   }
+//   else if ((dir<=cima)&&(dir<=esq)) 
+//   {
+//     arra[0]+=dir;
+//     println("VOU PARA DIREITA -> "+dir);
+//   }
+//   println("XO-> "+_posx+" YO-> "+_posy+" XF-> "+ arra[0]+" YF-> "+ arra[1]);
+//   return arra;  
+// } 
+// else  
+// {
 
  arra[0]=_posx;
  arra[1]=_posy; 
-}
-xxx=arra[0];
-yyy=arra[1];
+// }
+// xxx=arra[0];
+// yyy=arra[1];
  
 return arra;  
 }
@@ -435,10 +434,10 @@ public void keyPressed()
 
 }
 
-public void mouseMoved()
-{
-  println("XX-> " +mouseX+" YY-> "+mouseY);
-}
+// void mouseMoved()
+// {
+//   println("XX-> " +mouseX+" YY-> "+mouseY);
+// }
 class Area 
 {
 	int id;
