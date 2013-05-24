@@ -62,10 +62,11 @@ areas.addPonto(id_area,400,100);
 }
 
 void draw(){
-//   if (hideee)
-// {areas.desenharTodos(); }
+   background(0);
+  if (hideee)
+{areas.desenharTodos(); }
 // else  {
-  background(0);
+ 
 //}
  //smooth();
 
@@ -143,13 +144,18 @@ void carregaCasas()
     float xpos = map (xvals[i], xmin, xmax, 0, width);
 //---------------------------------
 float nova_x;
-if (xpos>600)
+
+int MEIO=600;
+int LARGUURA=1200;
+int MEIALARGURA=200;
+
+if (xpos>MEIO)
 {
-nova_x = map (xpos, 600,1200,800,1200 );
+nova_x = map (xpos, MEIO,LARGUURA,MEIO + MEIALARGURA,LARGUURA );
 }
 else 
 {
- nova_x = map (xpos, 0,600,0,400 ); 
+ nova_x = map (xpos, 0,MEIO,0,MEIO - MEIALARGURA ); 
 }
 
 

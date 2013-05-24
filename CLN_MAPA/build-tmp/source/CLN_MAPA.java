@@ -86,10 +86,11 @@ areas.addPonto(id_area,400,100);
 }
 
 public void draw(){
-//   if (hideee)
-// {areas.desenharTodos(); }
+   background(0);
+  if (hideee)
+{areas.desenharTodos(); }
 // else  {
-  background(0);
+ 
 //}
  //smooth();
 
@@ -167,13 +168,18 @@ public void carregaCasas()
     float xpos = map (xvals[i], xmin, xmax, 0, width);
 //---------------------------------
 float nova_x;
-if (xpos>600)
+
+int MEIO=600;
+int LARGUURA=1200;
+int MEIALARGURA=200;
+
+if (xpos>MEIO)
 {
-nova_x = map (xpos, 600,1200,800,1200 );
+nova_x = map (xpos, MEIO,LARGUURA,MEIO + MEIALARGURA,LARGUURA );
 }
 else 
 {
- nova_x = map (xpos, 0,600,0,400 ); 
+ nova_x = map (xpos, 0,MEIO,0,MEIO - MEIALARGURA ); 
 }
 
 
@@ -743,11 +749,11 @@ public void desenha(PShape aa ,PShape bb 	)
 		//smooth();
 		
 		
-		fill(0, 0, 255);
+		// fill(0, 0, 255);
 		
-		text("#"+tag, posicaoX+tamLetra, posicaoY-tamLetra);
+		// text("#"+tag, posicaoX+tamLetra, posicaoY-tamLetra);
 		
-		fill(255,0,0);
+		// fill(255,0,0);
 		
 		largura_tam=((largura+(dim*0.7f))/ESCALA);
 		altura_tam=((altura+dim)/ESCALA);
