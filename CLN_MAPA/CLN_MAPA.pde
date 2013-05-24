@@ -37,7 +37,10 @@ long ultimaVez = 0;
 void setup(){
 desenho = loadShape("Casacaldas.svg");
 fundo= loadShape("CasaFundo.svg");
-
+fundo.disableStyle();
+PFont font;   
+    font = loadFont("AGaramondPro-Bold-48.vlw");
+    textFont(font, 15);
   areas= new exclusoes(this);
   id_area= areas.addPoligno();
   areas.addPonto(id_area,300,0);
@@ -45,7 +48,7 @@ fundo= loadShape("CasaFundo.svg");
   areas.addPonto(id_area,410,80);
   areas.addPonto(id_area,400,100);
   //size(largura, altura,P3D);
-  size(largura, altura,P3D);
+  size(largura, altura);
   casas = new ArrayList();
   tweets= new ArrayList();
   instagrams= new ArrayList();
@@ -70,26 +73,32 @@ void draw(){
 // }
 
 
-// if (comeca)
-// {
+if (comeca)
+{
 
- // if ( millis() - lastTime > pausa ) 
- // {
- //   procuraTweets();
- //   procuraInstas();
- //   lastTime = millis();
+
+
+
+ if ( millis() - lastTime > pausa ) 
+ {
+  println("entrei");
+   procuraTweets();
+   procuraInstas();
+   lastTime = millis();
    // mostraInsta();
    // mostraTweet();
- //} 
- // if ( millis() - ultimaVez > espera ) 
- // {
- //  ultimaVez=millis();
-//desenhaCaminhos();
-//}
-//animaMundo();
-moveMundo();
+ } 
 
-//}
+
+}
+ moveMundo();
+//  if ( millis() - ultimaVez > espera ) 
+//  {
+//   ultimaVez=millis();
+// desenhaCaminhos();
+// }
+//animaMundo();
+
 
 
 // fill(0,0,255);
@@ -259,6 +268,7 @@ void procuraInstas()
   String jsonstring ;
   String username;
   casa aux;
+  println("CASAS-> "+casas.size());
   for (int i = 0; i <casas.size(); i++) 
   {
     aux= (casa) casas.get(i);
@@ -270,6 +280,9 @@ void procuraInstas()
     data = data.getJSON("data");
     if (data.length()>0)
     aux.setInsta( ultimo.getString("min_tag_id"));
+    else  {
+      println("TAG-> "+tag);
+    }
     int user_id;
     for (int f=0; f<data.length();f++)
     {
@@ -283,7 +296,7 @@ void procuraInstas()
         instagrams.add( new insta(instagrams.size()+1,user_id,fotoURL));//adiciona instagram a lista
         aux.addInsta();//aumenta o num de instagrams na casa
         adicionaAOuser(username,'I',tag); 
-        //println("INSTA  USER-> "+user_id+" TAG -> "+tag);
+        println("INSTA  USER-> "+user_id+" TAG -> "+tag);
       }
     }
   }
@@ -317,8 +330,8 @@ void procuraInstas()
       dx /= distancia;
       dy /= distancia;
       //como este vector é unário (tem tamanho 1) podemos então aplicar a fórmula de repulsa a cada um dos eixos
-      float forcaX = dx * (5 / distancia);
-      float forcaY = dy * (5 / distancia);
+      float forcaX = dx * (2 / distancia);
+      float forcaY = dy * (2 / distancia);
       //somamos a força à bolaA
       bolaA.aceleracaoX += forcaX;
       bolaA.aceleracaoY += forcaY;
@@ -328,21 +341,22 @@ void procuraInstas()
       
       //se a distância for menor que 40, 
       //desenhamos ainda uma linha a unir ambos os pontos
-      if(distancia < 40){
+      if(distancia < 440){
         line(bolaA.posicaoX, bolaA.posicaoY, bolaB.posicaoX, bolaB.posicaoY);
       }
 
       bolaA.desenha(desenho,fundo);
     }
-    float dx = bolaA.posicaoX - mouseX;
-    float dy = bolaA.posicaoY - mouseY;
-    float distancia = dist(bolaA.posicaoX, bolaA.posicaoY, mouseX, mouseY);
-    dx /= distancia;
-    dy /= distancia;
-    float forcaX = dx * (200 / distancia);
-    float forcaY = dy * (200 / distancia);
-    bolaA.aceleracaoX += forcaX;
-    bolaA.aceleracaoY += forcaY;
+    // ACIONA A OPÇAO DO RATO
+    // float dx = bolaA.posicaoX - mouseX;
+    // float dy = bolaA.posicaoY - mouseY;
+    // float distancia = dist(bolaA.posicaoX, bolaA.posicaoY, mouseX, mouseY);
+    // dx /= distancia;
+    // dy /= distancia;
+    // float forcaX = dx * (200 / distancia);
+    // float forcaY = dy * (200 / distancia);
+    // bolaA.aceleracaoX += forcaX;
+    // bolaA.aceleracaoY += forcaY;
 
   }
 

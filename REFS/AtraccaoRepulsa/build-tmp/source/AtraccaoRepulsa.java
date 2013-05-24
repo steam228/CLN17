@@ -37,7 +37,7 @@ public void draw(){
   //nosso loop a interar por todas as bolas
   for(int i=0; i<bolas.size(); i++){
     Bola bolaA = (Bola)bolas.get(i);
-    bolaA.mover();
+  //  bolaA.mover();
     
     //dentro deste loop, temos outro loop
     //onde cada bola vai interagir com todas as outras bolas

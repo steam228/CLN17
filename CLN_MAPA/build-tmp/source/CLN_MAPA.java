@@ -61,7 +61,10 @@ long ultimaVez = 0;
 public void setup(){
 desenho = loadShape("Casacaldas.svg");
 fundo= loadShape("CasaFundo.svg");
-
+fundo.disableStyle();
+PFont font;   
+    font = loadFont("AGaramondPro-Bold-48.vlw");
+    textFont(font, 15);
   areas= new exclusoes(this);
   id_area= areas.addPoligno();
   areas.addPonto(id_area,300,0);
@@ -69,7 +72,7 @@ fundo= loadShape("CasaFundo.svg");
   areas.addPonto(id_area,410,80);
   areas.addPonto(id_area,400,100);
   //size(largura, altura,P3D);
-  size(largura, altura,P3D);
+  size(largura, altura);
   casas = new ArrayList();
   tweets= new ArrayList();
   instagrams= new ArrayList();
@@ -94,26 +97,32 @@ public void draw(){
 // }
 
 
-// if (comeca)
-// {
+if (comeca)
+{
 
- // if ( millis() - lastTime > pausa ) 
- // {
- //   procuraTweets();
- //   procuraInstas();
- //   lastTime = millis();
+
+
+
+ if ( millis() - lastTime > pausa ) 
+ {
+  println("entrei");
+   procuraTweets();
+   procuraInstas();
+   lastTime = millis();
    // mostraInsta();
    // mostraTweet();
- //} 
- // if ( millis() - ultimaVez > espera ) 
- // {
- //  ultimaVez=millis();
-//desenhaCaminhos();
-//}
-//animaMundo();
-moveMundo();
+ } 
 
-//}
+
+}
+ moveMundo();
+//  if ( millis() - ultimaVez > espera ) 
+//  {
+//   ultimaVez=millis();
+// desenhaCaminhos();
+// }
+//animaMundo();
+
 
 
 // fill(0,0,255);
@@ -283,6 +292,7 @@ public void procuraInstas()
   String jsonstring ;
   String username;
   casa aux;
+  println("CASAS-> "+casas.size());
   for (int i = 0; i <casas.size(); i++) 
   {
     aux= (casa) casas.get(i);
@@ -294,6 +304,9 @@ public void procuraInstas()
     data = data.getJSON("data");
     if (data.length()>0)
     aux.setInsta( ultimo.getString("min_tag_id"));
+    else  {
+      println("TAG-> "+tag);
+    }
     int user_id;
     for (int f=0; f<data.length();f++)
     {
@@ -307,7 +320,7 @@ public void procuraInstas()
         instagrams.add( new insta(instagrams.size()+1,user_id,fotoURL));//adiciona instagram a lista
         aux.addInsta();//aumenta o num de instagrams na casa
         adicionaAOuser(username,'I',tag); 
-        //println("INSTA  USER-> "+user_id+" TAG -> "+tag);
+        println("INSTA  USER-> "+user_id+" TAG -> "+tag);
       }
     }
   }
@@ -341,8 +354,8 @@ public void procuraInstas()
       dx /= distancia;
       dy /= distancia;
       //como este vector \u00e9 un\u00e1rio (tem tamanho 1) podemos ent\u00e3o aplicar a f\u00f3rmula de repulsa a cada um dos eixos
-      float forcaX = dx * (5 / distancia);
-      float forcaY = dy * (5 / distancia);
+      float forcaX = dx * (2 / distancia);
+      float forcaY = dy * (2 / distancia);
       //somamos a for\u00e7a \u00e0 bolaA
       bolaA.aceleracaoX += forcaX;
       bolaA.aceleracaoY += forcaY;
@@ -352,21 +365,22 @@ public void procuraInstas()
       
       //se a dist\u00e2ncia for menor que 40, 
       //desenhamos ainda uma linha a unir ambos os pontos
-      if(distancia < 40){
+      if(distancia < 440){
         line(bolaA.posicaoX, bolaA.posicaoY, bolaB.posicaoX, bolaB.posicaoY);
       }
 
       bolaA.desenha(desenho,fundo);
     }
-    float dx = bolaA.posicaoX - mouseX;
-    float dy = bolaA.posicaoY - mouseY;
-    float distancia = dist(bolaA.posicaoX, bolaA.posicaoY, mouseX, mouseY);
-    dx /= distancia;
-    dy /= distancia;
-    float forcaX = dx * (200 / distancia);
-    float forcaY = dy * (200 / distancia);
-    bolaA.aceleracaoX += forcaX;
-    bolaA.aceleracaoY += forcaY;
+    // ACIONA A OP\u00c7AO DO RATO
+    // float dx = bolaA.posicaoX - mouseX;
+    // float dy = bolaA.posicaoY - mouseY;
+    // float distancia = dist(bolaA.posicaoX, bolaA.posicaoY, mouseX, mouseY);
+    // dx /= distancia;
+    // dy /= distancia;
+    // float forcaX = dx * (200 / distancia);
+    // float forcaY = dy * (200 / distancia);
+    // bolaA.aceleracaoX += forcaX;
+    // bolaA.aceleracaoY += forcaY;
 
   }
 
@@ -531,8 +545,8 @@ class Area
  {
 
 
- float posicaoX, posicaoY;
- float velocidadeX, velocidadeY;
+ 	float posicaoX, posicaoY;
+ 	float velocidadeX, velocidadeY;
 
   //vari\u00e1veis onde guardamos os valores de acelera\u00e7ao
   float aceleracaoX;
@@ -546,41 +560,44 @@ class Area
 
 
 
+  int MARGEN=50;
+  int ALTURA=300;
+  int LARGURA=1200;
+  int ESCALA=2;
+  int INCREMENTO=1;
+  int LIMITE=60;
 
+  float posx;
+  float posy;
+  float dim;
+  String tag;
+  int numTweets;
+  int numInsta;
+  float tamLetra;
+  int cor;
+  String ultimoInsta;
+  String ultimoTweet;
+  PShape desenho;
+  PShape fundo;
+  int largura=PApplet.parseInt(60*0.28333f);
+  int altura=PApplet.parseInt(85*0.28333f);
+  float largura_tam;
+  float altura_tam;
 
- 	int ESCALA=2;
-	int INCREMENTO=1;
- 	int LIMITE=60;
-
- 	float posx;
- 	float posy;
- 	float dim;
- 	String tag;
- 	int numTweets;
- 	int numInsta;
- 	float tamLetra;
- 	int cor;
- 	String ultimoInsta;
- 	String ultimoTweet;
- 	PShape desenho;
- 	PShape fundo;
- 	int largura=PApplet.parseInt(60*0.28333f);
- 	int altura=PApplet.parseInt(85*0.28333f);
-
- 	casa (String nome , float xx, float yy) 
- 	{
-		tag=nome;
-		posx=xx;
-		posy=yy;
- resistencia = 0.95f;
-		posicaoX=xx;
-		posicaoY=yy;
-		tamLetra=15;
-		dim=1;
-		numInsta=0;
-		numTweets=0;
-		ultimoInsta="0";
-		ultimoTweet="?q=%23"+nome;
+  casa (String nome , float xx, float yy) 
+  {
+  	tag=nome;
+  	posx=xx;
+  	posy=yy;
+  	resistencia = 0.95f;
+  	posicaoX=xx;
+  	posicaoY=yy;
+  	tamLetra=15;
+  	dim=1;
+  	numInsta=0;
+  	numTweets=0;
+  	ultimoInsta="0";
+  	ultimoTweet="?q=%23"+nome;
 		// desenho = loadShape("Casacaldas.svg");
 		// fundo = loadShape("CasaFundo.svg");
 		cor = color(0,0,0);
@@ -590,8 +607,10 @@ class Area
 	public void addInsta(){numInsta++;if (dim<LIMITE)dim+=INCREMENTO;}
 	public int countTwetts() {return numTweets;}
 	public int countInsta() {return numInsta;}
-	public float getX() {return posx;}
-	public float getY() {return posy;}
+	public float getX() {return posicaoX;}
+	public float getY() {return posicaoY;}
+	public float getXX() {return posx;}
+	public float getYY() {return posy;}
 	public void setInsta(String ident) {ultimoInsta = ident;}
 	public void setTweet(String ident) {ultimoTweet = ident;}
 	public String getInsta() {return ultimoInsta;}
@@ -599,15 +618,15 @@ class Area
 	public String getTag(){return tag;}
 	
 
-  public void mover(){
+	public void mover(){
 
    // float centroX = posx;
    float centroX = posx;
  // float centroY = posy;
   //   float centroX = width / 2;
-    float centroY = random(posy, posy+1);
-   aceleracaoX += (centroX - posicaoX) / 20;
-   aceleracaoY += (centroY - posicaoY) / 20;
+  float centroY = random(posy, posy+1);
+  aceleracaoX += (centroX - posicaoX) / 20;
+  aceleracaoY += (centroY - posicaoY) / 20;
 
 
     //somamos a acelera\u00e7\u00e3o \u00e0 velocidade
@@ -624,58 +643,93 @@ class Area
     
     aceleracaoX = 0;
     aceleracaoY = 0;
-  }
+    this.colisao();
+}
 
 
-   public void colisao(){
+public void colisao(){
     //testamos para ver se a nossa bola colide com os lados da janela
     //mas temos em conta o raio da bola
     //sempre que h\u00e1 uma colis\u00e3o, colocamos a bola no ponto de colis\u00e3o
     //e invertemos a velocidade nesse eixo
-    if(posicaoX < raio){
-      posicaoX = raio;
-      velocidadeX *= -1; 
+    // if(posicaoX < raio){
+    //   posicaoX = raio;
+    //   velocidadeX *= -1; 
+    // }
+    if(posicaoX > ((width - largura_tam)-MARGEN))
+    {
+    	posicaoX = (width - largura_tam)-MARGEN;
+
+    	velocidadeX *= -1; 
+    	if (velocidadeX>0)
+    	velocidadeX--;
+    	else 
+    	velocidadeX++;	
     }
-    if(posicaoX > width - raio){
-      posicaoX = width - raio;
-      velocidadeX *= -1; 
+    if(posicaoX <  (largura_tam+MARGEN))
+    {
+    	posicaoX =  largura_tam+MARGEN;
+    	velocidadeX *= -1; 
+    	if (velocidadeX>0)
+    	velocidadeX--;
+    	else 
+    	velocidadeX++;	
     }
-    if(posicaoY < raio){
-      posicaoY = raio;
-      velocidadeY *= -1; 
+    // if(posicaoY < raio){
+    //   posicaoY = raio;
+    //   velocidadeY *= -1; 
+    // }
+
+    if(posicaoY > ((height - altura_tam)-MARGEN))
+    {
+    	posicaoY = (height - altura_tam)-MARGEN;
+    	velocidadeY *= -1; 
+    	if (velocidadeY>0)
+    	velocidadeY--;
+    	else 
+    	velocidadeY++;	
     }
-    if(posicaoY > height - raio){
-      posicaoY = height - raio;
-      velocidadeY *= -1; 
+    if(posicaoY <  (altura_tam+MARGEN))
+    {
+    	posicaoY = altura_tam+MARGEN ;
+    	velocidadeY *= -1; 
+    	if (velocidadeY>0)
+    	velocidadeY--;
+    	else 
+    	velocidadeY++;	
     }
-  }
+
+
+    
+}
 
 
 
 
 
-	public void desenha(PShape aa ,PShape bb)
-	{
+public void desenha(PShape aa ,PShape bb 	)
+{
 		//smooth();
 		
 		
 		// fill(0, 0, 255);
-		// PFont font;		
-		// font = loadFont("AGaramondPro-Bold-48.vlw");
-		// textFont(font, tamLetra);
-		// text("#"+tag, posx+tamLetra, posy-tamLetra);
 		
-		fill(255,0,0);
-		bb.disableStyle();
-		 noStroke();
-		 fill(cor);
+		// text("#"+tag, posicaoX+tamLetra, posicaoY-tamLetra);
+		
+		// fill(255,0,0);
+		
+		largura_tam=((largura+(dim*0.7f))/ESCALA);
+		altura_tam=((altura+dim)/ESCALA);
+
+		noStroke();
+		fill(cor);
 		 //posicaoX
 		// shape(fundo, posx-((largura+(dim*0.7))/ESCALA), posy-((altura+dim)/ESCALA), (largura+(dim*0.7))/ESCALA, (altura+dim)/ESCALA);
 		 //shape(desenho, posx-((largura+(dim*0.7))/ESCALA), posy-((altura+dim)/ESCALA), (largura+(dim*0.7))/ESCALA, (altura+dim)/ESCALA);
-		 shape(bb, posicaoX-((largura+(dim*0.7f))/ESCALA), posicaoY-((altura+dim)/ESCALA), (largura+(dim*0.7f))/ESCALA, (altura+dim)/ESCALA);
-		 shape(aa, posicaoX-((largura+(dim*0.7f))/ESCALA), posicaoY-((altura+dim)/ESCALA), (largura+(dim*0.7f))/ESCALA, (altura+dim)/ESCALA);
+		 shape(bb, posicaoX-((largura+(dim*0.7f))/ESCALA), posicaoY-((altura+dim)/ESCALA), largura_tam, altura_tam);
+		 shape(aa, posicaoX-((largura+(dim*0.7f))/ESCALA), posicaoY-((altura+dim)/ESCALA), largura_tam, altura_tam);
+		}
 	}
-}
 class exclusoes 
 {
 
