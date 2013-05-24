@@ -177,11 +177,11 @@ void desenha(PShape aa ,PShape bb 	)
 		//smooth();
 		
 		
-		// fill(0, 0, 255);
+		fill(0, 0, 255);
 		
-		// text("#"+tag, posicaoX+tamLetra, posicaoY-tamLetra);
+		text("#"+tag, posicaoX+tamLetra, posicaoY-tamLetra);
 		
-		// fill(255,0,0);
+		fill(255,0,0);
 		
 		largura_tam=((largura+(dim*0.7))/ESCALA);
 		altura_tam=((altura+dim)/ESCALA);

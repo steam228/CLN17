@@ -40,6 +40,8 @@ float  yyy=0;
 float xxx1=0;
 float  yyy1=0;
 int id_area;
+
+int NUM_CASAS=124;
 boolean comeca  = false;
 boolean arryexclu = false;
 boolean finale = false;
@@ -136,7 +138,7 @@ public void carregaCasas()
   float[] posii = {0,0};
   reader = new XlsReader(this, "cln17.xls" ); 
 
-  int numcasas = 125;
+  int numcasas = NUM_CASAS;
   int margin = 80;//calibrate margin
   
   float[] xvals = new float[numcasas];
@@ -163,6 +165,20 @@ public void carregaCasas()
     // float xpos = map (xvals[i], xmin, xmax, margin, width-(margin/4));
      float ypos = map (yvals[i], ymin, ymax, 0, height);
     float xpos = map (xvals[i], xmin, xmax, 0, width);
+//---------------------------------
+float nova_x;
+if (xpos>600)
+{
+nova_x = map (xpos, 600,1200,800,1200 );
+}
+else 
+{
+ nova_x = map (xpos, 0,600,0,400 ); 
+}
+
+
+xpos=nova_x;
+//---------------------------------
     posii =verificaCasa(xpos,ypos);
     casas.add(new casa(designa, posii[0], posii[1]));
   }
@@ -232,6 +248,10 @@ float[] arra ={0,0};
 // } 
 // else  
 // {
+
+
+
+
 
  arra[0]=_posx;
  arra[1]=_posy; 
@@ -322,7 +342,7 @@ public void procuraInstas()
     // }
   }
     vou++;
-    if (vou>125)
+    if (vou>NUM_CASAS)
     vou=0;
   }
   public void animaMundo()
@@ -723,11 +743,11 @@ public void desenha(PShape aa ,PShape bb 	)
 		//smooth();
 		
 		
-		// fill(0, 0, 255);
+		fill(0, 0, 255);
 		
-		// text("#"+tag, posicaoX+tamLetra, posicaoY-tamLetra);
+		text("#"+tag, posicaoX+tamLetra, posicaoY-tamLetra);
 		
-		// fill(255,0,0);
+		fill(255,0,0);
 		
 		largura_tam=((largura+(dim*0.7f))/ESCALA);
 		altura_tam=((altura+dim)/ESCALA);
