@@ -29,6 +29,10 @@ public class CLN_MAPA extends PApplet {
 
 
 
+
+PShape desenho;
+PShape fundo;
+
 int largura=1200;
 int altura=300;
 float xxx=0;
@@ -55,6 +59,8 @@ long lastTime = 0;
 long ultimaVez = 0;
 
 public void setup(){
+desenho = loadShape("Casacaldas.svg");
+fundo= loadShape("CasaFundo.svg");
 
   areas= new exclusoes(this);
   id_area= areas.addPoligno();
@@ -63,7 +69,7 @@ public void setup(){
   areas.addPonto(id_area,410,80);
   areas.addPonto(id_area,400,100);
   //size(largura, altura,P3D);
-  size(largura, altura,OPENGL);
+  size(largura, altura,P3D);
   casas = new ArrayList();
   tweets= new ArrayList();
   instagrams= new ArrayList();
@@ -311,7 +317,7 @@ public void procuraInstas()
     for (int i = 0; i <casas.size(); i++) 
     {
       aux= (casa) casas.get(i);
-      aux.desenha();
+      aux.desenha(desenho , fundo);
     }
   }
 
@@ -350,7 +356,7 @@ public void procuraInstas()
         line(bolaA.posicaoX, bolaA.posicaoY, bolaB.posicaoX, bolaB.posicaoY);
       }
 
-      bolaA.desenha();
+      bolaA.desenha(desenho,fundo);
     }
     float dx = bolaA.posicaoX - mouseX;
     float dy = bolaA.posicaoY - mouseY;
@@ -566,7 +572,7 @@ class Area
 		tag=nome;
 		posx=xx;
 		posy=yy;
- resistencia = 0.05f;
+ resistencia = 0.95f;
 		posicaoX=xx;
 		posicaoY=yy;
 		tamLetra=15;
@@ -575,8 +581,8 @@ class Area
 		numTweets=0;
 		ultimoInsta="0";
 		ultimoTweet="?q=%23"+nome;
-		desenho = loadShape("Casacaldas.svg");
-		fundo = loadShape("CasaFundo.svg");
+		// desenho = loadShape("Casacaldas.svg");
+		// fundo = loadShape("CasaFundo.svg");
 		cor = color(0,0,0);
 	}
 
@@ -597,9 +603,9 @@ class Area
 
    // float centroX = posx;
    float centroX = posx;
-  // float centroY = posy;
+ // float centroY = posy;
   //   float centroX = width / 2;
-   float centroY = height / 2;
+    float centroY = random(posy, posy+1);
    aceleracaoX += (centroX - posicaoX) / 20;
    aceleracaoY += (centroY - posicaoY) / 20;
 
@@ -648,7 +654,7 @@ class Area
 
 
 
-	public void desenha()
+	public void desenha(PShape aa ,PShape bb)
 	{
 		//smooth();
 		
@@ -660,14 +666,14 @@ class Area
 		// text("#"+tag, posx+tamLetra, posy-tamLetra);
 		
 		fill(255,0,0);
-		fundo.disableStyle();
+		bb.disableStyle();
 		 noStroke();
 		 fill(cor);
 		 //posicaoX
 		// shape(fundo, posx-((largura+(dim*0.7))/ESCALA), posy-((altura+dim)/ESCALA), (largura+(dim*0.7))/ESCALA, (altura+dim)/ESCALA);
 		 //shape(desenho, posx-((largura+(dim*0.7))/ESCALA), posy-((altura+dim)/ESCALA), (largura+(dim*0.7))/ESCALA, (altura+dim)/ESCALA);
-		 shape(fundo, posicaoX-((largura+(dim*0.7f))/ESCALA), posicaoY-((altura+dim)/ESCALA), (largura+(dim*0.7f))/ESCALA, (altura+dim)/ESCALA);
-		 shape(desenho, posicaoX-((largura+(dim*0.7f))/ESCALA), posicaoY-((altura+dim)/ESCALA), (largura+(dim*0.7f))/ESCALA, (altura+dim)/ESCALA);
+		 shape(bb, posicaoX-((largura+(dim*0.7f))/ESCALA), posicaoY-((altura+dim)/ESCALA), (largura+(dim*0.7f))/ESCALA, (altura+dim)/ESCALA);
+		 shape(aa, posicaoX-((largura+(dim*0.7f))/ESCALA), posicaoY-((altura+dim)/ESCALA), (largura+(dim*0.7f))/ESCALA, (altura+dim)/ESCALA);
 	}
 }
 class exclusoes 

@@ -136,9 +136,11 @@ class Bola{
   }
 
   public void mover(){
-
-   float centroX = width / 2;
-   float centroY = height / 2;
+float  centroX = random(0, width);
+    //e no eixo do Y
+  float  centroY = random(0, height);
+   // float centroX = width / 2;
+   // float centroY = height / 2;
    aceleracaoX += (centroX - posicaoX) / 20;
    aceleracaoY += (centroY - posicaoY) / 20;
 

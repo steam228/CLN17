@@ -43,7 +43,7 @@
 		tag=nome;
 		posx=xx;
 		posy=yy;
- resistencia = 0.05;
+ resistencia = 0.95;
 		posicaoX=xx;
 		posicaoY=yy;
 		tamLetra=15;
@@ -52,8 +52,8 @@
 		numTweets=0;
 		ultimoInsta="0";
 		ultimoTweet="?q=%23"+nome;
-		desenho = loadShape("Casacaldas.svg");
-		fundo = loadShape("CasaFundo.svg");
+		// desenho = loadShape("Casacaldas.svg");
+		// fundo = loadShape("CasaFundo.svg");
 		cor = color(0,0,0);
 	}
 
@@ -74,9 +74,9 @@
 
    // float centroX = posx;
    float centroX = posx;
-  // float centroY = posy;
+ // float centroY = posy;
   //   float centroX = width / 2;
-   float centroY = height / 2;
+    float centroY = random(posy, posy+1);
    aceleracaoX += (centroX - posicaoX) / 20;
    aceleracaoY += (centroY - posicaoY) / 20;
 
@@ -125,7 +125,7 @@
 
 
 
-	void desenha()
+	void desenha(PShape aa ,PShape bb)
 	{
 		//smooth();
 		
@@ -137,13 +137,13 @@
 		// text("#"+tag, posx+tamLetra, posy-tamLetra);
 		
 		fill(255,0,0);
-		fundo.disableStyle();
+		bb.disableStyle();
 		 noStroke();
 		 fill(cor);
 		 //posicaoX
 		// shape(fundo, posx-((largura+(dim*0.7))/ESCALA), posy-((altura+dim)/ESCALA), (largura+(dim*0.7))/ESCALA, (altura+dim)/ESCALA);
 		 //shape(desenho, posx-((largura+(dim*0.7))/ESCALA), posy-((altura+dim)/ESCALA), (largura+(dim*0.7))/ESCALA, (altura+dim)/ESCALA);
-		 shape(fundo, posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA), (largura+(dim*0.7))/ESCALA, (altura+dim)/ESCALA);
-		 shape(desenho, posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA), (largura+(dim*0.7))/ESCALA, (altura+dim)/ESCALA);
+		 shape(bb, posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA), (largura+(dim*0.7))/ESCALA, (altura+dim)/ESCALA);
+		 shape(aa, posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA), (largura+(dim*0.7))/ESCALA, (altura+dim)/ESCALA);
 	}
 }

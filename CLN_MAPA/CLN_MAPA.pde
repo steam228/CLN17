@@ -5,6 +5,10 @@ import de.bezier.data.*;
 import toxi.geom.*;
 import toxi.processing.*;
 
+
+PShape desenho;
+PShape fundo;
+
 int largura=1200;
 int altura=300;
 float xxx=0;
@@ -31,6 +35,8 @@ long lastTime = 0;
 long ultimaVez = 0;
 
 void setup(){
+desenho = loadShape("Casacaldas.svg");
+fundo= loadShape("CasaFundo.svg");
 
   areas= new exclusoes(this);
   id_area= areas.addPoligno();
@@ -39,7 +45,7 @@ void setup(){
   areas.addPonto(id_area,410,80);
   areas.addPonto(id_area,400,100);
   //size(largura, altura,P3D);
-  size(largura, altura,OPENGL);
+  size(largura, altura,P3D);
   casas = new ArrayList();
   tweets= new ArrayList();
   instagrams= new ArrayList();
@@ -287,7 +293,7 @@ void procuraInstas()
     for (int i = 0; i <casas.size(); i++) 
     {
       aux= (casa) casas.get(i);
-      aux.desenha();
+      aux.desenha(desenho , fundo);
     }
   }
 
@@ -326,7 +332,7 @@ void procuraInstas()
         line(bolaA.posicaoX, bolaA.posicaoY, bolaB.posicaoX, bolaB.posicaoY);
       }
 
-      bolaA.desenha();
+      bolaA.desenha(desenho,fundo);
     }
     float dx = bolaA.posicaoX - mouseX;
     float dy = bolaA.posicaoY - mouseY;
