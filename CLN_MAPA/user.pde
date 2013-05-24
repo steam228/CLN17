@@ -58,31 +58,31 @@
  int getCaminhoSize() {return caminho.size();}
  void desenha(ArrayList casitas)
  {
- 		int numDaCasa;
- 		casa casola;
- 		casa cas_aux;
- 		for (int i = 0; i <caminho.size(); i++) 
- 		{
+ 	int numDaCasa;
+ 	casa casola;
+ 	casa cas_aux;
+ 	for (int i = 0; i <caminho.size(); i++) 
+ 	{
 
- 			numDaCasa= (Integer) caminho.get(i);
- 			casola=(casa)casitas.get(numDaCasa);
- 			if (i==0)
+ 		numDaCasa= (Integer) caminho.get(i);
+ 		casola=(casa)casitas.get(numDaCasa);
+ 		if (i==0)
+ 		{
+ 			traco = new linha(casola.getX(),casola.getY());
+ 			traco.setCor(corcor);
+ 		}
+ 		else
+ 		{
+ 			float p_xx=casola.getX();
+ 			float p_yy=casola.getY();
+ 			numDaCasa= (Integer) caminho.get(i-1);
+ 			cas_aux=(casa)casitas.get(numDaCasa);
+ 			float c_xx=cas_aux.getX();
+ 			float c_yy=cas_aux.getY();
+ 			for (int aa= 0; aa <= 3; aa++) 
  			{
- 				traco = new linha(casola.getX(),casola.getY());
- 				traco.setCor(corcor);
- 			}
- 			else
- 			{
- 				float p_xx=casola.getX();
- 				float p_yy=casola.getY();
- 				numDaCasa= (Integer) caminho.get(i-1);
- 				cas_aux=(casa)casitas.get(numDaCasa);
- 				float c_xx=cas_aux.getX();
- 				float c_yy=cas_aux.getY();
- 				for (int aa= 0; aa <= 3; aa++) 
- 				{
- 					float x = lerp(p_xx, c_xx, aa/3);
- 					float y = lerp(p_yy, c_yy, aa/3);
+ 				float x = lerp(p_xx, c_xx, aa/3);
+ 				float y = lerp(p_yy, c_yy, aa/3);
  					//point(x, y);
  					traco.novapos (x,y);	
  				}
@@ -90,6 +90,6 @@
  		}
  		traco.setCor(color(255,0,0));
  		traco.desenhalinha();	
- }
+ 	}
 
-}
+ }

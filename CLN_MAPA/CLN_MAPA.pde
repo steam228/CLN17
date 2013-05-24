@@ -7,12 +7,16 @@ import toxi.processing.*;
 
 int largura=1200;
 int altura=300;
-
+float xxx=0;
+float  yyy=0;
+float xxx1=0;
+float  yyy1=0;
 int id_area;
 boolean comeca  = false;
-boolean areclu = false;
+boolean arryexclu = false;
 boolean finale = false;
 boolean prinale = true;
+boolean hideee = true;
 
 ArrayList casas;
 ArrayList tweets;
@@ -34,20 +38,36 @@ void setup(){
   areas.addPonto(id_area,400,50);
   areas.addPonto(id_area,410,80);
   areas.addPonto(id_area,400,100);
-  size(largura, altura);
+  size(largura, altura,P3D);
   casas = new ArrayList();
   tweets= new ArrayList();
   instagrams= new ArrayList();
   pessoas= new ArrayList();
-  background(0);
-  carregaCasas();
+ // background(0);
+
 }
 
 void draw(){
-  if (comeca)
-  {
-    smooth();
- // background(0);
+  if (hideee)
+{areas.desenharTodos(); }
+else  {
+  background(0);
+}
+ //smooth();
+
+ if (arryexclu)
+ {
+  arryexclu=false;
+  carregaCasas();
+}
+else  {
+  
+  
+}
+
+if (comeca)
+{
+
  if ( millis() - lastTime > pausa ) 
  {
    procuraTweets();
@@ -65,7 +85,20 @@ animaMundo();
 
 
 }
-areas.desenharTodos();
+
+
+fill(0,0,255);
+ellipse(xxx, yyy, 50, 50);
+fill(0,255,0);
+ellipse(xxx1, yyy1, 50, 50);
+
+// stroke(0, 0, 255);
+// //line(0,0,);
+// line();
+// stroke(0, 0, 255);
+// line();
+// line();
+
 }
 
 
@@ -107,14 +140,76 @@ void carregaCasas()
 
 
 
-float[] verificaCasa(float _posx , float _posy) { 
-int idd;
- float[] arra ={0,0};
- areas.contemTodos(_posx , _posy);
- 
+float[] verificaCasa(float _posx , float _posy) 
+{ 
+  int idd;
+  float[] arra ={0,0};
+  if (areas.contemAlgum(_posx , _posy))
+  {
+   println("COLISAO");
+   xxx1=_posx;
+   yyy1=_posy;
+
+   int cima=0;
+   int dir=0;
+   int esq=0;
+   float aux_x=_posx;
+   float aux_y = _posy;
+   while (areas.contemAlgum(aux_x , aux_y))
+   {
+    aux_y--;
+    cima++;
+    // fill(255, 0, 0);
+    // ellipse(_posx, aux_y, 50, 50);
+  }
+   aux_x=_posx;
+    aux_y = _posy;
+   while (areas.contemAlgum(aux_x , aux_y))
+  {
+    aux_x--;
+    esq++;
+    //   fill(0, 255, 0);
+    // ellipse(aux_x, _posy, 5, 5);
+  }
+  aux_x=_posx;
+    aux_y = _posy;
+  while (areas.contemAlgum(aux_x , aux_y))
+  {
+    aux_x++;
+    dir++;
+    //   fill(0, 0, 255);
+    // ellipse(aux_x, _posy, 5, 5);
+  }
+  arra[0]=_posx;
+  arra[1]=_posy;
+  if ((cima<=dir) && (cima<=esq))
+  {
+    arra[1]-=cima;
+    println("VOU PARA CIMA -> "+cima);
+  }
+  else if ((esq<=cima) &&(esq<=dir)) 
+  {
+    arra[0]-=esq;
+    println("VOU PARA ESQUERDA -> "+esq);
+  }
+  else if ((dir<=cima)&&(dir<=esq)) 
+  {
+    arra[0]+=dir;
+    println("VOU PARA DIREITA -> "+dir);
+  }
+  println("XO-> "+_posx+" YO-> "+_posy+" XF-> "+ arra[0]+" YF-> "+ arra[1]);
+  return arra;  
+} 
+else  
+{
+
  arra[0]=_posx;
- arra[1]=_posy;
-  return arra;  // Returns an array of 3 ints: 20, 40, 60 
+ arra[1]=_posy; 
+}
+xxx=arra[0];
+yyy=arra[1];
+ 
+return arra;  
 }
 
 
@@ -289,9 +384,9 @@ void mousePressed(){
   {
     if (prinale)
     {
-    id_area= areas.addPoligno();
-     areas.addPonto(id_area,mouseX,mouseY);
-    prinale=false;
+      id_area= areas.addPoligno();
+      areas.addPonto(id_area,mouseX,mouseY);
+      prinale=false;
     }
     else
     areas.addPonto(id_area,mouseX,mouseY);
@@ -300,13 +395,23 @@ void mousePressed(){
 
 void keyPressed()
 {
- if (key == 's' || key == 'S') {
+ if (key == 's' || key == 'S') {//COMECA O PROGRAMA NORMAL
    comeca=!comeca;
  }
- if (key == 'a' || key == 'A') {
-   areclu=!areclu;
+ if (key == 'a' || key == 'A') {// CARREGAS AS CASAS COM AS AREAS DE EXCLUSAO 1 COISA A SER FEITA
+   arryexclu=!arryexclu;
  }
- if (key == 'f' || key == 'F') {
+ if (key == 'f' || key == 'F') {//TERMINA O DESENHO DE UMA ARE DE EXCUSAO
   prinale=true;
- }
+}
+  if (key == 'h' || key == 'H') {//TOOGLE DE VISAO DAS AREAS DE EXCLUSAO
+    hideee=!hideee;
+  }
+
+
+}
+
+void mouseMoved()
+{
+  println("XX-> " +mouseX+" YY-> "+mouseY);
 }

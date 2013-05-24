@@ -50,10 +50,10 @@
 	
 	void desenha()
 	{
-		smooth();
+		//smooth();
 		
-		stroke (204, 20, 0);
-		strokeWeight(1);
+		
+		fill(0, 0, 255);
 		PFont font;		
 		font = loadFont("AGaramondPro-Bold-48.vlw");
 		textFont(font, tamLetra);

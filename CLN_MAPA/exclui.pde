@@ -41,6 +41,19 @@ class exclusoes
 		return -1;
 	}
 
+	boolean   contemAlgum(float _posx , float _posy) 
+	{
+		Area zonita ;
+		for (int i = 0; i <zonas.size(); i++) 
+		{
+			zonita=(Area)zonas.get(i);
+			
+			if ( zonita.contem(_posx , _posy) )
+			return true;
+		}
+		return false;
+	}
+
 	boolean  contemID(int _id , int _posx , int _posy)
 	{
 		Area zonita ;
