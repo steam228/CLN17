@@ -137,7 +137,7 @@ void colisao(){
     //   velocidadeY *= -1; 
     // }
 
-    if(posicaoY > ((height - altura_tam)-MARGEN))
+    if(    posicaoY > (((height - altura_tam)-MARGEN) +20)  )
     {
     	posicaoY = (height - altura_tam)-MARGEN;
     	velocidadeY *= -1; 
@@ -179,11 +179,13 @@ void desenha(PShape aa ,PShape bb 	)
 		altura_tam=((altura+dim)/ESCALA);
 
 		noStroke();
-		fill(cor);
+		//fill(cor);
+		//stroke(color(255,0,10));
+		fill(color(255,0,10));
 		 //posicaoX
 		// shape(fundo, posx-((largura+(dim*0.7))/ESCALA), posy-((altura+dim)/ESCALA), (largura+(dim*0.7))/ESCALA, (altura+dim)/ESCALA);
 		 //shape(desenho, posx-((largura+(dim*0.7))/ESCALA), posy-((altura+dim)/ESCALA), (largura+(dim*0.7))/ESCALA, (altura+dim)/ESCALA);
-		 shape(bb, posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA), largura_tam, altura_tam);
+		 //shape(bb, posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA), largura_tam, altura_tam);
 		 shape(aa, posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA), largura_tam, altura_tam);
 		}
 	}
