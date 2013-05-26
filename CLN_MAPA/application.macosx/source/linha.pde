@@ -45,16 +45,16 @@ int ESCALA = 2;
   void desenhalinha() 
   {
     
-    canvas.noFill();
+   noFill();
 
-        canvas.stroke(cor);
+        stroke(cor);
     //stroke(255);
-    strokeWeight (tamanho/ESCALA); // alterar quando a path ficar invisivel e for percorrida
+   strokeWeight (tamanho/ESCALA); // alterar quando a path ficar invisivel e for percorrida
     numP=points.size();
     beginShape();
     for (int i=0; i<numP; i++) {
       Vec2D p=(Vec2D)points.get(i);
-      canvas.vertex(p.x, p.y);
+      vertex(p.x, p.y);
       //melhorar desenho da linha
     }
     endShape();
@@ -64,8 +64,9 @@ int ESCALA = 2;
     {
       Vec2D p=(Vec2D)points.get(i);
       handles[i]=p;
-      if (showHandles) 
-      canvas.ellipse(p.x, p.y, 5, 5);
+    //  if (showHandles) 
+      //ellipse(p.x, p.y, 5, 5);
+
     }
 
   // need at least 4 vertices for a spline
@@ -79,12 +80,12 @@ int ESCALA = 2;
     // so that we get extra 8 points between each original pair of points
     java.util.List vertices=spline.computeVertices(8);
     // draw the smoothened curve
-    beginShape();
+     beginShape();
     for (Iterator i=vertices.iterator(); i.hasNext(); ) {
       Vec2D v=(Vec2D)i.next();
-      canvas.vertex(v.x, v.y);
+      vertex(v.x, v.y);
     }
-    endShape();
+     endShape();
   }
 }
 
