@@ -20,7 +20,7 @@
 
   int MARGEN=50;
   int ALTURA=300;
-  int LARGURA=1200*2;
+  int LARGURA=1200;
   int ESCALA=2;
   int INCREMENTO=1;
   int LIMITE=60;
