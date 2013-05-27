@@ -3,9 +3,36 @@ import java.util.*;
 import de.bezier.data.*;
 import codeanticode.syphon.*;
 
+int estou_x=0;
+int estou_y=0;
+int estouu=0;
+PGraphics layerTOPO;
+PImage portaIMG;
+int vouiiii=0;
+int vouaaaa=0;
+PImage[] portass = new PImage[6];
+boolean[] jaja = new boolean[6];
+//jaja=false;
+ //jaja[0]=false;
+// jaja[1]=false;
+// jaja[2]=false;
+//jaja[3]=false;
+// jaja[4]=false;
+// jaja[5]=false;
+// jaja[6]=false;
+
+  PImage mascara;
+mostraCoisas mostraINSTA;
+mostraCoisas mostraTWII;
+
+
+SimpleThread threadINSTA;
+SimpleThread threadTWII;
+char cococo;
   int MARGEN_BAIXO=50;
-int[][] porta1_x = new int[4][4];
-int[][] porta1_y = new int[4][4];
+  int LARGURA_PORTA=100;
+int[][] porta1_x = new int[6][4];
+int[][] porta1_y = new int[6][4];
 
 PGraphics canvas;
 SyphonServer server;
@@ -47,6 +74,17 @@ long lastTime = 0;
 long ultimaVez = 0;
 
 void setup(){
+  frameRate(24);
+ jaja[0]=false;
+ jaja[1]=false;
+ jaja[2]=false;
+jaja[3]=false;
+ jaja[4]=false;
+ jaja[5]=false;
+
+  portaIMG = loadImage("img.png");
+  mascara = loadImage("1.gif");
+  mascara.resize(50,100);
   // desenho1 = loadShape("peca_01.svg");
   // desenho2 = loadShape("peca_02.svg");
   // desenho3 = loadShape("peca_03.svg");
@@ -83,12 +121,21 @@ areas.addPonto(id_area,100,300);
 areas.addPonto(id_area,150,300);
 areas.addPonto(id_area,150,200);
 
+
+porta1_x[1][0]=250; porta1_y[1][0]=200;
+porta1_x[1][1]=200; porta1_y[1][1]=300;
+porta1_x[1][2]=250; porta1_y[1][2]=300;
+porta1_x[1][3]=250; porta1_y[1][3]=200;
 id_area= areas.addPoligno();
 areas.addPonto(id_area,200,200);
 areas.addPonto(id_area,200,300);
 areas.addPonto(id_area,250,300);
 areas.addPonto(id_area,250,200);
 
+porta1_x[2][0]=450; porta1_y[2][0]=200;
+porta1_x[2][1]=300; porta1_y[2][1]=300;
+porta1_x[2][2]=350; porta1_y[2][2]=300;
+porta1_x[2][3]=350; porta1_y[2][3]=200;
 id_area= areas.addPoligno();
 areas.addPonto(id_area,300,200);
 areas.addPonto(id_area,300,300);
@@ -98,19 +145,32 @@ areas.addPonto(id_area,350,200);
 
 
 
-
+porta1_x[3][0]=650; porta1_y[3][0]=200;
+porta1_x[3][1]=850; porta1_y[3][1]=300;
+porta1_x[3][2]=900; porta1_y[3][2]=300;
+porta1_x[3][3]=900; porta1_y[3][3]=200;
 id_area= areas.addPoligno();
 areas.addPonto(id_area,850,200);
 areas.addPonto(id_area,850,300);
 areas.addPonto(id_area,900,300);
 areas.addPonto(id_area,900,200);
 
+
+
+porta1_x[4][0]=850; porta1_y[4][0]=200;
+porta1_x[4][1]=950; porta1_y[4][1]=300;
+porta1_x[4][2]=1000; porta1_y[4][2]=300;
+porta1_x[4][3]=1000; porta1_y[4][3]=200;
 id_area= areas.addPoligno();
 areas.addPonto(id_area,950,200);
 areas.addPonto(id_area,950,300);
 areas.addPonto(id_area,1000,300);
 areas.addPonto(id_area,1000,200);
 
+porta1_x[5][0]=1050; porta1_y[5][0]=200;
+porta1_x[5][1]=1050; porta1_y[5][1]=300;
+porta1_x[5][2]=1100; porta1_y[5][2]=300;
+porta1_x[5][3]=1100; porta1_y[5][3]=200;
 id_area= areas.addPoligno();
 areas.addPonto(id_area,1050,200);
 areas.addPonto(id_area,1050,300);
@@ -118,7 +178,9 @@ areas.addPonto(id_area,1100,300);
 areas.addPonto(id_area,1100,200);
   //size(largura, altura,P3D);
   size(largura, altura,P3D);
-   canvas = createGraphics(1200, 300, P3D);
+  layerTOPO = createGraphics(largura, altura);
+
+   canvas = createGraphics(largura, altura, P3D);
   server = new SyphonServer(this, "Processing Syphon");
 
   casas = new ArrayList();
@@ -127,14 +189,23 @@ areas.addPonto(id_area,1100,200);
   pessoas= new ArrayList();
   background(0);
   carregaCasas();
-
+  cococo='T';
+threadINSTA = new SimpleThread(cococo);
+mostraINSTA = new mostraCoisas(cococo);
+ threadINSTA.start();
+ //mostraINSTA.start();
+   cococo='I';
+threadTWII = new SimpleThread(cococo);
+mostraTWII = new mostraCoisas(cococo);
+ threadTWII.start();
+// mostraTWII.start();
 }
 
 void draw(){
    canvas.beginDraw();
-   background(0);
-  if (hideee)
-{areas.desenharTodos(); }
+   canvas.background(255);
+//   if (hideee)
+// {areas.desenharTodos(); }
 // else  {
  
 //}
@@ -155,13 +226,11 @@ void draw(){
 
  if ( millis() - lastTime > pausa ) 
  {
-    procuraTweets();
-    procuraInstas();
+    //procuraTweets();
+  // procuraInstas();
    lastTime = millis();
    // mostraInsta();
-
 //mostraInsta();
-
    // mostraTweet();
  } 
 
@@ -174,6 +243,12 @@ moveMundo();
 
 // }
 //animaMundo();
+//layerTOPO.background(255,0,0);
+//layerTOPO.beginDraw();
+    //layerTOPO.background(255,0,0);
+  //    layerTOPO.endDraw();
+
+//canvas.image(layerTOPO , 0, 0); 
 
 
 //image(portaIMG,0,0);
@@ -190,12 +265,11 @@ moveMundo();
 // canvas.fill(0,255,0);
 // canvas.ellipse(estou_x, estou_y, 10, 10);
 
-
-
-
-  canvas.endDraw();
- image(canvas, 0, 0);
+//  canvas.text(estou_x +" <-> "+ estou_y,100,100);
+ canvas.endDraw();
+  image(canvas, 0, 0);
   server.sendImage(canvas);
+
 }
 
 
@@ -365,97 +439,7 @@ return arra;
 
 
 
-void procuraTweets()
-{
 
-  casa aux;
-  String twitterSite[];
-  String jsonstring ;
-  String ultimoURL;
-  // for (int i = 0; i <casas.size(); i++) 
-  // {
-   aux= (casa) casas.get(vou);
-   twitterSite = loadStrings("http://search.twitter.com/search.json"+aux.getTweet());
-   if (twitterSite!=null)
-{
-   jsonstring =twitterSite[0];
-   JSON twiits = JSON.parse(jsonstring);
-   ultimoURL=twiits.getString("refresh_url");
-   twiits =twiits.getJSON("results");
-
-   if (twiits.length()>0)
-   {
-    for (int t = 0; t<twiits.length(); t++)
-    {
-    JSON  este =twiits.getJSON(t);//numero do tweet nesta query
-    tweets.add( new tweet(tweets.size()+1,este.getInt("from_user_id"),este.getString("text")));//adiciona instagram a lista
-    aux.addTweet();
-    adicionaAOuser(este.getString("from_user"),'T',aux.getTag());
-  }
-  aux.setTweet(ultimoURL);
-}
-// }
-}
-}
-
-void procuraInstas()
-{
-
-  String instaSite[];
-  String tag ;
-  int count;
-  String jsonstring ;
-  String username;
-  casa aux;
-  //println("CASAS-> "+casas.size());
-  // for (int i = 0; i <casas.size(); i++) 
-  // {
-    aux= (casa) casas.get(vou);
-    tag =aux.getTag();
-    instaSite = loadStrings("https://api.instagram.com/v1/tags/"+tag+"//media/recent?client_id=9d6af7341f7a4fd39e888fd12ab8d8a0&min_tag_id="+aux.getInsta()+"");
-   if (instaSite!=null)
-{
-   jsonstring =instaSite[0];
-    JSON data = JSON.parse(jsonstring);
-    JSON ultimo = data.getJSON("pagination");
-    data = data.getJSON("data");
-    if (data.length()>0)
-    aux.setInsta( ultimo.getString("min_tag_id"));
-    else  {
-     // println("TAG-> "+tag);
-    }
-    int user_id;
-    for (int f=0; f<data.length();f++)
-    {
-        JSON unico = data.getJSON(f);//NUMERO DA FOTO NO ARRAY
-        JSON imagens = unico.getJSON("images");
-        imagens = imagens.getJSON("thumbnail");//melhor tamanho 612x612 standard_resolution
-        String fotoURL =(String) imagens.getString("url"); 
-        JSON user= unico.getJSON("user");     
-        user_id=user.getInt("id");//identificador do user
-        username=user.getString("username");
-       
-        instagrams.add( new insta(instagrams.size()+1,user_id,fotoURL));//adiciona instagram a lista
-        aux.addInsta();//aumenta o num de instagrams na casa
-        adicionaAOuser(username,'I',tag); 
-        println("INSTA  USER-> "+user_id+" TAG -> "+tag);
-        
-      }
-    // }
-  }
-    vou++;
-    if (vou>=NUM_CASAS)
-    vou=0;
-  }
-  void animaMundo()
-  {
-    casa aux;
-    for (int i = 0; i <casas.size(); i++) 
-    {
-      aux= (casa) casas.get(i);
-      aux.desenha();
-    }
-  }
 
   void moveMundo()
   {
@@ -512,27 +496,7 @@ void procuraInstas()
 void fazMagia(){
   
 }
-void mostraInsta()
-{
-  insta aux;
-  for (int i = 0; i <instagrams.size(); i++) 
-  {
-    aux= (insta) instagrams.get(i);
-    aux.mostra(0,0);
 
-  }
-}
-
-void mostraTweet()
-{
-  tweet aux;
-  for (int i = 0; i <tweets.size(); i++) 
-  {
-    aux= (tweet) tweets.get(i);
-    aux.mostra(0,250,20);
-
-  }
-}
 void desenhaCaminhos()
 {
   user aux;
@@ -629,9 +593,103 @@ void keyPressed()
   }
 
 
+  if (key == 'f' || key == 'F') {//TERMINA O DESENHO DE UMA ARE DE EXCUSAO
+    estou_y--;
+    canvas.fill(255,0,0);
+  canvas.text(estou_x +" <-> "+ estou_y,100,100);
+}
+  if (key == 'g' || key == 'G') {//TOOGLE DE VISAO DAS AREAS DE EXCLUSAO
+    estou_y++;
+    canvas.fill(255,0,0);
+    canvas.text(estou_x +" <-> "+ estou_y,100,100);
+  }
+
+
+  if (key == 'v' || key == 'V') {//TERMINA O DESENHO DE UMA ARE DE EXCUSAO
+    estou_x--;
+    canvas.fill(255,0,0);
+  canvas.text(estou_x +" <-> "+ estou_y,100,100);
+}
+  if (key == 'b' || key == 'B') {//TOOGLE DE VISAO DAS AREAS DE EXCLUSAO
+    estou_x++;
+    canvas.fill(255,0,0);
+   
+  }
+
+
+}
+
+
+void mostraTWEE()
+{
+
+if (tweets.size()>0)
+{
+
+  tweet aux_T;
+
+    aux_T= (tweet) tweets.get(vouaaaa);
+    int pos =int(random(0,6));
+//portass[pos]=aux_I.dameca();
+aux_T.pinta();
+jaja[pos]=true;
+
+vouaaaa++;
+if (vouiiii>=tweets.size())
+vouaaaa=0;
+}
+}
+
+
+
+
+
+
+void mostraInsta()
+{
+
+if (instagrams.size()>0)
+{
+//int  qual = int ( random(instagrams.size()) );
+  insta aux_I;
+
+    // if (i==qual)
+    // {
+    //int i=int(random(instagrams.size() ));
+
+    aux_I= (insta) instagrams.get(vouiiii);
+    int pos =int(random(0,6));
+    println(pos);
+    // println(porta1_y[pos][0]+" < - > "+porta1_y[pos][0]);
+   // aux_I.mostra(porta1_x[pos][0],porta1_y[pos][0]);
+//PImage coiso=aux_I.dameca();
+//portass[int(random(6))]=aux_I.dameca();
+portass[pos]=aux_I.dameca();
+jaja[pos]=true;
+//image(coiso, porta1_x[pos][0],porta1_y[pos][0]);
+  // }
+
+
+vouiiii++;
+if (vouiiii>=(instagrams.size()))
+vouiiii=0;
+
+  // insta aux_I;
+  // // for (int i = 0; i <instagrams.size(); i++) 
+  // // {
+  //   int i=int(random(instagrams.size() ));
+  //   aux_I= (insta) instagrams.get(i);
+  //   int pos =int(random(0,6));
+  //   println(pos);
+  //   println(porta1_y[pos][0]+" < - > "+porta1_y[pos][0]);
+  //   aux_I.mostra(porta1_x[pos][0],porta1_y[pos][0]);
+  // // }
+}
 }
 
 // void mouseMoved()
 // {
 //   println("XX-> " +mouseX+" YY-> "+mouseY);
 // }
+
+
