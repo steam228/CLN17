@@ -45,16 +45,16 @@ int ESCALA = 2;
   void desenhalinha() 
   {
     
-    canvas.noFill();
+    noFill();
 
-        canvas.stroke(cor);
+        stroke (cor);
     //stroke(255);
     strokeWeight (tamanho/ESCALA); // alterar quando a path ficar invisivel e for percorrida
     numP=points.size();
     beginShape();
     for (int i=0; i<numP; i++) {
       Vec2D p=(Vec2D)points.get(i);
-      canvas.vertex(p.x, p.y);
+      vertex(p.x, p.y);
       //melhorar desenho da linha
     }
     endShape();
@@ -65,7 +65,7 @@ int ESCALA = 2;
       Vec2D p=(Vec2D)points.get(i);
       handles[i]=p;
       if (showHandles) 
-      canvas.ellipse(p.x, p.y, 5, 5);
+      ellipse(p.x, p.y, 5, 5);
     }
 
   // need at least 4 vertices for a spline
@@ -82,7 +82,7 @@ int ESCALA = 2;
     beginShape();
     for (Iterator i=vertices.iterator(); i.hasNext(); ) {
       Vec2D v=(Vec2D)i.next();
-      canvas.vertex(v.x, v.y);
+      vertex(v.x, v.y);
     }
     endShape();
   }
