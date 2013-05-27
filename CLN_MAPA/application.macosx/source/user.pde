@@ -12,12 +12,26 @@
  	linha traco;
  	color corcor;
  	int vai=0;
+ 	  color[] palette=new color[10];
  	user (int _id, String _user) 
  	{
  		id=_id;
  		username=_user;
  		caminho= new ArrayList();
- 		corcor=color(random(0,256),random(0,256),random(0,256));
+ 		//corcor=color(random(0,256),random(0,256),random(0,256));
+ 		  palette[0]=color(0,102,153);
+        palette[1]=color(0,153,255);
+        palette[2]=color(0,51,102);
+        palette[3]=color(51,204,255);
+        palette[4]=color(153,204,255);
+        palette[5]=color(51,102,153);
+        palette[6]=color(51,51,102);
+        palette[7]=color(102,51,102);
+        palette[8]=color(255,51,102);
+        palette[9]=color(255,102,153);
+      
+                int i = int(random(0,9));
+ 		corcor=palette[i];
  	}
 
  	void addTweet()
@@ -95,8 +109,8 @@
  				float x = lerp(p_xx, c_xx, aa/3.0);
  				float y = lerp(p_yy, c_yy, aa/3.0);
  					//point(x, y);
- 					fill(0);
- 					ellipse(x, y, 5, 5);
+ 					canvas.fill(0);
+ 					canvas.ellipse(x, y, 5, 5);
  					traco.novapos (x,y);	
  				}
  			//}
