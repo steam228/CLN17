@@ -524,6 +524,7 @@ public void fazMagia(){
 
 public void desenhaCaminhos()
 {
+  println("NUMERO DE UTILIZADORES -> "+pessoas.size());
   user aux;
   for (int i = 0; i <pessoas.size(); i++) 
   {
@@ -782,7 +783,7 @@ else  {
   }
 public void procuraTweets()
 {
-//println("TSI_> "+tweets.size());
+println("NUMERO DE TWEETS -> "+tweets.size());
   casa aux;
   String twitterSite[];
   String jsonstring ;
@@ -825,7 +826,7 @@ else  {
   
 public void procuraInstas()
 {
-//println("ISI_> "+instagrams.size());
+println("NUMERO DE INSTTAS -> "+instagrams.size());
   String instaSite[];
   String tag ;
   int count;

@@ -62,7 +62,7 @@ else  {
   }
 void procuraTweets()
 {
-//println("TSI_> "+tweets.size());
+println("NUMERO DE TWEETS -> "+tweets.size());
   casa aux;
   String twitterSite[];
   String jsonstring ;
@@ -105,7 +105,7 @@ else  {
   
 void procuraInstas()
 {
-//println("ISI_> "+instagrams.size());
+println("NUMERO DE INSTTAS -> "+instagrams.size());
   String instaSite[];
   String tag ;
   int count;
