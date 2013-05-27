@@ -46,8 +46,8 @@ PShape desenho3;
 PShape desenho4;
 PShape fundo;
 
-int largura=1200;
-int altura=300;
+int largura=800;
+int altura=600;
 float xxx=0;
 float  yyy=0;
 float xxx1=0;
@@ -230,11 +230,7 @@ void draw(){
   // procuraInstas();
    lastTime = millis();
    // mostraInsta();
-<<<<<<< HEAD
-mostraInsta();
-=======
 //mostraInsta();
->>>>>>> bb6ce80cc178bc839984ae70cb0115140c7c44a2
    // mostraTweet();
  } 
 
@@ -251,42 +247,21 @@ moveMundo();
 //layerTOPO.beginDraw();
     //layerTOPO.background(255,0,0);
   //    layerTOPO.endDraw();
-<<<<<<< HEAD
-=======
-
-//canvas.image(layerTOPO , 0, 0); 
->>>>>>> bb6ce80cc178bc839984ae70cb0115140c7c44a2
 
 //canvas.image(layerTOPO , 0, 0); 
 
 
 //image(portaIMG,0,0);
-for (int aae = 0; aae<6; aae++){
-  if (jaja[aae]==true)
-{
-canvas.image(portass[aae], porta1_x[aae][0],porta1_y[aae][0]);
-//println("aaaaaaaaa");
-//image(portass[0], porta1_x[0][0],porta1_y[0][0]);
-}
-}
+// for (int aae = 0; aae<6; aae++){
+//   if (jaja[aae]==true)
+// {
+// canvas.image(portass[aae], porta1_x[aae][0],porta1_y[aae][0]);
+// //println("aaaaaaaaa");
+// //image(portass[0], porta1_x[0][0],porta1_y[0][0]);
+// }
+//}
 
-   if (!hideee)
-{
- canvas.stroke(0,255,0);
- canvas.strokeWeight(5);
-canvas.line(100,0,100,300);
-canvas.line(200,0,200,300);
-canvas.line(400,0,400,300);
-canvas.line(600,0,600,300);
-canvas.line(800,0,800,300);
-canvas.line(1000,0,1000,300);
 
- canvas.line(0,50,1200,50);
- canvas.line(0,100,1200,100);
- canvas.line(0,150,1200,150);
- canvas.line(0,200,1200,200);
- canvas.line(0,250,1200,250);
-}
 // canvas.fill(0,255,0);
 // canvas.ellipse(estou_x, estou_y, 10, 10);
 
@@ -332,23 +307,23 @@ void carregaCasas()
      float ypos = map (yvals[i], ymin, ymax, 50, height-50);
     float xpos = map (xvals[i], xmin, xmax, 50, width-50);
 //---------------------------------
-float nova_x;
+// float nova_x;
 
-int MEIO=600;
-int LARGUURA=1200;
-int MEIALARGURA=100;
+// int MEIO=600;
+// int LARGUURA=800;
+// int MEIALARGURA=100;
 
-if (xpos>MEIO)
-{
-nova_x = map (xpos, MEIO,LARGUURA,MEIO + MEIALARGURA,LARGUURA );
-}
-else 
-{
- nova_x = map (xpos, 0,MEIO,0,MEIO - MEIALARGURA ); 
-}
+// if (xpos>MEIO)
+// {
+// nova_x = map (xpos, MEIO,LARGUURA,MEIO + MEIALARGURA,LARGUURA );
+// }
+// else 
+// {
+//  nova_x = map (xpos, 0,MEIO,0,MEIO - MEIALARGURA ); 
+// }
 
 
-xpos=nova_x;
+// xpos=nova_x;
 
 //-------------------
 
@@ -358,25 +333,25 @@ xpos=nova_x;
 // porta1_x[2]=150; porta1_y[2]=300;
 // porta1_x[3]=150; porta1_y[3]=200;
 //int lala=0;
-for (int lala=0; lala<4 ; lala++)
-{
-if ( (xpos>porta1_x[lala][0]) &&  (xpos<porta1_x[lala][3]) && (ypos>porta1_y[lala][0]) )
-{
-  float cima_dis=dist(xpos, ypos, xpos, porta1_y[lala][0]);//DISTANCIA PARA CIMA
-  float esq_dis=dist(xpos, ypos, porta1_x[lala][0], ypos);//DISTANCIA PARA ESQ
-  float dir_dis=dist(xpos, ypos, porta1_x[lala][0], ypos);//DISTANCIA PARA DIR
-  if ( (dir_dis<esq_dis) && (dir_dis<cima_dis) )
-  {
-    xpos-=dir_dis;
-  }
-  else if (  (cima_dis<esq_dis)&&(cima_dis<dir_dis)      ) {
-    ypos-=cima_dis;
-  }
-  else if ( (esq_dis<=cima_dis)&&(esq_dis<=dir_dis)   ) {
-     xpos+=dir_dis;
-  }
-}
-}
+// for (int lala=0; lala<4 ; lala++)
+// {
+// if ( (xpos>porta1_x[lala][0]) &&  (xpos<porta1_x[lala][3]) && (ypos>porta1_y[lala][0]) )
+// {
+//   float cima_dis=dist(xpos, ypos, xpos, porta1_y[lala][0]);//DISTANCIA PARA CIMA
+//   float esq_dis=dist(xpos, ypos, porta1_x[lala][0], ypos);//DISTANCIA PARA ESQ
+//   float dir_dis=dist(xpos, ypos, porta1_x[lala][0], ypos);//DISTANCIA PARA DIR
+//   if ( (dir_dis<esq_dis) && (dir_dis<cima_dis) )
+//   {
+//     xpos-=dir_dis;
+//   }
+//   else if (  (cima_dis<esq_dis)&&(cima_dis<dir_dis)      ) {
+//     ypos-=cima_dis;
+//   }
+//   else if ( (esq_dis<=cima_dis)&&(esq_dis<=dir_dis)   ) {
+//      xpos+=dir_dis;
+//   }
+// }
+// }
 //---------------------------------
     posii =verificaCasa(xpos,ypos);
     casas.add(new casa(designa, posii[0], posii[1]));
