@@ -697,6 +697,7 @@ if (instagrams.size()>0)
     // if (i==qual)
     // {
     //int i=int(random(instagrams.size() ));
+
     aux_I= (insta) instagrams.get(vouiiii);
     int pos =PApplet.parseInt(random(0,6));
     println(pos);
@@ -711,7 +712,7 @@ jaja[pos]=true;
 
 
 vouiiii++;
-if (vouiiii>(instagrams.size()))
+if (vouiiii>=(instagrams.size()))
 vouiiii=0;
 
   // insta aux_I;
@@ -1344,8 +1345,8 @@ int ESCALA = 2;
     {
       Vec2D p=(Vec2D)points.get(i);
       handles[i]=p;
-    //  if (showHandles) 
-      //ellipse(p.x, p.y, 5, 5);
+      // if (showHandles) 
+      // ellipse(p.x, p.y, 5, 5);
 
     }
 
@@ -1691,10 +1692,10 @@ canvas.fill(255,0,0);
  			//}
  			canvas.stroke(corcor);
  			canvas.strokeWeight(1);
- 			canvas.line(p_yy,p_yy,c_xx,c_yy);
+ 			//canvas.line(p_yy,p_yy,c_xx,c_yy);
  			
  			traco.setCor(corcor);
- 		//	traco.desenhalinha();	
+ 			traco.desenhalinha();	
  		}
  		//traco.setCor(color(255,0,0));
 		

@@ -64,8 +64,8 @@ int ESCALA = 2;
     {
       Vec2D p=(Vec2D)points.get(i);
       handles[i]=p;
-    //  if (showHandles) 
-      //ellipse(p.x, p.y, 5, 5);
+      if (showHandles) 
+      ellipse(p.x, p.y, 5, 5);
 
     }
 
