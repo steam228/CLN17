@@ -329,8 +329,8 @@ public void carregaCasas()
 
     // float ypos = map (yvals[i], ymin, ymax, margin/2, height-(margin/2));
     // float xpos = map (xvals[i], xmin, xmax, margin, width-(margin/4));
-     float ypos = map (yvals[i], ymin, ymax, 0, height);
-    float xpos = map (xvals[i], xmin, xmax, 0, width);
+     float ypos = map (yvals[i], ymin, ymax, 50, height-50);
+    float xpos = map (xvals[i], xmin, xmax, 50, width-50);
 //---------------------------------
 // float nova_x;
 
