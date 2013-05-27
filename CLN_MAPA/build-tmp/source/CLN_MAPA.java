@@ -71,8 +71,13 @@ PShape desenho3;
 PShape desenho4;
 PShape fundo;
 
+<<<<<<< HEAD
 int largura=1200;
 int altura=300;
+=======
+int largura=800;
+int altura=600;
+>>>>>>> bb6ce80cc178bc839984ae70cb0115140c7c44a2
 float xxx=0;
 float  yyy=0;
 float xxx1=0;
@@ -255,7 +260,11 @@ public void draw(){
   // procuraInstas();
    lastTime = millis();
    // mostraInsta();
+<<<<<<< HEAD
 mostraInsta();
+=======
+//mostraInsta();
+>>>>>>> bb6ce80cc178bc839984ae70cb0115140c7c44a2
    // mostraTweet();
  } 
 
@@ -277,6 +286,7 @@ moveMundo();
 
 
 //image(portaIMG,0,0);
+<<<<<<< HEAD
 for (int aae = 0; aae<6; aae++){
   if (jaja[aae]==true)
 {
@@ -303,6 +313,18 @@ canvas.line(1000,0,1000,300);
  canvas.line(0,200,1200,200);
  canvas.line(0,250,1200,250);
 }
+=======
+// for (int aae = 0; aae<6; aae++){
+//   if (jaja[aae]==true)
+// {
+// canvas.image(portass[aae], porta1_x[aae][0],porta1_y[aae][0]);
+// //println("aaaaaaaaa");
+// //image(portass[0], porta1_x[0][0],porta1_y[0][0]);
+// }
+//}
+
+
+>>>>>>> bb6ce80cc178bc839984ae70cb0115140c7c44a2
 // canvas.fill(0,255,0);
 // canvas.ellipse(estou_x, estou_y, 10, 10);
 
@@ -345,6 +367,7 @@ public void carregaCasas()
 
     // float ypos = map (yvals[i], ymin, ymax, margin/2, height-(margin/2));
     // float xpos = map (xvals[i], xmin, xmax, margin, width-(margin/4));
+<<<<<<< HEAD
      float ypos = map (yvals[i], ymin, ymax, 0, height);
     float xpos = map (xvals[i], xmin, xmax, 0, width);
 //---------------------------------
@@ -365,6 +388,28 @@ else
 
 
 xpos=nova_x;
+=======
+     float ypos = map (yvals[i], ymin, ymax, 50, height-50);
+    float xpos = map (xvals[i], xmin, xmax, 50, width-50);
+//---------------------------------
+// float nova_x;
+
+// int MEIO=600;
+// int LARGUURA=800;
+// int MEIALARGURA=100;
+
+// if (xpos>MEIO)
+// {
+// nova_x = map (xpos, MEIO,LARGUURA,MEIO + MEIALARGURA,LARGUURA );
+// }
+// else 
+// {
+//  nova_x = map (xpos, 0,MEIO,0,MEIO - MEIALARGURA ); 
+// }
+
+
+// xpos=nova_x;
+>>>>>>> bb6ce80cc178bc839984ae70cb0115140c7c44a2
 
 //-------------------
 
@@ -374,6 +419,7 @@ xpos=nova_x;
 // porta1_x[2]=150; porta1_y[2]=300;
 // porta1_x[3]=150; porta1_y[3]=200;
 //int lala=0;
+<<<<<<< HEAD
 for (int lala=0; lala<4 ; lala++)
 {
 if ( (xpos>porta1_x[lala][0]) &&  (xpos<porta1_x[lala][3]) && (ypos>porta1_y[lala][0]) )
@@ -393,6 +439,27 @@ if ( (xpos>porta1_x[lala][0]) &&  (xpos<porta1_x[lala][3]) && (ypos>porta1_y[lal
   }
 }
 }
+=======
+// for (int lala=0; lala<4 ; lala++)
+// {
+// if ( (xpos>porta1_x[lala][0]) &&  (xpos<porta1_x[lala][3]) && (ypos>porta1_y[lala][0]) )
+// {
+//   float cima_dis=dist(xpos, ypos, xpos, porta1_y[lala][0]);//DISTANCIA PARA CIMA
+//   float esq_dis=dist(xpos, ypos, porta1_x[lala][0], ypos);//DISTANCIA PARA ESQ
+//   float dir_dis=dist(xpos, ypos, porta1_x[lala][0], ypos);//DISTANCIA PARA DIR
+//   if ( (dir_dis<esq_dis) && (dir_dis<cima_dis) )
+//   {
+//     xpos-=dir_dis;
+//   }
+//   else if (  (cima_dis<esq_dis)&&(cima_dis<dir_dis)      ) {
+//     ypos-=cima_dis;
+//   }
+//   else if ( (esq_dis<=cima_dis)&&(esq_dis<=dir_dis)   ) {
+//      xpos+=dir_dis;
+//   }
+// }
+// }
+>>>>>>> bb6ce80cc178bc839984ae70cb0115140c7c44a2
 //---------------------------------
     posii =verificaCasa(xpos,ypos);
     casas.add(new casa(designa, posii[0], posii[1]));
@@ -952,8 +1019,13 @@ class Area
 
 
   int MARGEN=50;
+<<<<<<< HEAD
   int ALTURA=300;
   int LARGURA=1200*2;
+=======
+  int ALTURA=600;
+  int LARGURA=800;
+>>>>>>> bb6ce80cc178bc839984ae70cb0115140c7c44a2
   int ESCALA=2;
   int INCREMENTO=1;
   int LIMITE=60;
@@ -1058,26 +1130,44 @@ class Area
     //   posicaoX = raio;
     //   velocidadeX *= -1; 
     // }
+<<<<<<< HEAD
     if(posicaoX > ((width )-MARGEN))
     {
     	posicaoX = (width - largura_tam)-MARGEN;
+=======
+    if(posicaoX > ((width )))
+    {
+    	posicaoX = (width - largura_tam);
+>>>>>>> bb6ce80cc178bc839984ae70cb0115140c7c44a2
 
     	velocidadeX *= -1; 
     	if (velocidadeX>0)
     	velocidadeX--;
     	else 
     	velocidadeX++;	
+<<<<<<< HEAD
     }
     if(posicaoX <  (largura_tam+MARGEN))
     {
     	posicaoX =  largura_tam+MARGEN;
+=======
+      posx--;
+    }
+    if(posicaoX <  (largura_tam))
+    {
+    	posicaoX =  largura_tam;
+>>>>>>> bb6ce80cc178bc839984ae70cb0115140c7c44a2
     	velocidadeX *= -1; 
     	if (velocidadeX>0)
     	velocidadeX--;
     	else 
     	velocidadeX++;	
 
+<<<<<<< HEAD
       // if (posicaoX>=(width -MARGEN))
+=======
+      // if (posicaoX>=(width ))
+>>>>>>> bb6ce80cc178bc839984ae70cb0115140c7c44a2
       // posicaoX--;
 
     }
@@ -1086,9 +1176,15 @@ class Area
     //   velocidadeY *= -1; 
     // }
 
+<<<<<<< HEAD
     if(    posicaoY > (((height )-MARGEN) )  )
     {
     	posicaoY = (height - altura_tam)-MARGEN;
+=======
+    if(    posicaoY > (((height )) )  )
+    {
+    	posicaoY = (height - altura_tam);
+>>>>>>> bb6ce80cc178bc839984ae70cb0115140c7c44a2
     	velocidadeY *= -1; 
     	if (velocidadeY>0)
     	velocidadeY--;
@@ -1096,12 +1192,21 @@ class Area
     	velocidadeY++;	
 
       // if (posicaoY>=(height -(MARGEN)))
+<<<<<<< HEAD
       // posicaoY--;
 
     }
     if(posicaoY <  (altura_tam+MARGEN))
     {
     	posicaoY = altura_tam+MARGEN ;
+=======
+       posy--;
+
+    }
+    if(posicaoY <  (altura_tam))
+    {
+    	posicaoY = altura_tam ;
+>>>>>>> bb6ce80cc178bc839984ae70cb0115140c7c44a2
     	velocidadeY *= -1; 
     	if (velocidadeY>0)
     	velocidadeY--;
@@ -1345,8 +1450,13 @@ int ESCALA = 2;
     {
       Vec2D p=(Vec2D)points.get(i);
       handles[i]=p;
+<<<<<<< HEAD
       // if (showHandles) 
       // ellipse(p.x, p.y, 5, 5);
+=======
+      if (showHandles) 
+      ellipse(p.x, p.y, 5, 5);
+>>>>>>> bb6ce80cc178bc839984ae70cb0115140c7c44a2
 
     }
 

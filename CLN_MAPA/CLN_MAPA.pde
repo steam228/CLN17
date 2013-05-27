@@ -230,7 +230,11 @@ void draw(){
   // procuraInstas();
    lastTime = millis();
    // mostraInsta();
+<<<<<<< HEAD
 mostraInsta();
+=======
+//mostraInsta();
+>>>>>>> bb6ce80cc178bc839984ae70cb0115140c7c44a2
    // mostraTweet();
  } 
 
@@ -247,6 +251,11 @@ moveMundo();
 //layerTOPO.beginDraw();
     //layerTOPO.background(255,0,0);
   //    layerTOPO.endDraw();
+<<<<<<< HEAD
+=======
+
+//canvas.image(layerTOPO , 0, 0); 
+>>>>>>> bb6ce80cc178bc839984ae70cb0115140c7c44a2
 
 //canvas.image(layerTOPO , 0, 0); 
 
@@ -320,8 +329,8 @@ void carregaCasas()
 
     // float ypos = map (yvals[i], ymin, ymax, margin/2, height-(margin/2));
     // float xpos = map (xvals[i], xmin, xmax, margin, width-(margin/4));
-     float ypos = map (yvals[i], ymin, ymax, 0, height);
-    float xpos = map (xvals[i], xmin, xmax, 0, width);
+     float ypos = map (yvals[i], ymin, ymax, 50, height-50);
+    float xpos = map (xvals[i], xmin, xmax, 50, width-50);
 //---------------------------------
 float nova_x;
 

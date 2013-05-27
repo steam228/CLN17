@@ -19,8 +19,13 @@
 
 
   int MARGEN=50;
+<<<<<<< HEAD
   int ALTURA=300;
   int LARGURA=1200*2;
+=======
+  int ALTURA=600;
+  int LARGURA=800;
+>>>>>>> bb6ce80cc178bc839984ae70cb0115140c7c44a2
   int ESCALA=2;
   int INCREMENTO=1;
   int LIMITE=60;
