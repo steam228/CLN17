@@ -120,7 +120,6 @@ void procuraInstas()
     instaSite = loadStrings("https://api.instagram.com/v1/tags/"+tag+"//media/recent?client_id=9d6af7341f7a4fd39e888fd12ab8d8a0&min_tag_id="+aux.getInsta()+"");
    if (instaSite!=null)
 {
-  //println("ESTOU A PROCURA: ");
    jsonstring =instaSite[0];
     JSON data = JSON.parse(jsonstring);
     JSON ultimo = data.getJSON("pagination");
@@ -148,9 +147,6 @@ void procuraInstas()
         
       }
     // }
-  }
-  else  {
-    println("FALHA DA NET ");
   }
     vouI++;
     if (vouI>=NUM_CASAS)

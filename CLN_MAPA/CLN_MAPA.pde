@@ -5,18 +5,6 @@ import codeanticode.syphon.*;
 
 PGraphics layerTOPO;
 PImage portaIMG;
-int vouiiii=0;
-PImage[] portass = new PImage[6];
-boolean[] jaja = new boolean[6];
-//jaja=false;
- //jaja[0]=false;
-// jaja[1]=false;
-// jaja[2]=false;
-//jaja[3]=false;
-// jaja[4]=false;
-// jaja[5]=false;
-// jaja[6]=false;
-
   PImage mascara;
 mostraCoisas mostraINSTA;
 mostraCoisas mostraTWII;
@@ -70,13 +58,6 @@ long lastTime = 0;
 long ultimaVez = 0;
 
 void setup(){
- jaja[0]=false;
- jaja[1]=false;
- jaja[2]=false;
-jaja[3]=false;
- jaja[4]=false;
- jaja[5]=false;
-
   portaIMG = loadImage("img.png");
   mascara = loadImage("1.gif");
   mascara.resize(50,100);
@@ -193,14 +174,14 @@ mostraINSTA = new mostraCoisas(cococo);
 threadTWII = new SimpleThread(cococo);
 mostraTWII = new mostraCoisas(cococo);
  threadTWII.start();
-// mostraTWII.start();
+ mostraTWII.start();
 }
 
 void draw(){
    canvas.beginDraw();
-   canvas.background(0);
-//   if (hideee)
-// {areas.desenharTodos(); }
+   background(0);
+  if (hideee)
+{areas.desenharTodos(); }
 // else  {
  
 //}
@@ -225,7 +206,7 @@ void draw(){
   // procuraInstas();
    lastTime = millis();
    // mostraInsta();
-mostraInsta();
+
    // mostraTweet();
  } 
 
@@ -239,27 +220,19 @@ moveMundo();
 // }
 //animaMundo();
 //layerTOPO.background(255,0,0);
-//layerTOPO.beginDraw();
+layerTOPO.beginDraw();
     //layerTOPO.background(255,0,0);
-  //    layerTOPO.endDraw();
+      layerTOPO.endDraw();
 
-//canvas.image(layerTOPO , 0, 0); 
+canvas.image(layerTOPO , 0, 0); 
 
 
 //image(portaIMG,0,0);
-for (int aae = 0; aae<6; aae++){
-  if (jaja[aae]==true)
-{
-canvas.image(portass[aae], porta1_x[aae][0],porta1_y[aae][0]);
-//println("aaaaaaaaa");
-//image(portass[0], porta1_x[0][0],porta1_y[0][0]);
-}
-}
+
 
   canvas.endDraw();
  image(canvas, 0, 0);
   server.sendImage(canvas);
-
 }
 
 
@@ -588,43 +561,16 @@ void keyPressed()
 
 void mostraInsta()
 {
-
-if (instagrams.size()>0)
-{
-//int  qual = int ( random(instagrams.size()) );
   insta aux_I;
-
-    // if (i==qual)
-    // {
-    //int i=int(random(instagrams.size() ));
-    aux_I= (insta) instagrams.get(vouiiii);
+  // for (int i = 0; i <instagrams.size(); i++) 
+  // {
+    int i=int(random(instagrams.size() ));
+    aux_I= (insta) instagrams.get(i);
     int pos =int(random(0,6));
     println(pos);
-    // println(porta1_y[pos][0]+" < - > "+porta1_y[pos][0]);
-   // aux_I.mostra(porta1_x[pos][0],porta1_y[pos][0]);
-//PImage coiso=aux_I.dameca();
-//portass[int(random(6))]=aux_I.dameca();
-portass[pos]=aux_I.dameca();
-jaja[pos]=true;
-//image(coiso, porta1_x[pos][0],porta1_y[pos][0]);
+    println(porta1_y[pos][0]+" < - > "+porta1_y[pos][0]);
+    aux_I.mostra(porta1_x[pos][0],porta1_y[pos][0]);
   // }
-
-
-vouiiii++;
-if (vouiiii>=instagrams.size())
-vouiiii=0;
-
-  // insta aux_I;
-  // // for (int i = 0; i <instagrams.size(); i++) 
-  // // {
-  //   int i=int(random(instagrams.size() ));
-  //   aux_I= (insta) instagrams.get(i);
-  //   int pos =int(random(0,6));
-  //   println(pos);
-  //   println(porta1_y[pos][0]+" < - > "+porta1_y[pos][0]);
-  //   aux_I.mostra(porta1_x[pos][0],porta1_y[pos][0]);
-  // // }
-}
 }
 // void mouseMoved()
 // {
