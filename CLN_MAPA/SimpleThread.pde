@@ -117,7 +117,7 @@ void procuraInstas()
   // {
     aux= (casa) casas.get(vouI);
     tag =aux.getTag();
-    instaSite = loadStrings("https://api.instagram.com/v1/tags/"+tag+"//media/recent?client_id=df3cb46a40c042faa62e1e2e29c89697&min_tag_id="+aux.getInsta()+"");
+    instaSite = loadStrings("https://api.instagram.com/v1/tags/"+tag+"//media/recent?client_id=9d6af7341f7a4fd39e888fd12ab8d8a0&min_tag_id="+aux.getInsta()+"");
    if (instaSite!=null)
 {
   //println("ESTOU A PROCURA: ");
