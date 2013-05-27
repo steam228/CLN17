@@ -91,6 +91,8 @@
  		// {
  			float p_xx=0;
  			float p_yy=0;
+ 				 p_xx=casola.getX();
+ 					 p_yy=casola.getY();
  			numDaCasa= (Integer) caminho.get(i+1);
  			cas_aux=(casa)casitas.get(numDaCasa);
  			float c_xx=cas_aux.getX();
@@ -109,13 +111,17 @@
  				float x = lerp(p_xx, c_xx, aa/3.0);
  				float y = lerp(p_yy, c_yy, aa/3.0);
  					//point(x, y);
- 					canvas.fill(0);
- 					canvas.ellipse(x, y, 5, 5);
+ 					fill(0);
+ 					//ellipse(x, y, 5, 5);
  					traco.novapos (x,y);	
  				}
  			//}
+ 			canvas.stroke(corcor);
+ 			canvas.strokeWeight(1);
+ 			canvas.line(p_yy,p_yy,c_xx,c_yy);
+ 			
  			traco.setCor(corcor);
- 			traco.desenhalinha();	
+ 		//	traco.desenhalinha();	
  		}
  		//traco.setCor(color(255,0,0));
 		
