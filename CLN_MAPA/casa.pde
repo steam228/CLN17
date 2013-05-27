@@ -1,9 +1,10 @@
  class casa 
  {
+  int[] porta1_x = new int[4];
+  int[] porta1_y = new int[4];
 
-
- 	float posicaoX, posicaoY;
- 	float velocidadeX, velocidadeY;
+  float posicaoX, posicaoY;
+  float velocidadeX, velocidadeY;
 
   //variáveis onde guardamos os valores de aceleraçao
   float aceleracaoX;
@@ -43,18 +44,29 @@
 
   casa (String nome , float xx, float yy) 
   {
-  	tag=nome;
-  	posx=xx;
-  	posy=yy;
-  	resistencia = 0.95;
-  	posicaoX=xx;
-  	posicaoY=yy;
-  	tamLetra=15;
-  	dim=1;
-  	numInsta=0;
-  	numTweets=0;
-  	ultimoInsta="0";
-  	ultimoTweet="?q=%23"+nome;
+
+
+    porta1_x[0]=400; porta1_y[0]=0;
+    porta1_x[1]=400; porta1_y[1]=300;
+    porta1_x[2]=800; porta1_y[2]=300;
+    porta1_x[3]=800; porta1_y[3]=0;
+
+
+
+
+
+    tag=nome;
+    posx=xx;
+    posy=yy;
+    resistencia = 0.95;
+    posicaoX=xx;
+    posicaoY=yy;
+    tamLetra=15;
+    dim=1;
+    numInsta=0;
+    numTweets=0;
+    ultimoInsta="0";
+    ultimoTweet="?q=%23"+nome;
 		// desenho = loadShape("Casacaldas.svg");
 		// fundo = loadShape("CasaFundo.svg");
 		cor = color(0,0,0);
@@ -101,10 +113,10 @@
     aceleracaoX = 0;
     aceleracaoY = 0;
     this.colisao();
-}
+  }
 
 
-void colisao(){
+  void colisao(){
     //testamos para ver se a nossa bola colide com os lados da janela
     //mas temos em conta o raio da bola
     //sempre que há uma colisão, colocamos a bola no ponto de colisão
@@ -132,8 +144,8 @@ void colisao(){
     	else 
     	velocidadeX++;	
 
-      if (posx>=(width -MARGEN))
-      posx--;
+      // if (posicaoX>=(width -MARGEN))
+      // posicaoX--;
 
     }
     // if(posicaoY < raio){
@@ -150,8 +162,8 @@ void colisao(){
     	else 
     	velocidadeY++;	
 
-if (posy>=(height -(MARGEN)))
-posy--;
+      // if (posicaoY>=(height -(MARGEN)))
+      // posicaoY--;
 
     }
     if(posicaoY <  (altura_tam+MARGEN))
@@ -165,7 +177,8 @@ posy--;
     }
 
 
-    
+
+
 }
 
 
@@ -200,11 +213,11 @@ void desenha(	)
    //   shape(bb, posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA), largura_tam, altura_tam);
    //   shape(cc, posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA), largura_tam, altura_tam);
    //   shape(dd, posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA), largura_tam, altura_tam);
-rect(posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA), largura_tam, largura_tam);
-line(posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA),posicaoX-((largura+(dim*0.7))/ESCALA)+largura_tam, posicaoY-((altura+dim)/ESCALA)+largura_tam);
-line(posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA)+largura_tam,posicaoX-((largura+(dim*0.7))/ESCALA)+largura_tam, posicaoY-((altura+dim)/ESCALA));
-line(posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA),posicaoX-((largura+(dim*0.7))/ESCALA)+(largura_tam/2), posicaoY-((altura+dim)/ESCALA)-(largura_tam/2));
-line(posicaoX-((largura+(dim*0.7))/ESCALA)+largura_tam, posicaoY-((altura+dim)/ESCALA),posicaoX-((largura+(dim*0.7))/ESCALA)+(largura_tam/2), posicaoY-((altura+dim)/ESCALA)-(largura_tam/2));
+   rect(posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA), largura_tam, largura_tam);
+   line(posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA),posicaoX-((largura+(dim*0.7))/ESCALA)+largura_tam, posicaoY-((altura+dim)/ESCALA)+largura_tam);
+   line(posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA)+largura_tam,posicaoX-((largura+(dim*0.7))/ESCALA)+largura_tam, posicaoY-((altura+dim)/ESCALA));
+   line(posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA),posicaoX-((largura+(dim*0.7))/ESCALA)+(largura_tam/2), posicaoY-((altura+dim)/ESCALA)-(largura_tam/2));
+   line(posicaoX-((largura+(dim*0.7))/ESCALA)+largura_tam, posicaoY-((altura+dim)/ESCALA),posicaoX-((largura+(dim*0.7))/ESCALA)+(largura_tam/2), posicaoY-((altura+dim)/ESCALA)-(largura_tam/2));
 
-		}
-	}
+ }
+}
