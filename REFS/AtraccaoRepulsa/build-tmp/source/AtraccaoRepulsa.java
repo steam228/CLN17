@@ -32,12 +32,12 @@ frameRate(30);
 
 public void draw(){
   // bolas.add(new Bola()); 
-  background(0);
+ // background(0);
   stroke(255, 255, 255, 100);
   //nosso loop a interar por todas as bolas
   for(int i=0; i<bolas.size(); i++){
     Bola bolaA = (Bola)bolas.get(i);
-  //  bolaA.mover();
+    bolaA.mover();
     
     //dentro deste loop, temos outro loop
     //onde cada bola vai interagir com todas as outras bolas
