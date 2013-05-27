@@ -230,7 +230,7 @@ void draw(){
   // procuraInstas();
    lastTime = millis();
    // mostraInsta();
-//mostraInsta();
+mostraInsta();
    // mostraTweet();
  } 
 
@@ -259,7 +259,7 @@ moveMundo();
 // //println("aaaaaaaaa");
 // //image(portass[0], porta1_x[0][0],porta1_y[0][0]);
 // }
-//}
+// }
 
 
 // canvas.fill(0,255,0);

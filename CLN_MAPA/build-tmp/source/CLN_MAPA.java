@@ -255,7 +255,7 @@ public void draw(){
   // procuraInstas();
    lastTime = millis();
    // mostraInsta();
-//mostraInsta();
+mostraInsta();
    // mostraTweet();
  } 
 
@@ -277,14 +277,14 @@ moveMundo();
 
 
 //image(portaIMG,0,0);
-// for (int aae = 0; aae<6; aae++){
-//   if (jaja[aae]==true)
-// {
-// canvas.image(portass[aae], porta1_x[aae][0],porta1_y[aae][0]);
-// //println("aaaaaaaaa");
-// //image(portass[0], porta1_x[0][0],porta1_y[0][0]);
-// }
-//}
+for (int aae = 0; aae<6; aae++){
+  if (jaja[aae]==true)
+{
+canvas.image(portass[aae], porta1_x[aae][0],porta1_y[aae][0]);
+//println("aaaaaaaaa");
+//image(portass[0], porta1_x[0][0],porta1_y[0][0]);
+}
+}
 
 
 // canvas.fill(0,255,0);
@@ -837,7 +837,7 @@ public void procuraInstas()
   // {
     aux= (casa) casas.get(vouI);
     tag =aux.getTag();
-    instaSite = loadStrings("https://api.instagram.com/v1/tags/"+tag+"//media/recent?client_id=df3cb46a40c042faa62e1e2e29c89697&min_tag_id="+aux.getInsta()+"");
+    instaSite = loadStrings("https://api.instagram.com/v1/tags/"+tag+"//media/recent?client_id=d89bc143c63a4dbe85785bc181c146e4&min_tag_id="+aux.getInsta()+"");
    if (instaSite!=null)
 {
   //println("ESTOU A PROCURA: ");
