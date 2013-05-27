@@ -28,10 +28,6 @@ public class CLN_MAPA extends PApplet {
 
 
 
-  int MARGEN_BAIXO=50;
-int[][] porta1_x = new int[4][4];
-int[][] porta1_y = new int[4][4];
-
 PGraphics canvas;
 SyphonServer server;
 
@@ -87,60 +83,10 @@ font = loadFont("AGaramondPro-Bold-48.vlw");
 textFont(font, 15);
 areas= new exclusoes(this);
 id_area= areas.addPoligno();
-
-
-areas.addPonto(id_area,400,0);
-areas.addPonto(id_area,400,300);
-areas.addPonto(id_area,800,300);
-areas.addPonto(id_area,800,0);
-
-
-
-
-porta1_x[0][0]=100; porta1_y[0][0]=200;
-porta1_x[0][1]=100; porta1_y[0][1]=300;
-porta1_x[0][2]=150; porta1_y[0][2]=300;
-porta1_x[0][3]=150; porta1_y[0][3]=200;
-
-id_area= areas.addPoligno();
-areas.addPonto(id_area,100,200);
-areas.addPonto(id_area,100,300);
-areas.addPonto(id_area,150,300);
-areas.addPonto(id_area,150,200);
-
-id_area= areas.addPoligno();
-areas.addPonto(id_area,200,200);
-areas.addPonto(id_area,200,300);
-areas.addPonto(id_area,250,300);
-areas.addPonto(id_area,250,200);
-
-id_area= areas.addPoligno();
-areas.addPonto(id_area,300,200);
-areas.addPonto(id_area,300,300);
-areas.addPonto(id_area,350,300);
-areas.addPonto(id_area,350,200);
-
-
-
-
-
-id_area= areas.addPoligno();
-areas.addPonto(id_area,850,200);
-areas.addPonto(id_area,850,300);
-areas.addPonto(id_area,900,300);
-areas.addPonto(id_area,900,200);
-
-id_area= areas.addPoligno();
-areas.addPonto(id_area,950,200);
-areas.addPonto(id_area,950,300);
-areas.addPonto(id_area,1000,300);
-areas.addPonto(id_area,1000,200);
-
-id_area= areas.addPoligno();
-areas.addPonto(id_area,1050,200);
-areas.addPonto(id_area,1050,300);
-areas.addPonto(id_area,1100,300);
-areas.addPonto(id_area,1100,200);
+areas.addPonto(id_area,300,0);
+areas.addPonto(id_area,400,50);
+areas.addPonto(id_area,410,80);
+areas.addPonto(id_area,400,100);
   //size(largura, altura,P3D);
   size(largura, altura,P3D);
    canvas = createGraphics(1200, 300, P3D);
@@ -200,7 +146,7 @@ moveMundo();
 
 
   canvas.endDraw();
- image(canvas, 0, 0);
+ //image(canvas, 0, 0);
   server.sendImage(canvas);
 }
 
@@ -243,7 +189,7 @@ float nova_x;
 
 int MEIO=600;
 int LARGUURA=1200;
-int MEIALARGURA=100;
+int MEIALARGURA=200;
 
 if (xpos>MEIO)
 {
@@ -256,34 +202,6 @@ else
 
 
 xpos=nova_x;
-
-//-------------------
-
-
-// porta1_x[0]=100; porta1_y[0]=200;
-// porta1_x[1]=100; porta1_y[1]=300;
-// porta1_x[2]=150; porta1_y[2]=300;
-// porta1_x[3]=150; porta1_y[3]=200;
-//int lala=0;
-for (int lala=0; lala<4 ; lala++)
-{
-if ( (xpos>porta1_x[lala][0]) &&  (xpos<porta1_x[lala][3]) && (ypos>porta1_y[lala][0]) )
-{
-  float cima_dis=dist(xpos, ypos, xpos, porta1_y[lala][0]);//DISTANCIA PARA CIMA
-  float esq_dis=dist(xpos, ypos, porta1_x[lala][0], ypos);//DISTANCIA PARA ESQ
-  float dir_dis=dist(xpos, ypos, porta1_x[lala][0], ypos);//DISTANCIA PARA DIR
-  if ( (dir_dis<esq_dis) && (dir_dis<cima_dis) )
-  {
-    xpos-=dir_dis;
-  }
-  else if (  (cima_dis<esq_dis)&&(cima_dis<dir_dis)      ) {
-    ypos-=cima_dis;
-  }
-  else if ( (esq_dis<=cima_dis)&&(esq_dis<=dir_dis)   ) {
-     xpos+=dir_dis;
-  }
-}
-}
 //---------------------------------
     posii =verificaCasa(xpos,ypos);
     casas.add(new casa(designa, posii[0], posii[1]));
@@ -440,17 +358,15 @@ public void procuraInstas()
         JSON user= unico.getJSON("user");     
         user_id=user.getInt("id");//identificador do user
         username=user.getString("username");
-       
         instagrams.add( new insta(instagrams.size()+1,user_id,fotoURL));//adiciona instagram a lista
         aux.addInsta();//aumenta o num de instagrams na casa
         adicionaAOuser(username,'I',tag); 
         println("INSTA  USER-> "+user_id+" TAG -> "+tag);
-        
       }
     // }
   }
     vou++;
-    if (vou>=NUM_CASAS)
+    if (vou>NUM_CASAS)
     vou=0;
   }
   public void animaMundo()
@@ -674,11 +590,10 @@ class Area
 }
  class casa 
  {
-  int[] porta1_x = new int[4];
-  int[] porta1_y = new int[4];
 
-  float posicaoX, posicaoY;
-  float velocidadeX, velocidadeY;
+
+ 	float posicaoX, posicaoY;
+ 	float velocidadeX, velocidadeY;
 
   //vari\u00e1veis onde guardamos os valores de acelera\u00e7ao
   float aceleracaoX;
@@ -718,29 +633,18 @@ class Area
 
   casa (String nome , float xx, float yy) 
   {
-
-
-    porta1_x[0]=400; porta1_y[0]=0;
-    porta1_x[1]=400; porta1_y[1]=300;
-    porta1_x[2]=800; porta1_y[2]=300;
-    porta1_x[3]=800; porta1_y[3]=0;
-
-
-
-
-
-    tag=nome;
-    posx=xx;
-    posy=yy;
-    resistencia = 0.95f;
-    posicaoX=xx;
-    posicaoY=yy;
-    tamLetra=15;
-    dim=1;
-    numInsta=0;
-    numTweets=0;
-    ultimoInsta="0";
-    ultimoTweet="?q=%23"+nome;
+  	tag=nome;
+  	posx=xx;
+  	posy=yy;
+  	resistencia = 0.95f;
+  	posicaoX=xx;
+  	posicaoY=yy;
+  	tamLetra=15;
+  	dim=1;
+  	numInsta=0;
+  	numTweets=0;
+  	ultimoInsta="0";
+  	ultimoTweet="?q=%23"+nome;
 		// desenho = loadShape("Casacaldas.svg");
 		// fundo = loadShape("CasaFundo.svg");
 		cor = color(0,0,0);
@@ -787,10 +691,10 @@ class Area
     aceleracaoX = 0;
     aceleracaoY = 0;
     this.colisao();
-  }
+}
 
 
-  public void colisao(){
+public void colisao(){
     //testamos para ver se a nossa bola colide com os lados da janela
     //mas temos em conta o raio da bola
     //sempre que h\u00e1 uma colis\u00e3o, colocamos a bola no ponto de colis\u00e3o
@@ -818,8 +722,8 @@ class Area
     	else 
     	velocidadeX++;	
 
-      // if (posicaoX>=(width -MARGEN))
-      // posicaoX--;
+      if (posx>=(width -MARGEN))
+      posx--;
 
     }
     // if(posicaoY < raio){
@@ -836,8 +740,8 @@ class Area
     	else 
     	velocidadeY++;	
 
-      // if (posicaoY>=(height -(MARGEN)))
-      // posicaoY--;
+if (posy>=(height -(MARGEN)))
+posy--;
 
     }
     if(posicaoY <  (altura_tam+MARGEN))
@@ -851,8 +755,7 @@ class Area
     }
 
 
-
-
+    
 }
 
 
@@ -887,14 +790,14 @@ public void desenha(	)
    //   shape(bb, posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA), largura_tam, altura_tam);
    //   shape(cc, posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA), largura_tam, altura_tam);
    //   shape(dd, posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA), largura_tam, altura_tam);
-   rect(posicaoX-((largura+(dim*0.7f))/ESCALA), posicaoY-((altura+dim)/ESCALA), largura_tam, largura_tam);
-   line(posicaoX-((largura+(dim*0.7f))/ESCALA), posicaoY-((altura+dim)/ESCALA),posicaoX-((largura+(dim*0.7f))/ESCALA)+largura_tam, posicaoY-((altura+dim)/ESCALA)+largura_tam);
-   line(posicaoX-((largura+(dim*0.7f))/ESCALA), posicaoY-((altura+dim)/ESCALA)+largura_tam,posicaoX-((largura+(dim*0.7f))/ESCALA)+largura_tam, posicaoY-((altura+dim)/ESCALA));
-   line(posicaoX-((largura+(dim*0.7f))/ESCALA), posicaoY-((altura+dim)/ESCALA),posicaoX-((largura+(dim*0.7f))/ESCALA)+(largura_tam/2), posicaoY-((altura+dim)/ESCALA)-(largura_tam/2));
-   line(posicaoX-((largura+(dim*0.7f))/ESCALA)+largura_tam, posicaoY-((altura+dim)/ESCALA),posicaoX-((largura+(dim*0.7f))/ESCALA)+(largura_tam/2), posicaoY-((altura+dim)/ESCALA)-(largura_tam/2));
+rect(posicaoX-((largura+(dim*0.7f))/ESCALA), posicaoY-((altura+dim)/ESCALA), largura_tam, largura_tam);
+line(posicaoX-((largura+(dim*0.7f))/ESCALA), posicaoY-((altura+dim)/ESCALA),posicaoX-((largura+(dim*0.7f))/ESCALA)+largura_tam, posicaoY-((altura+dim)/ESCALA)+largura_tam);
+line(posicaoX-((largura+(dim*0.7f))/ESCALA), posicaoY-((altura+dim)/ESCALA)+largura_tam,posicaoX-((largura+(dim*0.7f))/ESCALA)+largura_tam, posicaoY-((altura+dim)/ESCALA));
+line(posicaoX-((largura+(dim*0.7f))/ESCALA), posicaoY-((altura+dim)/ESCALA),posicaoX-((largura+(dim*0.7f))/ESCALA)+(largura_tam/2), posicaoY-((altura+dim)/ESCALA)-(largura_tam/2));
+line(posicaoX-((largura+(dim*0.7f))/ESCALA)+largura_tam, posicaoY-((altura+dim)/ESCALA),posicaoX-((largura+(dim*0.7f))/ESCALA)+(largura_tam/2), posicaoY-((altura+dim)/ESCALA)-(largura_tam/2));
 
- }
-}
+		}
+	}
 class exclusoes 
 {
 
@@ -1051,7 +954,6 @@ int ESCALA = 2;
 
   public void desenhalinha() 
   {
-    
     noFill();
 
         stroke (cor);
