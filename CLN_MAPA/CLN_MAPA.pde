@@ -3,13 +3,9 @@ import java.util.*;
 import de.bezier.data.*;
 import codeanticode.syphon.*;
 
-int estou_x=0;
-int estou_y=0;
-int estouu=0;
 PGraphics layerTOPO;
 PImage portaIMG;
 int vouiiii=0;
-int vouaaaa=0;
 PImage[] portass = new PImage[6];
 boolean[] jaja = new boolean[6];
 //jaja=false;
@@ -74,7 +70,6 @@ long lastTime = 0;
 long ultimaVez = 0;
 
 void setup(){
-  frameRate(24);
  jaja[0]=false;
  jaja[1]=false;
  jaja[2]=false;
@@ -122,7 +117,7 @@ areas.addPonto(id_area,150,300);
 areas.addPonto(id_area,150,200);
 
 
-porta1_x[1][0]=250; porta1_y[1][0]=200;
+porta1_x[1][0]=200; porta1_y[1][0]=200;
 porta1_x[1][1]=200; porta1_y[1][1]=300;
 porta1_x[1][2]=250; porta1_y[1][2]=300;
 porta1_x[1][3]=250; porta1_y[1][3]=200;
@@ -132,7 +127,7 @@ areas.addPonto(id_area,200,300);
 areas.addPonto(id_area,250,300);
 areas.addPonto(id_area,250,200);
 
-porta1_x[2][0]=450; porta1_y[2][0]=200;
+porta1_x[2][0]=300; porta1_y[2][0]=200;
 porta1_x[2][1]=300; porta1_y[2][1]=300;
 porta1_x[2][2]=350; porta1_y[2][2]=300;
 porta1_x[2][3]=350; porta1_y[2][3]=200;
@@ -145,7 +140,7 @@ areas.addPonto(id_area,350,200);
 
 
 
-porta1_x[3][0]=650; porta1_y[3][0]=200;
+porta1_x[3][0]=850; porta1_y[3][0]=200;
 porta1_x[3][1]=850; porta1_y[3][1]=300;
 porta1_x[3][2]=900; porta1_y[3][2]=300;
 porta1_x[3][3]=900; porta1_y[3][3]=200;
@@ -157,7 +152,7 @@ areas.addPonto(id_area,900,200);
 
 
 
-porta1_x[4][0]=850; porta1_y[4][0]=200;
+porta1_x[4][0]=950; porta1_y[4][0]=200;
 porta1_x[4][1]=950; porta1_y[4][1]=300;
 porta1_x[4][2]=1000; porta1_y[4][2]=300;
 porta1_x[4][3]=1000; porta1_y[4][3]=200;
@@ -203,7 +198,7 @@ mostraTWII = new mostraCoisas(cococo);
 
 void draw(){
    canvas.beginDraw();
-   canvas.background(255);
+   canvas.background(0);
 //   if (hideee)
 // {areas.desenharTodos(); }
 // else  {
@@ -261,29 +256,8 @@ canvas.image(portass[aae], porta1_x[aae][0],porta1_y[aae][0]);
 }
 }
 
-   if (!hideee)
-{
- canvas.stroke(0,255,0);
- canvas.strokeWeight(5);
-canvas.line(100,0,100,300);
-canvas.line(200,0,200,300);
-canvas.line(400,0,400,300);
-canvas.line(600,0,600,300);
-canvas.line(800,0,800,300);
-canvas.line(1000,0,1000,300);
-
- canvas.line(0,50,1200,50);
- canvas.line(0,100,1200,100);
- canvas.line(0,150,1200,150);
- canvas.line(0,200,1200,200);
- canvas.line(0,250,1200,250);
-}
-// canvas.fill(0,255,0);
-// canvas.ellipse(estou_x, estou_y, 10, 10);
-
-//  canvas.text(estou_x +" <-> "+ estou_y,100,100);
- canvas.endDraw();
-  image(canvas, 0, 0);
+  canvas.endDraw();
+ image(canvas, 0, 0);
   server.sendImage(canvas);
 
 }
@@ -609,56 +583,7 @@ void keyPressed()
   }
 
 
-  if (key == 'f' || key == 'F') {//TERMINA O DESENHO DE UMA ARE DE EXCUSAO
-    estou_y--;
-    canvas.fill(255,0,0);
-  canvas.text(estou_x +" <-> "+ estou_y,100,100);
 }
-  if (key == 'g' || key == 'G') {//TOOGLE DE VISAO DAS AREAS DE EXCLUSAO
-    estou_y++;
-    canvas.fill(255,0,0);
-    canvas.text(estou_x +" <-> "+ estou_y,100,100);
-  }
-
-
-  if (key == 'v' || key == 'V') {//TERMINA O DESENHO DE UMA ARE DE EXCUSAO
-    estou_x--;
-    canvas.fill(255,0,0);
-  canvas.text(estou_x +" <-> "+ estou_y,100,100);
-}
-  if (key == 'b' || key == 'B') {//TOOGLE DE VISAO DAS AREAS DE EXCLUSAO
-    estou_x++;
-    canvas.fill(255,0,0);
-   
-  }
-
-
-}
-
-
-void mostraTWEE()
-{
-
-if (tweets.size()>0)
-{
-
-  tweet aux_T;
-
-    aux_T= (tweet) tweets.get(vouaaaa);
-    int pos =int(random(0,6));
-//portass[pos]=aux_I.dameca();
-aux_T.pinta();
-jaja[pos]=true;
-
-vouaaaa++;
-if (vouiiii>=tweets.size())
-vouaaaa=0;
-}
-}
-
-
-
-
 
 
 void mostraInsta()
@@ -672,7 +597,6 @@ if (instagrams.size()>0)
     // if (i==qual)
     // {
     //int i=int(random(instagrams.size() ));
-
     aux_I= (insta) instagrams.get(vouiiii);
     int pos =int(random(0,6));
     println(pos);
@@ -687,7 +611,7 @@ jaja[pos]=true;
 
 
 vouiiii++;
-if (vouiiii>=(instagrams.size()))
+if (vouiiii>=instagrams.size())
 vouiiii=0;
 
   // insta aux_I;
@@ -702,10 +626,7 @@ vouiiii=0;
   // // }
 }
 }
-
 // void mouseMoved()
 // {
 //   println("XX-> " +mouseX+" YY-> "+mouseY);
 // }
-
-

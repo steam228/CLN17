@@ -14,16 +14,16 @@
  		foto = loadImage(url);
  		foto.resize(int(foto.width-(foto.width*0.3)	),int( foto.height-(foto.height*0.3)) );
 
- 		// for (int x=0; x<foto.height;x++)
- 		// {
+ 		for (int x=0; x<foto.height;x++)
+ 		{
 
- 		// 	for (int xx=0; xx<foto.width;xx++)
- 		// 	{
- 		// 		if (xx>(foto.width*0.5))
- 		// 		foto.set(xx,x,255);
- 		// 	}
+ 			for (int xx=0; xx<foto.width;xx++)
+ 			{
+ 				if (xx>(foto.width*0.5))
+ 				foto.set(xx,x,0);
+ 			}
 
- 		// }
+ 		}
 
  	}
 
@@ -31,7 +31,7 @@
  	{
 
  		layerTOPO.beginDraw();
- 		layerTOPO.background(0, 0, 255);
+ 		layerTOPO.background(0, 255, 0);
  		layerTOPO.image(foto, posx, posy);
  		layerTOPO.endDraw();
  	}
