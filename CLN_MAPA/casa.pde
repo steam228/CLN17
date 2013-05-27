@@ -19,8 +19,8 @@
 
 
   int MARGEN=50;
-  int ALTURA=600;
-  int LARGURA=800;
+  int ALTURA=300;
+  int LARGURA=1200*2;
   int ESCALA=2;
   int INCREMENTO=1;
   int LIMITE=60;
@@ -125,27 +125,26 @@
     //   posicaoX = raio;
     //   velocidadeX *= -1; 
     // }
-    if(posicaoX > ((width )))
+    if(posicaoX > ((width )-MARGEN))
     {
-    	posicaoX = (width - largura_tam);
+    	posicaoX = (width - largura_tam)-MARGEN;
 
     	velocidadeX *= -1; 
     	if (velocidadeX>0)
     	velocidadeX--;
     	else 
     	velocidadeX++;	
-      posx--;
     }
-    if(posicaoX <  (largura_tam))
+    if(posicaoX <  (largura_tam+MARGEN))
     {
-    	posicaoX =  largura_tam;
+    	posicaoX =  largura_tam+MARGEN;
     	velocidadeX *= -1; 
     	if (velocidadeX>0)
     	velocidadeX--;
     	else 
     	velocidadeX++;	
 
-      // if (posicaoX>=(width ))
+      // if (posicaoX>=(width -MARGEN))
       // posicaoX--;
 
     }
@@ -154,9 +153,9 @@
     //   velocidadeY *= -1; 
     // }
 
-    if(    posicaoY > (((height )) )  )
+    if(    posicaoY > (((height )-MARGEN) )  )
     {
-    	posicaoY = (height - altura_tam);
+    	posicaoY = (height - altura_tam)-MARGEN;
     	velocidadeY *= -1; 
     	if (velocidadeY>0)
     	velocidadeY--;
@@ -164,12 +163,12 @@
     	velocidadeY++;	
 
       // if (posicaoY>=(height -(MARGEN)))
-       posy--;
+      // posicaoY--;
 
     }
-    if(posicaoY <  (altura_tam))
+    if(posicaoY <  (altura_tam+MARGEN))
     {
-    	posicaoY = altura_tam ;
+    	posicaoY = altura_tam+MARGEN ;
     	velocidadeY *= -1; 
     	if (velocidadeY>0)
     	velocidadeY--;
