@@ -36,8 +36,8 @@
   String ultimoTweet;
   PShape desenho;
   PShape fundo;
-  int largura=int(60*0.28333);
-  int altura=int(85*0.28333);
+  int largura=17;
+  int altura=24;
   float largura_tam;
   float altura_tam;
 
@@ -172,7 +172,7 @@ posy--;
 
 
 
-void desenha(PShape aa ,PShape bb 	)
+void desenha(	)
 {
 		//smooth();
 		
@@ -186,14 +186,25 @@ void desenha(PShape aa ,PShape bb 	)
 		largura_tam=((largura+(dim*0.7))/ESCALA);
 		altura_tam=((altura+dim)/ESCALA);
 
-		noStroke();
+		//noStroke();
 		//fill(cor);
-		//stroke(color(255,0,10));
-		fill(color(255,0,10));
+		stroke(color(255,0,10));
+		//fill(color(255,0,10));
+    noFill();
+    strokeWeight(1+(dim)/16);
 		 //posicaoX
 		// shape(fundo, posx-((largura+(dim*0.7))/ESCALA), posy-((altura+dim)/ESCALA), (largura+(dim*0.7))/ESCALA, (altura+dim)/ESCALA);
 		 //shape(desenho, posx-((largura+(dim*0.7))/ESCALA), posy-((altura+dim)/ESCALA), (largura+(dim*0.7))/ESCALA, (altura+dim)/ESCALA);
 		 //shape(bb, posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA), largura_tam, altura_tam);
-		 shape(aa, posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA), largura_tam, altura_tam);
+		 // shape(aa, posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA), largura_tam, altura_tam);
+   //   shape(bb, posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA), largura_tam, altura_tam);
+   //   shape(cc, posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA), largura_tam, altura_tam);
+   //   shape(dd, posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA), largura_tam, altura_tam);
+rect(posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA), largura_tam, largura_tam);
+line(posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA),posicaoX-((largura+(dim*0.7))/ESCALA)+largura_tam, posicaoY-((altura+dim)/ESCALA)+largura_tam);
+line(posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA)+largura_tam,posicaoX-((largura+(dim*0.7))/ESCALA)+largura_tam, posicaoY-((altura+dim)/ESCALA));
+line(posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA),posicaoX-((largura+(dim*0.7))/ESCALA)+(largura_tam/2), posicaoY-((altura+dim)/ESCALA)-(largura_tam/2));
+line(posicaoX-((largura+(dim*0.7))/ESCALA)+largura_tam, posicaoY-((altura+dim)/ESCALA),posicaoX-((largura+(dim*0.7))/ESCALA)+(largura_tam/2), posicaoY-((altura+dim)/ESCALA)-(largura_tam/2));
+
 		}
 	}

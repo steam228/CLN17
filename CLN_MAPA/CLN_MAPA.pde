@@ -1,12 +1,18 @@
 import org.json.*;
 import java.util.*; 
 import de.bezier.data.*;
+import codeanticode.syphon.*;
 
+PGraphics canvas;
+SyphonServer server;
 import toxi.geom.*;
 import toxi.processing.*;
 int vou=0;
 
-PShape desenho;
+PShape desenho1;
+PShape desenho2;
+PShape desenho3;
+PShape desenho4;
 PShape fundo;
 
 int largura=1200;
@@ -37,9 +43,15 @@ long lastTime = 0;
 long ultimaVez = 0;
 
 void setup(){
-  desenho = loadShape("Casacaldas.svg");
-  fundo= loadShape("CasaFundo.svg");
-  desenho.disableStyle();
+  // desenho1 = loadShape("peca_01.svg");
+  // desenho2 = loadShape("peca_02.svg");
+  // desenho3 = loadShape("peca_03.svg");
+  // desenho4 = loadShape("peca_04.svg");
+  // fundo= loadShape("CasaFundo.svg");
+  // desenho1.disableStyle();
+  // desenho2.disableStyle();
+  // desenho3.disableStyle();
+  // desenho4.disableStyle();
 //fundo.disableStyle();
 PFont font;   
 font = loadFont("AGaramondPro-Bold-48.vlw");
@@ -51,7 +63,10 @@ areas.addPonto(id_area,400,50);
 areas.addPonto(id_area,410,80);
 areas.addPonto(id_area,400,100);
   //size(largura, altura,P3D);
-  size(largura, altura);
+  size(largura, altura,P3D);
+   canvas = createGraphics(1200, 300, P3D);
+  server = new SyphonServer(this, "Processing Syphon");
+
   casas = new ArrayList();
   tweets= new ArrayList();
   instagrams= new ArrayList();
@@ -62,6 +77,7 @@ areas.addPonto(id_area,400,100);
 }
 
 void draw(){
+   canvas.beginDraw();
    background(0);
   if (hideee)
 {areas.desenharTodos(); }
@@ -104,8 +120,9 @@ moveMundo();
 
 
 
-
-
+  canvas.endDraw();
+ image(canvas, 0, 0);
+  server.sendImage(canvas);
 }
 
 
@@ -333,7 +350,7 @@ void procuraInstas()
     for (int i = 0; i <casas.size(); i++) 
     {
       aux= (casa) casas.get(i);
-      aux.desenha(desenho , fundo);
+      aux.desenha();
     }
   }
 
@@ -372,7 +389,7 @@ void procuraInstas()
       //   line(bolaA.posicaoX, bolaA.posicaoY, bolaB.posicaoX, bolaB.posicaoY);
       // }
 
-      bolaA.desenha(desenho,fundo);
+      bolaA.desenha();
     }
     // ACIONA A OPÇAO DO RATO
     // float dx = bolaA.posicaoX - mouseX;
