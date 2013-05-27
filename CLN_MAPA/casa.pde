@@ -201,10 +201,10 @@ void desenha(	)
 
 		//noStroke();
 		//fill(cor);
-		stroke(color(255,0,10));
+		canvas.stroke(color(255,0,10));
 		//fill(color(255,0,10));
-    noFill();
-    strokeWeight(1+(dim)/16);
+    canvas.noFill();
+    canvas.strokeWeight(1+(dim)/16);
 		 //posicaoX
 		// shape(fundo, posx-((largura+(dim*0.7))/ESCALA), posy-((altura+dim)/ESCALA), (largura+(dim*0.7))/ESCALA, (altura+dim)/ESCALA);
 		 //shape(desenho, posx-((largura+(dim*0.7))/ESCALA), posy-((altura+dim)/ESCALA), (largura+(dim*0.7))/ESCALA, (altura+dim)/ESCALA);
@@ -213,11 +213,11 @@ void desenha(	)
    //   shape(bb, posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA), largura_tam, altura_tam);
    //   shape(cc, posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA), largura_tam, altura_tam);
    //   shape(dd, posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA), largura_tam, altura_tam);
-   rect(posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA), largura_tam, largura_tam);
-   line(posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA),posicaoX-((largura+(dim*0.7))/ESCALA)+largura_tam, posicaoY-((altura+dim)/ESCALA)+largura_tam);
-   line(posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA)+largura_tam,posicaoX-((largura+(dim*0.7))/ESCALA)+largura_tam, posicaoY-((altura+dim)/ESCALA));
-   line(posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA),posicaoX-((largura+(dim*0.7))/ESCALA)+(largura_tam/2), posicaoY-((altura+dim)/ESCALA)-(largura_tam/2));
-   line(posicaoX-((largura+(dim*0.7))/ESCALA)+largura_tam, posicaoY-((altura+dim)/ESCALA),posicaoX-((largura+(dim*0.7))/ESCALA)+(largura_tam/2), posicaoY-((altura+dim)/ESCALA)-(largura_tam/2));
+   canvas.rect(posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA), largura_tam, largura_tam);
+   canvas.line(posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA),posicaoX-((largura+(dim*0.7))/ESCALA)+largura_tam, posicaoY-((altura+dim)/ESCALA)+largura_tam);
+   canvas.line(posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA)+largura_tam,posicaoX-((largura+(dim*0.7))/ESCALA)+largura_tam, posicaoY-((altura+dim)/ESCALA));
+   canvas.line(posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA),posicaoX-((largura+(dim*0.7))/ESCALA)+(largura_tam/2), posicaoY-((altura+dim)/ESCALA)-(largura_tam/2));
+   canvas.line(posicaoX-((largura+(dim*0.7))/ESCALA)+largura_tam, posicaoY-((altura+dim)/ESCALA),posicaoX-((largura+(dim*0.7))/ESCALA)+(largura_tam/2), posicaoY-((altura+dim)/ESCALA)-(largura_tam/2));
 
  }
 }

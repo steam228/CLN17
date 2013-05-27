@@ -30,6 +30,18 @@ public class CLN_MAPA extends PApplet {
 
 PGraphics layerTOPO;
 PImage portaIMG;
+
+PImage[] portass = new PImage[6];
+boolean[] jaja = new boolean[6];
+//jaja=false;
+ //jaja[0]=false;
+// jaja[1]=false;
+// jaja[2]=false;
+//jaja[3]=false;
+// jaja[4]=false;
+// jaja[5]=false;
+// jaja[6]=false;
+
   PImage mascara;
 mostraCoisas mostraINSTA;
 mostraCoisas mostraTWII;
@@ -83,6 +95,13 @@ long lastTime = 0;
 long ultimaVez = 0;
 
 public void setup(){
+ jaja[0]=false;
+ jaja[1]=false;
+ jaja[2]=false;
+jaja[3]=false;
+ jaja[4]=false;
+ jaja[5]=false;
+
   portaIMG = loadImage("img.png");
   mascara = loadImage("1.gif");
   mascara.resize(50,100);
@@ -199,14 +218,14 @@ mostraINSTA = new mostraCoisas(cococo);
 threadTWII = new SimpleThread(cococo);
 mostraTWII = new mostraCoisas(cococo);
  threadTWII.start();
- mostraTWII.start();
+// mostraTWII.start();
 }
 
 public void draw(){
    canvas.beginDraw();
-   background(0);
-  if (hideee)
-{areas.desenharTodos(); }
+   canvas.background(0);
+//   if (hideee)
+// {areas.desenharTodos(); }
 // else  {
  
 //}
@@ -231,7 +250,7 @@ public void draw(){
   // procuraInstas();
    lastTime = millis();
    // mostraInsta();
-
+mostraInsta();
    // mostraTweet();
  } 
 
@@ -245,19 +264,27 @@ moveMundo();
 // }
 //animaMundo();
 //layerTOPO.background(255,0,0);
-layerTOPO.beginDraw();
+//layerTOPO.beginDraw();
     //layerTOPO.background(255,0,0);
-      layerTOPO.endDraw();
+  //    layerTOPO.endDraw();
 
-canvas.image(layerTOPO , 0, 0); 
+//canvas.image(layerTOPO , 0, 0); 
 
 
 //image(portaIMG,0,0);
-
+// for (int aae = 0; aae<6; aae++){
+//   if (jaja[aae]==true)
+// {
+// canvas.image(portass[aae], porta1_x[aae][0],porta1_y[aae][0]);
+// println("aaaaaaaaa");
+// //image(portass[0], porta1_x[0][0],porta1_y[0][0]);
+// }
+// }
 
   canvas.endDraw();
  image(canvas, 0, 0);
   server.sendImage(canvas);
+
 }
 
 
@@ -586,16 +613,41 @@ public void keyPressed()
 
 public void mostraInsta()
 {
+
+if (instagrams.size()>0)
+{
+int  qual = PApplet.parseInt ( random(instagrams.size()) );
   insta aux_I;
-  // for (int i = 0; i <instagrams.size(); i++) 
-  // {
-    int i=PApplet.parseInt(random(instagrams.size() ));
-    aux_I= (insta) instagrams.get(i);
+
+    // if (i==qual)
+    // {
+    //int i=int(random(instagrams.size() ));
+    aux_I= (insta) instagrams.get(qual);
     int pos =PApplet.parseInt(random(0,6));
     println(pos);
-    println(porta1_y[pos][0]+" < - > "+porta1_y[pos][0]);
-    aux_I.mostra(porta1_x[pos][0],porta1_y[pos][0]);
+    // println(porta1_y[pos][0]+" < - > "+porta1_y[pos][0]);
+   // aux_I.mostra(porta1_x[pos][0],porta1_y[pos][0]);
+//PImage coiso=aux_I.dameca();
+//portass[int(random(6))]=aux_I.dameca();
+portass[0]=aux_I.dameca();
+jaja[0]=true;
+//image(coiso, porta1_x[pos][0],porta1_y[pos][0]);
   // }
+
+
+
+
+  // insta aux_I;
+  // // for (int i = 0; i <instagrams.size(); i++) 
+  // // {
+  //   int i=int(random(instagrams.size() ));
+  //   aux_I= (insta) instagrams.get(i);
+  //   int pos =int(random(0,6));
+  //   println(pos);
+  //   println(porta1_y[pos][0]+" < - > "+porta1_y[pos][0]);
+  //   aux_I.mostra(porta1_x[pos][0],porta1_y[pos][0]);
+  // // }
+}
 }
 // void mouseMoved()
 // {
@@ -723,6 +775,7 @@ public void procuraInstas()
     instaSite = loadStrings("https://api.instagram.com/v1/tags/"+tag+"//media/recent?client_id=9d6af7341f7a4fd39e888fd12ab8d8a0&min_tag_id="+aux.getInsta()+"");
    if (instaSite!=null)
 {
+  //println("ESTOU A PROCURA: ");
    jsonstring =instaSite[0];
     JSON data = JSON.parse(jsonstring);
     JSON ultimo = data.getJSON("pagination");
@@ -750,6 +803,9 @@ public void procuraInstas()
         
       }
     // }
+  }
+  else  {
+    println("FALHA DA NET ");
   }
     vouI++;
     if (vouI>=NUM_CASAS)
@@ -997,10 +1053,10 @@ public void desenha(	)
 
 		//noStroke();
 		//fill(cor);
-		stroke(color(255,0,10));
+		canvas.stroke(color(255,0,10));
 		//fill(color(255,0,10));
-    noFill();
-    strokeWeight(1+(dim)/16);
+    canvas.noFill();
+    canvas.strokeWeight(1+(dim)/16);
 		 //posicaoX
 		// shape(fundo, posx-((largura+(dim*0.7))/ESCALA), posy-((altura+dim)/ESCALA), (largura+(dim*0.7))/ESCALA, (altura+dim)/ESCALA);
 		 //shape(desenho, posx-((largura+(dim*0.7))/ESCALA), posy-((altura+dim)/ESCALA), (largura+(dim*0.7))/ESCALA, (altura+dim)/ESCALA);
@@ -1009,11 +1065,11 @@ public void desenha(	)
    //   shape(bb, posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA), largura_tam, altura_tam);
    //   shape(cc, posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA), largura_tam, altura_tam);
    //   shape(dd, posicaoX-((largura+(dim*0.7))/ESCALA), posicaoY-((altura+dim)/ESCALA), largura_tam, altura_tam);
-   rect(posicaoX-((largura+(dim*0.7f))/ESCALA), posicaoY-((altura+dim)/ESCALA), largura_tam, largura_tam);
-   line(posicaoX-((largura+(dim*0.7f))/ESCALA), posicaoY-((altura+dim)/ESCALA),posicaoX-((largura+(dim*0.7f))/ESCALA)+largura_tam, posicaoY-((altura+dim)/ESCALA)+largura_tam);
-   line(posicaoX-((largura+(dim*0.7f))/ESCALA), posicaoY-((altura+dim)/ESCALA)+largura_tam,posicaoX-((largura+(dim*0.7f))/ESCALA)+largura_tam, posicaoY-((altura+dim)/ESCALA));
-   line(posicaoX-((largura+(dim*0.7f))/ESCALA), posicaoY-((altura+dim)/ESCALA),posicaoX-((largura+(dim*0.7f))/ESCALA)+(largura_tam/2), posicaoY-((altura+dim)/ESCALA)-(largura_tam/2));
-   line(posicaoX-((largura+(dim*0.7f))/ESCALA)+largura_tam, posicaoY-((altura+dim)/ESCALA),posicaoX-((largura+(dim*0.7f))/ESCALA)+(largura_tam/2), posicaoY-((altura+dim)/ESCALA)-(largura_tam/2));
+   canvas.rect(posicaoX-((largura+(dim*0.7f))/ESCALA), posicaoY-((altura+dim)/ESCALA), largura_tam, largura_tam);
+   canvas.line(posicaoX-((largura+(dim*0.7f))/ESCALA), posicaoY-((altura+dim)/ESCALA),posicaoX-((largura+(dim*0.7f))/ESCALA)+largura_tam, posicaoY-((altura+dim)/ESCALA)+largura_tam);
+   canvas.line(posicaoX-((largura+(dim*0.7f))/ESCALA), posicaoY-((altura+dim)/ESCALA)+largura_tam,posicaoX-((largura+(dim*0.7f))/ESCALA)+largura_tam, posicaoY-((altura+dim)/ESCALA));
+   canvas.line(posicaoX-((largura+(dim*0.7f))/ESCALA), posicaoY-((altura+dim)/ESCALA),posicaoX-((largura+(dim*0.7f))/ESCALA)+(largura_tam/2), posicaoY-((altura+dim)/ESCALA)-(largura_tam/2));
+   canvas.line(posicaoX-((largura+(dim*0.7f))/ESCALA)+largura_tam, posicaoY-((altura+dim)/ESCALA),posicaoX-((largura+(dim*0.7f))/ESCALA)+(largura_tam/2), posicaoY-((altura+dim)/ESCALA)-(largura_tam/2));
 
  }
 }
@@ -1113,7 +1169,7 @@ class exclusoes
  		foto = loadImage(url);
  		foto.resize(PApplet.parseInt(foto.width-(foto.width*0.3f)	),PApplet.parseInt( foto.height-(foto.height*0.3f)) );
 
-for (int x=0; x<foto.height;x++)
+ 		for (int x=0; x<foto.height;x++)
  		{
 
  			for (int xx=0; xx<foto.width;xx++)
@@ -1123,19 +1179,22 @@ for (int x=0; x<foto.height;x++)
  			}
 
  		}
- 		
+
  	}
 
  	public void mostra(int posx , int posy)
  	{
 
  		layerTOPO.beginDraw();
- 		
+ 		layerTOPO.background(0, 255, 0);
  		layerTOPO.image(foto, posx, posy);
  		layerTOPO.endDraw();
  	}
  	
-
+public PImage dameca()
+{
+	return foto;
+}
  	public int getUser(){return userID;}
  	public int getId(){return id;}
  }
@@ -1186,16 +1245,16 @@ int ESCALA = 2;
   public void desenhalinha() 
   {
     
-    noFill();
+    canvas.noFill();
 
-        stroke (cor);
+        canvas.stroke(cor);
     //stroke(255);
     strokeWeight (tamanho/ESCALA); // alterar quando a path ficar invisivel e for percorrida
     numP=points.size();
     beginShape();
     for (int i=0; i<numP; i++) {
       Vec2D p=(Vec2D)points.get(i);
-      vertex(p.x, p.y);
+      canvas.vertex(p.x, p.y);
       //melhorar desenho da linha
     }
     endShape();
@@ -1206,7 +1265,7 @@ int ESCALA = 2;
       Vec2D p=(Vec2D)points.get(i);
       handles[i]=p;
       if (showHandles) 
-      ellipse(p.x, p.y, 5, 5);
+      canvas.ellipse(p.x, p.y, 5, 5);
     }
 
   // need at least 4 vertices for a spline
@@ -1223,7 +1282,7 @@ int ESCALA = 2;
     beginShape();
     for (Iterator i=vertices.iterator(); i.hasNext(); ) {
       Vec2D v=(Vec2D)i.next();
-      vertex(v.x, v.y);
+      canvas.vertex(v.x, v.y);
     }
     endShape();
   }
@@ -1437,12 +1496,26 @@ public void mostraTweet()
  	linha traco;
  	int corcor;
  	int vai=0;
+ 	  int[] palette=new int[10];
  	user (int _id, String _user) 
  	{
  		id=_id;
  		username=_user;
  		caminho= new ArrayList();
- 		corcor=color(random(0,256),random(0,256),random(0,256));
+ 		//corcor=color(random(0,256),random(0,256),random(0,256));
+ 		  palette[0]=color(0,102,153);
+        palette[1]=color(0,153,255);
+        palette[2]=color(0,51,102);
+        palette[3]=color(51,204,255);
+        palette[4]=color(153,204,255);
+        palette[5]=color(51,102,153);
+        palette[6]=color(51,51,102);
+        palette[7]=color(102,51,102);
+        palette[8]=color(255,51,102);
+        palette[9]=color(255,102,153);
+      
+                int i = PApplet.parseInt(random(0,9));
+ 		corcor=palette[i];
  	}
 
  	public void addTweet()
@@ -1520,8 +1593,8 @@ public void mostraTweet()
  				float x = lerp(p_xx, c_xx, aa/3.0f);
  				float y = lerp(p_yy, c_yy, aa/3.0f);
  					//point(x, y);
- 					fill(0);
- 					ellipse(x, y, 5, 5);
+ 					canvas.fill(0);
+ 					canvas.ellipse(x, y, 5, 5);
  					traco.novapos (x,y);	
  				}
  			//}
