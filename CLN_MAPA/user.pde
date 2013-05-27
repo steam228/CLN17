@@ -116,9 +116,10 @@
  					traco.novapos (x,y);	
  				}
  			//}
- 			stroke(corcor);
- 			line(p_yy,p_yy,c_xx,c_yy);
- 			strokeWeight(1);
+ 			canvas.stroke(corcor);
+ 			canvas.strokeWeight(1);
+ 			canvas.line(p_yy,p_yy,c_xx,c_yy);
+ 			
  			traco.setCor(corcor);
  		//	traco.desenhalinha();	
  		}
