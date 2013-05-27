@@ -499,7 +499,6 @@ void fazMagia(){
 
 void desenhaCaminhos()
 {
-  println("NUMERO DE UTILIZADORES -> "+pessoas.size());
   user aux;
   for (int i = 0; i <pessoas.size(); i++) 
   {
